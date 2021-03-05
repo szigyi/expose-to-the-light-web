@@ -1,0 +1,17 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%magenta(%thread)] %highlight(%.-1level) %cyan(%-30(%logger{25})) %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.http4s.server.blaze" level="info"/>
+    <logger name="org.http4s.blaze.channel" level="warn"/>
+    <logger name="org.http4s.blaze.pipeline" level="error"/>
+    <logger name="hu.szigyi.ettl" level="debug"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
