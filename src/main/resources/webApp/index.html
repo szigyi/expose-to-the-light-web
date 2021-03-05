@@ -7,15 +7,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
+        const Api = {
+            getLogs: (ts, p, success) =>
+                $.post('/log', JSON.stringify({timestamp: ts, path: p}), success)
+        };
+
+        const Template = {
+            renderLog: (log) =>
+                `<li>${log.timestamp} - ${log.message}</li>`
+        };
+
+        const Page = {
+            loadLogs: () => {
+                Api.getLogs('2021-03-05T13:00:00Z', '/Users/szabolcs/dev/expose-to-the-light/logs', logs => {
+                    $('#logs').html(logs.map(Template.renderLog));
+                })
+            }
+        };
+
+
         $(function() {
-            let logRequest = { timestamp: '2021-03-05T13:00:00Z', path: '/Users/szabolcs/dev/expose-to-the-light/logs' }
-            $.post('/log', JSON.stringify(logRequest), function(result) {
-               console.log(result);
-            });
+            Page.loadLogs();
         });
     </script>
 </head>
 <body>
     <h1>ettl web</h1>
+    <section>
+        <h2>Logs</h2>
+        <ul id="logs"></ul>
+    </section>
 </body>
 </html>

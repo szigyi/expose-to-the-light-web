@@ -3,14 +3,11 @@ package hu.szigyi.ettl.web.api
 import cats.effect.IO
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.LogApi._
-import cats.implicits._
-import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+import io.circe.Codec
 import io.circe.generic.semiauto.deriveCodec
-import io.circe.{Codec, Decoder, Encoder}
-import org.http4s.{EntityDecoder, HttpRoutes}
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
-import org.http4s.dsl.io._
+import org.http4s.{EntityDecoder, HttpRoutes}
 
 import java.time.Instant
 
@@ -35,7 +32,7 @@ object LogApi {
   implicit val logRequestCodec: Codec[LogRequest] = deriveCodec[LogRequest]
   implicit val logResponseCodec: Codec[LogResponse] = deriveCodec[LogResponse]
 
-  implicit val logRequestEntityDecoder: EntityDecoder[IO, LogRequest] = circeEntityDecoder
+//  implicit val logRequestEntityDecoder: EntityDecoder[IO, LogRequest] = circeEntityDecoder
 
   case class LogRequest(timestamp: String, path: String)
 
