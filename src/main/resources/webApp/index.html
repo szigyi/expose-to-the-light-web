@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>ettl web</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(function() {
+            let logRequest = { timestamp: '2021-03-05T13:00:00Z', path: '/Users/szabolcs/dev/expose-to-the-light/logs' }
+            $.post('/log', JSON.stringify(logRequest), function(result) {
+               console.log(result);
+            });
+        });
+    </script>
 </head>
 <body>
     <h1>ettl web</h1>

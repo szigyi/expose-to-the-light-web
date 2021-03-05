@@ -36,8 +36,9 @@ object WebApp extends IOApp with StrictLogging {
 
   private def httpApp(ioc: InverseOfControl): Kleisli[IO, Request[IO], Response[IO]] =
     Router(
-      "/"               -> ioc.staticApi.service,
-      "/health"         -> ioc.healthApi.service
+      "/"       -> ioc.staticApi.service,
+      "/health" -> ioc.healthApi.service,
+      "/log"    -> ioc.logApi.service
     ).orNotFound
 
   private def banner(envName: String): String = {
