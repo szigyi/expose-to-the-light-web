@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext
 // 1 make the log service to use timestamp and send the newest lines only
 // 2 UI should only append the log lines
 // 3 UI should poll every half a second the log lines
-// TODO 4 UI should use the latest timestamp from the returned log lines or now to poll
+// 4 UI should use the latest timestamp from the returned log lines or now to poll
 // TODO 5 show the latest image on the UI
 // TODO 6 create mini timelapse from the images on the UI :D
 // TODO 7 filter log messages at server side based on log levels
