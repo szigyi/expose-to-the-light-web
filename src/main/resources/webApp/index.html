@@ -18,6 +18,8 @@
         };
 
         const Page = {
+            pollLogs: () =>
+                setInterval(Page.loadLogs, 500),
             loadLogs: () => {
                 Api.getLogs('2021-03-06T09:50:30Z', '/Users/szabolcs/dev/expose-to-the-light/logs', logs => {
                     $('#logs').append(logs.map(Template.renderLog));
@@ -27,7 +29,7 @@
 
 
         $(function() {
-            Page.loadLogs();
+            Page.pollLogs();
         });
     </script>
 </head>

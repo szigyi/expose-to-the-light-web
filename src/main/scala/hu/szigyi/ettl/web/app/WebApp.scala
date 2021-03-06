@@ -14,11 +14,13 @@ import scala.concurrent.ExecutionContext
 
 // 1 make the log service to use timestamp and send the newest lines only
 // 2 UI should only append the log lines
-// TODO 3 UI should poll every half a second the log lines
-// TODO 4 show the latest image on the UI
-// TODO 5 create mini timelapse from the images on the UI :D
-// TODO 6 filter log messages at server side based on log levels
+// 3 UI should poll every half a second the log lines
+// TODO 4 UI should use the latest timestamp from the returned log lines or now to poll
+// TODO 5 show the latest image on the UI
+// TODO 6 create mini timelapse from the images on the UI :D
+// TODO 7 filter log messages at server side based on log levels
 
+// http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
 
   private val port = sys.env.getOrElse("http_port", "8230").toInt
@@ -54,7 +56,7 @@ object WebApp extends IOApp with StrictLogging {
        |          _       _       _
        |  ___ ___| |_ ___| |_ ___| |
        | / -_)___|  _|___|  _|___| |
-       | \\___|    \\__|    \\__|   |_|
+       | \\___|    \\__|    \\__|   |_| WEB
        |
        | Build Number: ${manifestInfo.buildNumber}
        | Build Time:   ${manifestInfo.buildTimeStamp}
