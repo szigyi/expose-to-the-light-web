@@ -26,7 +26,7 @@ object LogApi {
   implicit val logRequestCodec: Codec[LogRequest] = deriveCodec[LogRequest]
   implicit val logResponseCodec: Codec[LogResponse] = deriveCodec[LogResponse]
 
-  case class LogRequest(timestamp: String, path: String)
+  case class LogRequest(timestamp: Instant, path: String)
 
   case class LogResponse(timestamp: Instant, message: String)
 

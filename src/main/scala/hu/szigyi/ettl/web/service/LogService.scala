@@ -16,7 +16,8 @@ class LogService extends StrictLogging {
   // TODO fetch logs after timestmap
   def readLogsSince(req: LogRequest): Seq[LogResponse] = {
     val logFile = filesInDirectory(req.path).sortBy(_.getName).reverse.head
-    logger.info(s"Log File: ${logFile.toString}")
+    logger.info(s"Reading log file: ${logFile.toString}")
+    logger.info(s"Reading log lines since: ${req.timestamp}")
 
     withResources(Source.fromFile(logFile)) { source =>
       val logs = source.getLines().toSeq.flatMap(line => {
@@ -32,11 +33,11 @@ class LogService extends StrictLogging {
               None
           }
           case other =>
-            logger.error("Log file's structure does not match the expected: timestamp:::message")
+            logger.error(s"Log file's structure does not match the expected: timestamp:::message != $other")
             None
         }
       })
-      logs.reverse
+      logs.reverse.filter(_.timestamp.isAfter(req.timestamp))
     }
   }
 

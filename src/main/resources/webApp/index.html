@@ -19,7 +19,7 @@
 
         const Page = {
             loadLogs: () => {
-                Api.getLogs('2021-03-05T13:00:00Z', '/Users/szabolcs/dev/expose-to-the-light/logs', logs => {
+                Api.getLogs('2021-03-06T09:50:30Z', '/Users/szabolcs/dev/expose-to-the-light/logs', logs => {
                     $('#logs').html(logs.map(Template.renderLog));
                 })
             }
