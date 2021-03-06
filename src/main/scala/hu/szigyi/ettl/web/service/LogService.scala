@@ -16,8 +16,8 @@ class LogService extends StrictLogging {
   // TODO fetch logs after timestmap
   def readLogsSince(req: LogRequest): Seq[LogResponse] = {
     val logFile = filesInDirectory(req.path).sortBy(_.getName).reverse.head
-    logger.info(s"Reading log file: ${logFile.toString}")
-    logger.info(s"Reading log lines since: ${req.timestamp}")
+    logger.trace(s"Reading log file: ${logFile.toString}")
+    logger.trace(s"Reading log lines since: ${req.timestamp}")
 
     withResources(Source.fromFile(logFile)) { source =>
       val logs = source.getLines().toSeq.flatMap(line => {
