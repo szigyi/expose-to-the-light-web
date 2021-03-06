@@ -9,6 +9,7 @@ import java.time.{Instant, ZoneOffset}
 import java.time.format.DateTimeFormatter
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
+import hu.szigyi.ettl.web.tool.ClosableOps._
 
 class LogService extends StrictLogging {
 
@@ -17,26 +18,26 @@ class LogService extends StrictLogging {
     val logFile = filesInDirectory(req.path).sortBy(_.getName).reverse.head
     logger.info(s"Log File: ${logFile.toString}")
 
-    val source = Source.fromFile(logFile)
-    val logs = source.getLines().toSeq.flatMap(line => {
-      line.split(":::").toList match {
-        case Nil =>
-          logger.info("Empty file. No logs in the file.")
-          None
-        case timestampString :: message :: Nil => parseLogInstant(timestampString) match {
-          case Success(timestamp) =>
-            Some(LogResponse(timestamp, message))
-          case Failure(exception) =>
-            logger.error(s"Could not parse timestamp: $timestampString ::: $message")
+    withResources(Source.fromFile(logFile)) { source =>
+      val logs = source.getLines().toSeq.flatMap(line => {
+        line.split(":::").toList match {
+          case Nil =>
+            logger.info("Empty file. No logs in the file.")
+            None
+          case timestampString :: message :: Nil => parseLogInstant(timestampString) match {
+            case Success(timestamp) =>
+              Some(LogResponse(timestamp, message))
+            case Failure(exception) =>
+              logger.error(s"Could not parse timestamp: $timestampString ::: $message")
+              None
+          }
+          case other =>
+            logger.error("Log file's structure does not match the expected: timestamp:::message")
             None
         }
-        case other =>
-          logger.error("Log file's structure does not match the expected: timestamp:::message")
-          None
-      }
-    })
-    source.close()
-    logs.reverse
+      })
+      logs.reverse
+    }
   }
 
   private def filesInDirectory(dir: String): Seq[File] = {
