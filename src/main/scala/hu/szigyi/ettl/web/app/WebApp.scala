@@ -13,10 +13,11 @@ import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
 // 1 make the log service to use timestamp and send the newest lines only
-// TODO 2 UI should only append the log lines
+// 2 UI should only append the log lines
 // TODO 3 UI should poll every half a second the log lines
 // TODO 4 show the latest image on the UI
 // TODO 5 create mini timelapse from the images on the UI :D
+// TODO 6 filter log messages at server side based on log levels
 
 object WebApp extends IOApp with StrictLogging {
 
