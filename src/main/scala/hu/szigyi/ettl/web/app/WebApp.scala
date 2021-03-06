@@ -12,6 +12,12 @@ import org.http4s.{Request, Response}
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
+// TODO 1 make the log service to use timestamp and send the newest lines only
+// TODO 2 UI should only append the log lines
+// TODO 3 UI should poll every half a second the log lines
+// TODO 4 show the latest image on the UI
+// TODO 5 create mini timelapse from the images on the UI :D
+
 object WebApp extends IOApp with StrictLogging {
 
   private val port = sys.env.getOrElse("http_port", "8230").toInt
