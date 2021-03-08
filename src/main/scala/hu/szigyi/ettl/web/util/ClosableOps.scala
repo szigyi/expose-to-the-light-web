@@ -1,4 +1,4 @@
-package hu.szigyi.ettl.web.tool
+package hu.szigyi.ettl.web.util
 
 import scala.util.control.NonFatal
 

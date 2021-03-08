@@ -9,7 +9,7 @@ import java.time.{Instant, ZoneOffset}
 import java.time.format.DateTimeFormatter
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
-import hu.szigyi.ettl.web.tool.ClosableOps._
+import hu.szigyi.ettl.web.util.ClosableOps._
 
 class LogService extends StrictLogging {
 

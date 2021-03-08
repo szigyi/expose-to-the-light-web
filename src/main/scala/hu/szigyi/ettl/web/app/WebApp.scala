@@ -3,7 +3,7 @@ package hu.szigyi.ettl.web.app
 import cats.data.Kleisli
 import cats.effect.{ExitCode, IO, IOApp}
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.tool.ManifestReader
+import hu.szigyi.ettl.web.util.ManifestReader
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder

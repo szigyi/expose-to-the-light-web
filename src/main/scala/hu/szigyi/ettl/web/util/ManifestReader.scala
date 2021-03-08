@@ -1,8 +1,8 @@
-package hu.szigyi.ettl.web.tool
+package hu.szigyi.ettl.web.util
 
 import java.net.URL
 
-import hu.szigyi.ettl.web.tool.ManifestReader.ManifestInfo
+import hu.szigyi.ettl.web.util.ManifestReader.ManifestInfo
 
 import scala.util.Try
 
