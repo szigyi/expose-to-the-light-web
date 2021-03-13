@@ -4,7 +4,7 @@ import cats.effect.{Blocker, ContextShift, IO}
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.ImageApi.{ImageRequest, ImageResponse}
 import hu.szigyi.ettl.web.util.Dir.getLastFileInDirectory
-import hu.szigyi.ettl.web.util.RawToJpg.{convert, fileNameToJpg}
+import hu.szigyi.ettl.web.util.RawToJpg.{convert, fileName, fileNameToJpg}
 import io.circe.Codec
 import io.circe.generic.semiauto.deriveCodec
 import org.http4s.HttpRoutes
@@ -13,15 +13,24 @@ import org.http4s.dsl.Http4sDsl
 import org.http4s.server.staticcontent.{FileService, fileService}
 
 
-class ImageApi(blocker: Blocker)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging{
+class ImageApi(blocker: Blocker)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging {
+
+  var convertedStorage: Set[String] = Set.empty
 
   val convertService: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case request@POST -> Root =>
       request.decode[ImageRequest] { req =>
-        val latestImageFile = getLastFileInDirectory(req.path).getAbsolutePath
-        val jpgVersion = fileNameToJpg(latestImageFile)
-        convert(latestImageFile, jpgVersion)
-        Ok(ImageResponse(jpgVersion))
+        val latestRawPath = getLastFileInDirectory(req.path).getAbsolutePath
+        val jpgPath = fileNameToJpg(latestRawPath)
+        convertedStorage.find(_ == jpgPath) match {
+          case Some(_) =>
+            Ok(ImageResponse(fileName(jpgPath)))
+          case None =>
+            convert(latestRawPath, jpgPath)
+            convertedStorage = convertedStorage + jpgPath
+            Ok(ImageResponse(fileName(jpgPath)))
+
+        }
       }
   }
 

@@ -23,7 +23,7 @@
             renderLog: (log) =>
                 `<li>${log.timestamp} - ${log.message}</li>`,
             renderLatestImage: (path) =>
-                `<img src="${path}">`
+                `<img src="/image/${path}">`
         };
 
         let latestTimestamp = new Date(Date.now());
@@ -50,8 +50,9 @@
 
 
         $(function () {
-            Page.pollLogs();
-            Page.pollImages();
+            // Page.pollLogs();
+            // Page.pollImages();
+            Page.loadLatestImage();
         });
     </script>
 </head>
