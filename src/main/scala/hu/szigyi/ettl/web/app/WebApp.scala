@@ -25,9 +25,10 @@ import scala.concurrent.ExecutionContext
 //          Do I need a background process which does it or can I do it when image request comes in?
 //          Which one is better for later use making gif?
 // 9 figure out what is the easiest way to serve dynamically changing images from folder
-// TODO 10 make source folder of raw images a config or part of request
+// 10 make source folder of raw images a config or part of request
 // 11 make image api more robust: can serve converted image if already exist; can serve latest image after page refresh
 // TODO 12 serve the entire last log file after page is refreshed not just incoming since now -> UI should have different states when first request goes to api and then just fetching latest
+// TODO 13 raw directory path and log path are comign from command line args and UI can get them -> makes the code more flexible and independent where it is running
 
 // http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
