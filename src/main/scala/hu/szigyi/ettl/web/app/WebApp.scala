@@ -25,7 +25,7 @@ import scala.concurrent.ExecutionContext
 //          Which one is better for later use making gif?
 // 9 figure out what is the easiest way to serve dynamically changing images from folder
 // TODO 10 make source folder of raw images a config or part of request
-// TODO 11 make image api more robust: can serve converted image if already exist; can serve latest image after page refresh
+// 11 make image api more robust: can serve converted image if already exist; can serve latest image after page refresh
 // TODO 12 serve the entire last log file after page is refreshed not just incoming since now -> UI should have different states when first request goes to api and then just fetching latest
 
 // http://localhost:8230/index.html
