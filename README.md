@@ -5,6 +5,7 @@ expose-to-the-light-web client
 ## On Mac Os
 * `brew install imagemagick`
 * `brew install ufraw`
+* `brew install exiftool`
 
 #### On Raspberry Pi (unix)
 TODO add apt install commands
