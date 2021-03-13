@@ -8,6 +8,7 @@ import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.{Request, Response}
+import org.rogach.scallop.{ScallopConf, ScallopOption}
 
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
@@ -38,10 +39,12 @@ object WebApp extends IOApp with StrictLogging {
   private val ec = ExecutionContext.fromExecutor(threadPool)
 
   override def run(args: List[String]): IO[ExitCode] = {
+    val conf = new Conf(args)
+    val appConfig = AppConfiguration(conf.rawDirectoryPath.apply())
     BlazeServerBuilder[IO](ec)
       .bindHttp(port, "0.0.0.0")
       .withBanner(Seq(banner(env)))
-      .withHttpApp(httpApp(new InverseOfControl(env)))
+      .withHttpApp(httpApp(new InverseOfControl(env, appConfig)))
       .serve
       .compile
       .drain
@@ -82,4 +85,11 @@ object WebApp extends IOApp with StrictLogging {
   private def finalWords(): Unit =
     logger.info(s"App is terminating as you said so!")
 
+  class Conf(args: Seq[String]) extends ScallopConf(args) {
+    val rawDirectoryPath: ScallopOption[String] =
+      opt[String](name = "rawDirectoryPath", required = true, descr = "Directory where the captured, raw images are")
+    verify()
+  }
+
+  case class AppConfiguration(rawDirectoryPath: String)
 }

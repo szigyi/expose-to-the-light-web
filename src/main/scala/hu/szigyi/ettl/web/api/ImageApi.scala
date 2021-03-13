@@ -12,7 +12,7 @@ import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.staticcontent.{FileService, fileService}
 
-class ImageApi(blocker: Blocker)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging {
+class ImageApi(blocker: Blocker, rawDirectoryPath: String)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging {
 
   var convertedStorage: Set[String] = Set.empty
 
@@ -36,7 +36,7 @@ class ImageApi(blocker: Blocker)(implicit cs: ContextShift[IO]) extends Http4sDs
       }
   }
 
-  val imageService: HttpRoutes[IO] = fileService[IO](FileService.Config("/Users/szabolcs/Downloads/img", blocker))
+  val imageService: HttpRoutes[IO] = fileService[IO](FileService.Config(rawDirectoryPath, blocker))
 }
 
 object ImageApi {
