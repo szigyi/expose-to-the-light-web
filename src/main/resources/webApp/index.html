@@ -43,6 +43,7 @@
             },
             loadLatestImage: () => {
                 Api.convertLatestImage('/Users/szabolcs/Downloads/img', response => {
+                    console.log('overwriting image now...')
                     $('#latest-image').html(Template.renderLatestImage(response.path))
                 });
             }
@@ -50,9 +51,8 @@
 
 
         $(function () {
-            // Page.pollLogs();
-            // Page.pollImages();
-            Page.loadLatestImage();
+            Page.pollLogs();
+            Page.pollImages();
         });
     </script>
 </head>
