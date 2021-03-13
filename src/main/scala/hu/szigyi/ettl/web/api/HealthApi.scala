@@ -1,15 +1,15 @@
 package hu.szigyi.ettl.web.api
 
-import java.time.Instant
-import io.circe.generic.auto._
-import org.http4s.circe.CirceEntityCodec._
 import cats.effect.IO
 import hu.szigyi.ettl.web.api.HealthApi.HealthModel
+import io.circe.generic.auto._
 import org.http4s.HttpRoutes
-import org.http4s.dsl.impl.Root
-import org.http4s.dsl.io._
+import org.http4s.circe.CirceEntityCodec._
+import org.http4s.dsl.Http4sDsl
 
-class HealthApi(env: String) {
+import java.time.Instant
+
+class HealthApi(env: String) extends Http4sDsl[IO] {
 
   val service = HttpRoutes.of[IO] {
     case GET -> Root => Ok(HealthModel(Instant.now(), env, false))
