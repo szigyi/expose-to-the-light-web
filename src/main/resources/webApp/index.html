@@ -15,15 +15,15 @@
         const Api = {
             getLogs: (ts, p, success) =>
                 $.post('/log', JSON.stringify({timestamp: ts, path: p}), success),
-            convertLatestImage: (p, success) =>
-                $.post('/convert', JSON.stringify({path: p}), success)
+            convertLatestImage: (rawDirectory, latestImage, success) =>
+                $.post('/convert', JSON.stringify({rawDirectoryPath: rawDirectory, latestImageName: latestImage}), success)
         };
 
         const Template = {
             renderLog: (log) =>
                 `<li>${log.timestamp} - ${log.message}</li>`,
-            renderLatestImage: (path) =>
-                `<img src="/image/${path}">`
+            renderLatestImage: (name) =>
+                `<img id="latest-image" data-name="${name}" src="/image/${name}">`
         };
 
         let latestTimestamp = new Date(Date.now());
@@ -42,9 +42,12 @@
                 });
             },
             loadLatestImage: () => {
-                Api.convertLatestImage('/Users/szabolcs/Downloads/img', response => {
-                    console.log('overwriting image now...')
-                    $('#latest-image').html(Template.renderLatestImage(response.path))
+                let rawDirectory = '/Users/szabolcs/Downloads/img';
+                let latestImage = $('#latest-image').data('name');
+                Api.convertLatestImage(rawDirectory, latestImage, response => {
+                    if (response.latestImageName !== latestImage) {
+                        $('#latest-image-section').html(Template.renderLatestImage(response.latestImageName));
+                    }
                 });
             }
         };
@@ -60,7 +63,7 @@
 <h1>ettl web</h1>
 <section>
     <h2>Latest Image</h2>
-    <section id="latest-image"></section>
+    <section id="latest-image-section"></section>
     <h2>Logs</h2>
     <ul id="logs"></ul>
 </section>

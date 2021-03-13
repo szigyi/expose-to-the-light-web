@@ -1,17 +1,22 @@
 package hu.szigyi.ettl.web.util
 
-import java.io.File
+import cats.data.NonEmptyList
+
+import java.io.{File, FilenameFilter}
 
 object Dir {
 
-  def filesInDirectory(dir: String): Seq[File] = {
+  def filesInDirectory(dir: String, excludedFile: String): Option[NonEmptyList[File]] = {
     val d = new File(dir)
     if (d.exists && d.isDirectory)
-      d.listFiles.filter(_.isFile).toSeq
+      NonEmptyList.fromList(d.listFiles(extensionFilter(excludedFile)).filter(_.isFile).toList)
     else
-      Seq[File]()
+      None
   }
 
-  def getLastFileInDirectory(dir: String): File =
-    filesInDirectory(dir).sortBy(_.getName).reverse.head
+  def getLastNonJpgFileInDirectory(dir: String): Option[File] =
+    filesInDirectory(dir, ".jpg").map(_.sortBy(_.getName).reverse.head)
+
+  private def extensionFilter(extension: String): FilenameFilter =
+    (_: File, name: String) => !name.toLowerCase.endsWith(extension)
 }
