@@ -19,7 +19,7 @@ import scala.concurrent.ExecutionContext
 // TODO 5 show the latest image on the UI
 // TODO 6 create mini timelapse from the images on the UI :D
 // TODO 7 filter log messages at server side based on log levels
-// TODO 8 as it is bugged and cannot download the jpg version of the image from the camera
+// 8 as it is bugged and cannot download the jpg version of the image from the camera
 //        compare the speed of exiftool (extract thumbnail and then resize with magick) and magick (raw to jpg)
 //          Do I need a background process which does it or can I do it when image request comes in?
 //          Which one is better for later use making gif?

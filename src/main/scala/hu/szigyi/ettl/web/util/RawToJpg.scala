@@ -20,4 +20,3 @@ object RawToJpg extends StrictLogging {
   def fileName(path: String): String =
     new File(path).getName
 }
-
