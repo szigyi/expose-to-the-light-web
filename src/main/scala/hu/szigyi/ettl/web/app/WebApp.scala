@@ -58,6 +58,7 @@ object WebApp extends IOApp with StrictLogging {
     Router(
       "/"        -> ioc.staticApi.service,
       "/health"  -> ioc.healthApi.service,
+      "/config"  -> ioc.configApi.service,
       "/log"     -> ioc.logApi.service,
       "/convert" -> ioc.imageApi.convertService,
       "/image"   -> ioc.imageApi.imageService,
