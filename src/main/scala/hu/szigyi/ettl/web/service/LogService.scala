@@ -13,11 +13,10 @@ import hu.szigyi.ettl.web.util.Dir.getLastFileInDirectory
 
 class LogService extends StrictLogging {
 
-  // TODO fetch logs after timestmap
-  def readLogsSince(req: LogRequest): Seq[LogResponse] = {
-    val latestLogFile = getLastFileInDirectory(req.path)
+  def readLogsSince(path: String, timestamp: Instant): Seq[LogResponse] = {
+    val latestLogFile = getLastFileInDirectory(path)
     logger.trace(s"Reading log file: ${latestLogFile.toString}")
-    logger.trace(s"Reading log lines since: ${req.timestamp}")
+    logger.trace(s"Reading log lines since: ${timestamp}")
 
     withResources(Source.fromFile(latestLogFile)) { source =>
       val logs = source.getLines().toSeq.flatMap(line => {
@@ -37,7 +36,7 @@ class LogService extends StrictLogging {
             None
         }
       })
-      logs.reverse.filter(_.timestamp.isAfter(req.timestamp))
+      logs.reverse.filter(_.timestamp.isAfter(timestamp))
     }
   }
 }

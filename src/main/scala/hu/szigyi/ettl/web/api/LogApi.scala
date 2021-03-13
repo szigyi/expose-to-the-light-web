@@ -17,7 +17,7 @@ class LogApi(logService: LogService) extends Http4sDsl[IO] with StrictLogging {
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case request@POST -> Root =>
       request.decode[LogRequest] { logRequest =>
-        Ok(logService.readLogsSince(logRequest))
+        Ok(logService.readLogsSince(logRequest.path, logRequest.timestamp))
       }
   }
 }

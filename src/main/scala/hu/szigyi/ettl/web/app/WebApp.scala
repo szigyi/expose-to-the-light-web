@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext
 // 2 UI should only append the log lines
 // 3 UI should poll every half a second the log lines
 // 4 UI should use the latest timestamp from the returned log lines or now to poll
-// TODO 5 show the latest image on the UI
+// 5 show the latest image on the UI
 // TODO 6 create mini timelapse from the images on the UI :D
 // TODO 7 filter log messages at server side based on log levels
 // 8 as it is bugged and cannot download the jpg version of the image from the camera
@@ -26,6 +26,7 @@ import scala.concurrent.ExecutionContext
 // 9 figure out what is the easiest way to serve dynamically changing images from folder
 // TODO 10 make source folder of raw images a config or part of request
 // TODO 11 make image api more robust: can serve converted image if already exist; can serve latest image after page refresh
+// TODO 12 serve the entire last log file after page is refreshed not just incoming since now -> UI should have different states when first request goes to api and then just fetching latest
 
 // http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
