@@ -1,22 +1,22 @@
 package hu.szigyi.ettl.web.service
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.api.LogApi.{LogRequest, LogResponse}
+import hu.szigyi.ettl.web.api.LogApi.LogResponse
 import hu.szigyi.ettl.web.service.LogService.parseLogInstant
-
-import java.time.{Instant, ZoneOffset}
-import java.time.format.DateTimeFormatter
-import scala.io.Source
-import scala.util.{Failure, Success, Try}
 import hu.szigyi.ettl.web.util.ClosableOps._
 import hu.szigyi.ettl.web.util.Dir.getLastFileInDirectory
+
+import java.time.format.DateTimeFormatter
+import java.time.{Instant, ZoneOffset}
+import scala.io.Source
+import scala.util.{Failure, Success, Try}
 
 class LogService extends StrictLogging {
 
   def readLogsSince(path: String, timestamp: Instant): Seq[LogResponse] = {
     val latestLogFile = getLastFileInDirectory(path)
     logger.trace(s"Reading log file: ${latestLogFile.toString}")
-    logger.trace(s"Reading log lines since: ${timestamp}")
+    logger.trace(s"Reading log lines since: $timestamp")
 
     withResources(Source.fromFile(latestLogFile)) { source =>
       val logs = source.getLines().toSeq.flatMap(line => {

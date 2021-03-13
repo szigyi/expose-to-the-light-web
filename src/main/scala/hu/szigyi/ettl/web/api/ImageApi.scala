@@ -7,7 +7,7 @@ import hu.szigyi.ettl.web.util.Dir.getLastFileInDirectory
 import hu.szigyi.ettl.web.util.RawToJpg.{convertToJpg, fileName, filePathToJpg}
 import io.circe.Codec
 import io.circe.generic.semiauto.deriveCodec
-import org.http4s.{HttpRoutes, Response}
+import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.staticcontent.{FileService, fileService}
@@ -33,7 +33,7 @@ class ImageApi(blocker: Blocker)(implicit cs: ContextShift[IO]) extends Http4sDs
       }
   }
 
-  val imageService = fileService[IO](FileService.Config("/Users/szabolcs/Downloads/img", blocker))
+  val imageService: HttpRoutes[IO] = fileService[IO](FileService.Config("/Users/szabolcs/Downloads/img", blocker))
 }
 
 object ImageApi {
