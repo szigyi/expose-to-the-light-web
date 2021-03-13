@@ -27,7 +27,7 @@
             renderLatestImage: (name) =>
                 `<img id="latest-image" data-name="${name}" src="/image/${name}">`,
             renderConfig: (conf) =>
-                `<pre>${conf.rawDirectoryPath}</pre>`
+                `<pre>${conf.rawDirectoryPath}</pre><pre>${conf.logDirectoryPath}</pre>`
         };
 
         let latestTimestamp = new Date(Date.now());
@@ -39,7 +39,7 @@
             pollImages: () =>
                 setInterval(Page.loadLatestImage, 1000),
             loadLogs: () => {
-                Api.getLogs(latestTimestamp.toISOString(), '/Users/szabolcs/dev/expose-to-the-light/logs', logs => {
+                Api.getLogs(latestTimestamp.toISOString(), config.logDirectoryPath, logs => {
                     if (logs.length > 0) {
                         $('#logs').prepend(logs.map(Template.renderLog));
                         latestTimestamp = new Date(Date.parse(logs[0].timestamp));
