@@ -1,7 +1,7 @@
 package hu.szigyi.ettl.web.app
 
 import cats.effect.{Blocker, ContextShift, IO}
-import hu.szigyi.ettl.web.api.{HealthApi, LogApi, StaticApi}
+import hu.szigyi.ettl.web.api.{HealthApi, ImageApi, LogApi, StaticApi}
 import hu.szigyi.ettl.web.service.LogService
 
 class InverseOfControl(env: String)(implicit cs: ContextShift[IO]) {
@@ -12,4 +12,5 @@ class InverseOfControl(env: String)(implicit cs: ContextShift[IO]) {
   val staticApi = new StaticApi(blocker)
   val healthApi = new HealthApi(env)
   val logApi    = new LogApi(logService)
+  val imageApi  = new ImageApi(blocker)
 }

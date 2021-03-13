@@ -19,6 +19,10 @@ import scala.concurrent.ExecutionContext
 // TODO 5 show the latest image on the UI
 // TODO 6 create mini timelapse from the images on the UI :D
 // TODO 7 filter log messages at server side based on log levels
+// TODO 8 as it is bugged and cannot download the jpg version of the image from the camera
+//        compare the speed of exiftool (extract thumbnail and then resize with magick) and magick (raw to jpg)
+//          Do I need a background process which does it or can I do it when image request comes in?
+//          Which one is better for later use making gif?
 
 // http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
@@ -45,9 +49,11 @@ object WebApp extends IOApp with StrictLogging {
 
   private def httpApp(ioc: InverseOfControl): Kleisli[IO, Request[IO], Response[IO]] =
     Router(
-      "/"       -> ioc.staticApi.service,
-      "/health" -> ioc.healthApi.service,
-      "/log"    -> ioc.logApi.service
+      "/"        -> ioc.staticApi.service,
+      "/health"  -> ioc.healthApi.service,
+      "/log"     -> ioc.logApi.service,
+      "/convert" -> ioc.imageApi.convertService,
+      "/image"   -> ioc.imageApi.imageService,
     ).orNotFound
 
   private def banner(envName: String): String = {

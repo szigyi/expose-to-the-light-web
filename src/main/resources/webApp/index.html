@@ -14,12 +14,16 @@
     <script>
         const Api = {
             getLogs: (ts, p, success) =>
-                $.post('/log', JSON.stringify({timestamp: ts, path: p}), success)
+                $.post('/log', JSON.stringify({timestamp: ts, path: p}), success),
+            convertLatestImage: (p, success) =>
+                $.post('/convert', JSON.stringify({path: p}), success)
         };
 
         const Template = {
             renderLog: (log) =>
-                `<li>${log.timestamp} - ${log.message}</li>`
+                `<li>${log.timestamp} - ${log.message}</li>`,
+            renderLatestImage: (path) =>
+                `<img src="${path}">`
         };
 
         let latestTimestamp = new Date(Date.now());
@@ -27,6 +31,8 @@
         const Page = {
             pollLogs: () =>
                 setInterval(Page.loadLogs, 500),
+            pollImages: () =>
+                setInterval(Page.loadLatestImage, 1000),
             loadLogs: () => {
                 Api.getLogs(latestTimestamp.toISOString(), '/Users/szabolcs/dev/expose-to-the-light/logs', logs => {
                     if (logs.length > 0) {
@@ -34,18 +40,26 @@
                         latestTimestamp = new Date(Date.parse(logs[0].timestamp));
                     }
                 });
+            },
+            loadLatestImage: () => {
+                Api.convertLatestImage('/Users/szabolcs/Downloads/img', response => {
+                    $('#latest-image').html(Template.renderLatestImage(response.path))
+                });
             }
         };
 
 
         $(function () {
             Page.pollLogs();
+            Page.pollImages();
         });
     </script>
 </head>
 <body>
 <h1>ettl web</h1>
 <section>
+    <h2>Latest Image</h2>
+    <section id="latest-image"></section>
     <h2>Logs</h2>
     <ul id="logs"></ul>
 </section>
