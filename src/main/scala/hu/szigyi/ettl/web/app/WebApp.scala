@@ -23,6 +23,8 @@ import scala.concurrent.ExecutionContext
 //        compare the speed of exiftool (extract thumbnail and then resize with magick) and magick (raw to jpg)
 //          Do I need a background process which does it or can I do it when image request comes in?
 //          Which one is better for later use making gif?
+// TODO 9 figure out what is the easiest way to serve dynamically changing images from folder
+// TODO 10 make source folder of raw images a config or part of request
 
 // http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
