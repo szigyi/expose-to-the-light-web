@@ -27,9 +27,6 @@ libraryDependencies ++= Seq(
   "com.github.pureconfig"      %% "pureconfig"          % "0.14.1",
   "org.rogach"                 %% "scallop"             % "4.0.2",
 
-  "org.gphoto"                 %  "gphoto2-java"        % "1.5",
-  "com.github.dorinp.reflux"   %% "reflux-generic"      % "0.0.14",
-
   "org.http4s"                 %% "http4s-circe"        % http4sVersion,
   "org.http4s"                 %% "http4s-dsl"          % http4sVersion,
   "org.http4s"                 %% "http4s-blaze-server" % http4sVersion,
