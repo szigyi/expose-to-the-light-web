@@ -31,8 +31,8 @@ import scala.concurrent.ExecutionContext
 // 13 raw directory path and log path are comign from command line args and UI can get them -> makes the code more flexible and independent where it is running
 // 14 can handle empty raw directory
 // 15 read only known files types from folder
+// TODO 16 can start the ettl command line tool from the UI
 
-// http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
 
   private val port = sys.env.getOrElse("http_port", "8230").toInt
@@ -77,6 +77,8 @@ object WebApp extends IOApp with StrictLogging {
        |  ___ ___| |_ ___| |_ ___| |
        | / -_)___|  _|___|  _|___| |
        | \\___|    \\__|    \\__|   |_| WEB
+       |
+       | http://localhost:8230/index.html
        |
        | Build Number: ${manifestInfo.buildNumber}
        | Build Time:   ${manifestInfo.buildTimeStamp}
