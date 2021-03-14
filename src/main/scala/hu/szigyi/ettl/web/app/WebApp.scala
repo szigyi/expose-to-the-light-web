@@ -32,7 +32,9 @@ import scala.concurrent.ExecutionContext
 // 14 can handle empty raw directory
 // 15 read only known files types from folder
 // TODO 16 can start the ettl command line tool from the UI
-// TODO 17 remove unnecessary info from logs
+// TODO 17 responsive image on the UI
+// TODO 18 log's timestamp is separated and smaller then the message
+
 
 object WebApp extends IOApp with StrictLogging {
 
