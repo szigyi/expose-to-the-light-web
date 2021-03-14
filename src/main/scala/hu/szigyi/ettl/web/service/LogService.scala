@@ -1,7 +1,6 @@
 package hu.szigyi.ettl.web.service
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.api.LogApi.LogResponse
 import hu.szigyi.ettl.web.service.LogService.parseLogInstant
 import hu.szigyi.ettl.web.util.ClosableOps._
 import hu.szigyi.ettl.web.util.Dir.getLatestFileInDirectory
@@ -13,11 +12,10 @@ import scala.util.{Failure, Success, Try}
 
 class LogService(logDirectoryPath: String) extends StrictLogging {
 
-  def readLogsSince(timestamp: Instant): Seq[LogResponse] = {
+  def readLatestLogFile: Seq[(Instant, String)] =
     getLatestFileInDirectory(logDirectoryPath, ".log") match {
       case Some(latestLogFile) =>
         logger.trace(s"Reading log file: ${latestLogFile.toString}")
-        logger.trace(s"Reading log lines since: $timestamp")
 
         withResources(Source.fromFile(latestLogFile)) { source =>
           val logs = source.getLines().toSeq.flatMap(line => {
@@ -27,7 +25,7 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
                 None
               case timestampString :: message :: Nil => parseLogInstant(timestampString) match {
                 case Success(timestamp) =>
-                  Some(LogResponse(timestamp, message))
+                  Some((timestamp, message))
                 case Failure(exception) =>
                   logger.error(s"Could not parse timestamp: $timestampString ::: $message")
                   None
@@ -37,11 +35,15 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
                 None
             }
           })
-          logs.reverse.filter(_.timestamp.isAfter(timestamp))
+          logs.reverse
         }
       case None =>
         Seq.empty
     }
+
+  def readLogsSince(timestamp: Instant): Seq[(Instant, String)] = {
+    logger.trace(s"Reading log lines since: $timestamp")
+    readLatestLogFile.filter(_._1.isAfter(timestamp))
   }
 }
 

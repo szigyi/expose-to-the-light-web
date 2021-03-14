@@ -15,9 +15,12 @@ import java.time.Instant
 class LogApi(logService: LogService) extends Http4sDsl[IO] with StrictLogging {
 
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
+    case GET -> Root =>
+      Ok(logService.readLatestLogFile.map(LogResponse.apply))
+
     case request@POST -> Root =>
       request.decode[LogRequest] { logRequest =>
-        Ok(logService.readLogsSince(logRequest.timestamp))
+        Ok(logService.readLogsSince(logRequest.timestamp).map(LogResponse.apply))
       }
   }
 }
@@ -29,5 +32,9 @@ object LogApi {
   case class LogRequest(timestamp: Instant)
 
   case class LogResponse(timestamp: Instant, message: String)
+  object LogResponse {
+    def apply(tup: (Instant, String)): LogResponse =
+      LogResponse(tup._1, tup._2)
+  }
 
 }

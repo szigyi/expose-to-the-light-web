@@ -15,7 +15,9 @@
         const Api = {
             getConfig: (success) =>
                 $.get('/config', success),
-            getLogs: (ts, p, success) =>
+            getLatestLogFile: (success) =>
+                $.get('/log', success),
+            getLogsSince: (ts, p, success) =>
                 $.post('/log', JSON.stringify({timestamp: ts, path: p}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success)
@@ -35,16 +37,20 @@
 
         const Page = {
             pollLogs: () =>
-                setInterval(Page.loadLogs, 500),
+                setInterval(Page.loadLogsSince, 500),
             pollImages: () =>
                 setInterval(Page.loadLatestImage, 1000),
-            loadLogs: () => {
-                Api.getLogs(latestTimestamp.toISOString(), config.logDirectoryPath, logs => {
-                    if (logs.length > 0) {
-                        $('#logs').prepend(logs.map(Template.renderLog));
-                        latestTimestamp = new Date(Date.parse(logs[0].timestamp));
-                    }
-                });
+            handleLogs: (logs) => {
+                if (logs.length > 0) {
+                    $('#logs').prepend(logs.map(Template.renderLog));
+                    latestTimestamp = new Date(Date.parse(logs[0].timestamp));
+                }
+            },
+            loadLatestLogFile: () => {
+                Api.getLatestLogFile(Page.handleLogs)
+            },
+            loadLogsSince: () => {
+                Api.getLogsSince(latestTimestamp.toISOString(), config.logDirectoryPath, Page.handleLogs);
             },
             loadLatestImage: () => {
                 let latestImage = $('#latest-image').data('name');
@@ -65,6 +71,7 @@
 
         $(function () {
             Page.loadConfig();
+            Page.loadLatestLogFile();
             Page.pollLogs();
             Page.pollImages();
         });
