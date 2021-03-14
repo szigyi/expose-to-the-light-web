@@ -17,8 +17,8 @@
                 $.get('/config', success),
             getLogs: (ts, p, success) =>
                 $.post('/log', JSON.stringify({timestamp: ts, path: p}), success),
-            convertLatestImage: (rawDirectory, latestImage, success) =>
-                $.post('/convert', JSON.stringify({rawDirectoryPath: rawDirectory, latestImageName: latestImage}), success)
+            getFileNameOfLatestImage: (success) =>
+                $.get('/convert', success)
         };
 
         const Template = {
@@ -48,8 +48,8 @@
             },
             loadLatestImage: () => {
                 let latestImage = $('#latest-image').data('name');
-                Api.convertLatestImage(config.rawDirectoryPath, latestImage, response => {
-                    if (response.latestImageName !== latestImage) {
+                Api.getFileNameOfLatestImage(response => {
+                    if (response.latestImageName && response.latestImageName !== latestImage) {
                         $('#latest-image-section').html(Template.renderLatestImage(response.latestImageName));
                     }
                 });

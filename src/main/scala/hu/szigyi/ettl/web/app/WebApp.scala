@@ -63,7 +63,7 @@ object WebApp extends IOApp with StrictLogging {
       "/config"  -> ioc.configApi.service,
       "/log"     -> ioc.logApi.service,
       "/convert" -> ioc.imageApi.convertService,
-      "/image"   -> ioc.imageApi.imageService,
+      "/image"   -> ioc.imageApi.imageFileService,
     ).orNotFound
 
   private def banner(envName: String): String = {

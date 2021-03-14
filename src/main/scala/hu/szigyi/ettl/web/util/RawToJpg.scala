@@ -9,7 +9,7 @@ import java.io.File
 object RawToJpg extends StrictLogging {
   val jpgNameAddition: String = ".JPG"
 
-  def convertToJpg(rawPath: String): String = {
+  def convertToJpg(rawPath: String) = {
     val jpgPath = filePathToJpg(rawPath)
     logger.debug(s"converting raw '$rawPath' to '$jpgPath'...")
     val exifCommand =
@@ -20,8 +20,6 @@ object RawToJpg extends StrictLogging {
     exifCommand !
 
     magickCommand !
-
-    jpgPath
   }
 
   // https://stackoverflow.com/a/4731270
