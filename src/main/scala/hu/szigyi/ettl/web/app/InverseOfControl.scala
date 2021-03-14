@@ -8,7 +8,7 @@ import hu.szigyi.ettl.web.service.{ImageService, LogService}
 class InverseOfControl(env: String, config: AppConfiguration)(implicit cs: ContextShift[IO]) {
   private val blocker: Blocker = Blocker[IO].allocated.unsafeRunSync()._1
 
-  private val logService = new LogService()
+  private val logService = new LogService(config.logDirectoryPath)
   private val imageService = new ImageService(config.rawDirectoryPath)
 
   val staticApi = new StaticApi(blocker)

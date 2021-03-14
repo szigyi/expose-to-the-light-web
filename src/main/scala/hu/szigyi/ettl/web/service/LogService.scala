@@ -11,10 +11,10 @@ import java.time.{Instant, ZoneOffset}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
-class LogService extends StrictLogging {
+class LogService(logDirectoryPath: String) extends StrictLogging {
 
-  def readLogsSince(path: String, timestamp: Instant): Seq[LogResponse] = {
-    getLastNonJpgFileInDirectory(path) match {
+  def readLogsSince(timestamp: Instant): Seq[LogResponse] = {
+    getLastNonJpgFileInDirectory(logDirectoryPath) match {
       case Some(latestLogFile) =>
         logger.trace(s"Reading log file: ${latestLogFile.toString}")
         logger.trace(s"Reading log lines since: $timestamp")
