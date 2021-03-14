@@ -17,8 +17,8 @@
                 $.get('/config', success),
             getLatestLogFile: (success) =>
                 $.get('/log', success),
-            getLogsSince: (ts, p, success) =>
-                $.post('/log', JSON.stringify({timestamp: ts, path: p}), success),
+            getLogsSince: (ts, success) =>
+                $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success)
         };
@@ -50,7 +50,7 @@
                 Api.getLatestLogFile(Page.handleLogs)
             },
             loadLogsSince: () => {
-                Api.getLogsSince(latestTimestamp.toISOString(), config.logDirectoryPath, Page.handleLogs);
+                Api.getLogsSince(latestTimestamp.toISOString(), Page.handleLogs);
             },
             loadLatestImage: () => {
                 let latestImage = $('#latest-image').data('name');
