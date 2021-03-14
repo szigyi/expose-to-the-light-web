@@ -30,7 +30,7 @@ import scala.concurrent.ExecutionContext
 // TODO 12 serve the entire last log file after page is refreshed not just incoming since now -> UI should have different states when first request goes to api and then just fetching latest
 // 13 raw directory path and log path are comign from command line args and UI can get them -> makes the code more flexible and independent where it is running
 // 14 can handle empty raw directory
-// TODO 15 read only known files types from folder
+// 15 read only known files types from folder
 
 // http://localhost:8230/index.html
 object WebApp extends IOApp with StrictLogging {
