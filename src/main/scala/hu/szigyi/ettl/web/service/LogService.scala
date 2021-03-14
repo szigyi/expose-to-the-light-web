@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.LogApi.LogResponse
 import hu.szigyi.ettl.web.service.LogService.parseLogInstant
 import hu.szigyi.ettl.web.util.ClosableOps._
-import hu.szigyi.ettl.web.util.Dir.getLastNonJpgFileInDirectory
+import hu.szigyi.ettl.web.util.Dir.getLatestFileInDirectory
 
 import java.time.format.DateTimeFormatter
 import java.time.{Instant, ZoneOffset}
@@ -14,7 +14,7 @@ import scala.util.{Failure, Success, Try}
 class LogService(logDirectoryPath: String) extends StrictLogging {
 
   def readLogsSince(timestamp: Instant): Seq[LogResponse] = {
-    getLastNonJpgFileInDirectory(logDirectoryPath) match {
+    getLatestFileInDirectory(logDirectoryPath, ".log") match {
       case Some(latestLogFile) =>
         logger.trace(s"Reading log file: ${latestLogFile.toString}")
         logger.trace(s"Reading log lines since: $timestamp")

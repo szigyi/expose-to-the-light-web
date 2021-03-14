@@ -43,7 +43,10 @@ object WebApp extends IOApp with StrictLogging {
 
   override def run(args: List[String]): IO[ExitCode] = {
     val conf = new Conf(args)
-    val appConfig = AppConfiguration(conf.rawDirectoryPath.apply(), conf.logDirectoryPath.apply())
+    val appConfig = AppConfiguration(
+      conf.rawDirectoryPath.apply(),
+      conf.logDirectoryPath.apply(),
+      conf.rawFileExtension.apply())
     BlazeServerBuilder[IO](ec)
       .bindHttp(port, "0.0.0.0")
       .withBanner(Seq(banner(env)))
@@ -94,8 +97,10 @@ object WebApp extends IOApp with StrictLogging {
       opt[String](name = "rawDirectoryPath", required = true, descr = "Directory where the captured, raw images are")
     val logDirectoryPath: ScallopOption[String] =
       opt[String](name = "logDirectoryPath", required = true, descr = "Directory where the logs are")
+    val rawFileExtension: ScallopOption[String] =
+      opt[String](name = "rawFileExtension", required = true, descr = "Extension of your Raw file ie: CR2, NEF")
     verify()
   }
 
-  case class AppConfiguration(rawDirectoryPath: String, logDirectoryPath: String)
+  case class AppConfiguration(rawDirectoryPath: String, logDirectoryPath: String, rawFileExtension: String)
 }

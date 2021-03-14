@@ -9,7 +9,7 @@ class InverseOfControl(env: String, config: AppConfiguration)(implicit cs: Conte
   private val blocker: Blocker = Blocker[IO].allocated.unsafeRunSync()._1
 
   private val logService = new LogService(config.logDirectoryPath)
-  private val imageService = new ImageService(config.rawDirectoryPath)
+  private val imageService = new ImageService(config.rawDirectoryPath, config.rawFileExtension)
 
   val staticApi = new StaticApi(blocker)
   val healthApi = new HealthApi(env)

@@ -6,17 +6,17 @@ import java.io.{File, FilenameFilter}
 
 object Dir {
 
-  def filesInDirectory(dir: String, excludedFile: String): Option[NonEmptyList[File]] = {
+  def filesInDirectory(dir: String, allowedExtension: String): Option[NonEmptyList[File]] = {
     val d = new File(dir)
     if (d.exists && d.isDirectory)
-      NonEmptyList.fromList(d.listFiles(extensionFilter(excludedFile)).filter(_.isFile).toList)
+      NonEmptyList.fromList(d.listFiles(allowedExtensionFilter(allowedExtension)).filter(_.isFile).toList)
     else
       None
   }
 
-  def getLastNonJpgFileInDirectory(dir: String): Option[File] =
-    filesInDirectory(dir, ".jpg").map(_.sortBy(_.getName).reverse.head)
+  def getLatestFileInDirectory(dir: String, allowedExtension: String): Option[File] =
+    filesInDirectory(dir, allowedExtension).map(_.sortBy(_.getName).reverse.head)
 
-  private def extensionFilter(extension: String): FilenameFilter =
-    (_: File, name: String) => !name.toLowerCase.endsWith(extension)
+  private def allowedExtensionFilter(extension: String): FilenameFilter =
+    (_: File, name: String) => name.toLowerCase.endsWith(extension.toLowerCase)
 }
