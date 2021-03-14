@@ -15,7 +15,7 @@ object RawToJpg extends StrictLogging {
     val exifCommand =
       s"exiftool -b -PreviewImage $rawPath -w $jpgNameAddition"
     val magickCommand =
-      s"convert $jpgPath -resize 1080 -quality 75 $jpgPath"
+      s"magick convert $jpgPath -resize 1080 -quality 75 $jpgPath"
 
     exifCommand !
 
