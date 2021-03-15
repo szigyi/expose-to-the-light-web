@@ -10,7 +10,7 @@ import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 
-import java.time.Instant
+import java.time.{Instant, LocalTime, ZoneId}
 
 class LogApi(logService: LogService) extends Http4sDsl[IO] with StrictLogging {
 
@@ -20,7 +20,9 @@ class LogApi(logService: LogService) extends Http4sDsl[IO] with StrictLogging {
 
     case request@POST -> Root =>
       request.decode[LogRequest] { logRequest =>
-        Ok(logService.readLogsSince(logRequest.timestamp).map(LogResponse.apply))
+        Ok(logService.readLogsSince(
+          logRequest.timestamp.atZone(ZoneId.systemDefault()).toLocalTime
+        ).map(LogResponse.apply))
       }
   }
 }
@@ -31,9 +33,9 @@ object LogApi {
 
   case class LogRequest(timestamp: Instant)
 
-  case class LogResponse(timestamp: Instant, message: String)
+  case class LogResponse(timestamp: LocalTime, message: String)
   object LogResponse {
-    def apply(tup: (Instant, String)): LogResponse =
+    def apply(tup: (LocalTime, String)): LogResponse =
       LogResponse(tup._1, tup._2)
   }
 

@@ -1,18 +1,18 @@
 package hu.szigyi.ettl.web.service
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.service.LogService.parseLogInstant
+import hu.szigyi.ettl.web.service.LogService.parseLocalDate
 import hu.szigyi.ettl.web.util.ClosableOps._
 import hu.szigyi.ettl.web.util.Dir.getLatestFileInDirectory
 
 import java.time.format.DateTimeFormatter
-import java.time.{Instant, ZoneOffset}
+import java.time.{Instant, LocalDate, LocalTime, ZoneOffset}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 class LogService(logDirectoryPath: String) extends StrictLogging {
 
-  def readLatestLogFile: Seq[(Instant, String)] =
+  def readLatestLogFile: Seq[(LocalTime, String)] =
     getLatestFileInDirectory(logDirectoryPath, ".log") match {
       case Some(latestLogFile) =>
         logger.trace(s"Reading log file: ${latestLogFile.toString}")
@@ -23,7 +23,7 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
               case Nil =>
                 logger.info("Empty file. No logs in the file.")
                 None
-              case timestampString :: message :: Nil => parseLogInstant(timestampString) match {
+              case timestampString :: message :: Nil => parseLocalDate(timestampString) match {
                 case Success(timestamp) =>
                   Some((timestamp, message))
                 case Failure(exception) =>
@@ -41,17 +41,17 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
         Seq.empty
     }
 
-  def readLogsSince(timestamp: Instant): Seq[(Instant, String)] = {
+  def readLogsSince(timestamp: LocalTime): Seq[(LocalTime, String)] = {
     logger.trace(s"Reading log lines since: $timestamp")
     readLatestLogFile.filter(_._1.isAfter(timestamp))
   }
 }
 
 object LogService {
-  def parseLogInstant(ts: String): Try[Instant] =
+  def parseLocalDate(ts: String): Try[LocalTime] =
     Try(DateTimeFormatter
-      .ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+      .ofPattern("HH:mm:ss.SSS")
       .withZone(ZoneOffset.UTC)
       .parse(ts))
-      .map(Instant.from)
+      .map(LocalTime.from)
 }
