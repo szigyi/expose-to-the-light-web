@@ -37,11 +37,24 @@
         };
 
         const Template = {
-            renderLog: (log) => `
+            renderLog: (log) => {
+                let logLevel;
+                switch (log.logLevel) {
+                    case 'D':
+                        logLevel = 'bg-secondary text-light'; break;
+                    case 'E':
+                        logLevel = 'bg-danger text-light'; break;
+                    case 'W':
+                        logLevel = 'bg-warning text-light'; break;
+                    default:
+                        logLevel = 'bg-light text-dark';
+                };
+                return `
                 <div class="">
-                    <span class="log-timestamp badge rounded-pill bg-light text-dark">${log.timestamp}</span>
+                    <span class="log-timestamp badge rounded-pill ${logLevel}" title="Log Level: ${log.logLevel}">${log.timestamp}</span>
                     <span class="">${log.message}</span>
-                </div>`,
+                </div>`
+            },
             renderLatestImage: (name) =>
                 `<img class="responsive" id="latest-image" data-name="${name}" src="/image/${name}">`,
             renderConfig: (conf) =>

@@ -33,10 +33,10 @@ object LogApi {
 
   case class LogRequest(timestamp: Instant)
 
-  case class LogResponse(timestamp: LocalTime, message: String)
+  case class LogResponse(timestamp: LocalTime, logLevel: String, message: String)
   object LogResponse {
-    def apply(tup: (LocalTime, String)): LogResponse =
-      LogResponse(tup._1, tup._2)
+    def apply(tup: (LocalTime, String, String)): LogResponse =
+      LogResponse(tup._1, tup._2, tup._3)
   }
 
 }

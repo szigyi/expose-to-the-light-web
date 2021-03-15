@@ -6,13 +6,13 @@ import hu.szigyi.ettl.web.util.ClosableOps._
 import hu.szigyi.ettl.web.util.Dir.getLatestFileInDirectory
 
 import java.time.format.DateTimeFormatter
-import java.time.{Instant, LocalDate, LocalTime, ZoneOffset}
+import java.time.{LocalTime, ZoneOffset}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 class LogService(logDirectoryPath: String) extends StrictLogging {
 
-  def readLatestLogFile: Seq[(LocalTime, String)] =
+  def readLatestLogFile: Seq[(LocalTime, String, String)] =
     getLatestFileInDirectory(logDirectoryPath, ".log") match {
       case Some(latestLogFile) =>
         logger.trace(s"Reading log file: ${latestLogFile.toString}")
@@ -23,15 +23,15 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
               case Nil =>
                 logger.info("Empty file. No logs in the file.")
                 None
-              case timestampString :: message :: Nil => parseLocalDate(timestampString) match {
+              case timestampString :: logLevel :: message :: Nil => parseLocalDate(timestampString) match {
                 case Success(timestamp) =>
-                  Some((timestamp, message))
+                  Some((timestamp, logLevel, message))
                 case Failure(exception) =>
-                  logger.error(s"Could not parse timestamp: $timestampString ::: $message")
+                  logger.error(s"Could not parse timestamp: $timestampString ::: $logLevel ::: $message", exception)
                   None
               }
               case other =>
-                logger.error(s"Log file's structure does not match the expected: timestamp:::message != $other")
+                logger.error(s"Log file's structure does not match the expected: timestamp:::logLevel:::message != $other")
                 None
             }
           })
@@ -41,7 +41,7 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
         Seq.empty
     }
 
-  def readLogsSince(timestamp: LocalTime): Seq[(LocalTime, String)] = {
+  def readLogsSince(timestamp: LocalTime): Seq[(LocalTime, String, String)] = {
     logger.trace(s"Reading log lines since: $timestamp")
     readLatestLogFile.filter(_._1.isAfter(timestamp))
   }

@@ -33,7 +33,8 @@ import scala.concurrent.ExecutionContext
 // 15 read only known files types from folder
 // TODO 16 can start the ettl command line tool from the UI
 // 17 responsive image on the UI
-// TODO 18 log's timestamp is separated and smaller then the message
+// 18 log's timestamp is separated and smaller then the message
+// TODO 19 newly added log lines should glow or should be obvious that was added recently
 
 
 object WebApp extends IOApp with StrictLogging {
