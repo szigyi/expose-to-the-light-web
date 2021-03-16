@@ -34,7 +34,7 @@ import scala.concurrent.ExecutionContext
 // TODO 16 can start the ettl command line tool from the UI
 // 17 responsive image on the UI
 // 18 log's timestamp is separated and smaller then the message
-// TODO 19 newly added log lines should glow or should be obvious that was added recently
+// 19 newly added log lines should glow or should be obvious that was added recently
 // TODO 20 remove RAW file that is already converted
 
 
