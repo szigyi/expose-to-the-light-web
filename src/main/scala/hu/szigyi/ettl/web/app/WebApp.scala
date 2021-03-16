@@ -27,14 +27,15 @@ import scala.concurrent.ExecutionContext
 // 9 figure out what is the easiest way to serve dynamically changing images from folder
 // 10 make source folder of raw images a config or part of request
 // 11 make image api more robust: can serve converted image if already exist; can serve latest image after page refresh
-// TODO 12 serve the entire last log file after page is refreshed not just incoming since now -> UI should have different states when first request goes to api and then just fetching latest
-// 13 raw directory path and log path are comign from command line args and UI can get them -> makes the code more flexible and independent where it is running
+// 12 serve the entire last log file after page is refreshed not just incoming since now -> UI should have different states when first request goes to api and then just fetching latest
+// 13 raw directory path and log path are coming from command line args and UI can get them -> makes the code more flexible and independent where it is running
 // 14 can handle empty raw directory
 // 15 read only known files types from folder
 // TODO 16 can start the ettl command line tool from the UI
 // 17 responsive image on the UI
 // 18 log's timestamp is separated and smaller then the message
 // TODO 19 newly added log lines should glow or should be obvious that was added recently
+// TODO 20 remove RAW file that is already converted
 
 
 object WebApp extends IOApp with StrictLogging {
