@@ -14,6 +14,24 @@
             integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
     <style>
+        /*https://stackoverflow.com/a/16877398*/
+        @-webkit-keyframes yellow-fade {
+            0% {box-shadow: none;}
+            25% {box-shadow: 0px 0px 5px 0px yellow;}
+            75% {box-shadow: 0px 0px 5px 0px yellow;}
+            100% {box-shadow: none;}
+        }
+        @keyframes yellow-fade {
+            0% {box-shadow: none;}
+            25% {box-shadow: 0px 0px 5px 0px yellow;}
+            75% {box-shadow: 0px 0px 5px 0px yellow;}
+            100% {box-shadow: none;}
+        }
+        .highlight {
+            -webkit-animation: yellow-fade 2s ease-in 3;
+            animation: yellow-fade 2s ease-in 3;
+        }
+
         .responsive {
             width: 100%;
             max-width: 1000px;
@@ -50,9 +68,9 @@
                         logLevel = 'bg-light text-dark';
                 };
                 return `
-                <div class="">
+                <div class="highlight">
                     <span class="log-timestamp badge rounded-pill ${logLevel}" title="Log Level: ${log.logLevel}">${log.timestamp}</span>
-                    <span class="">${log.message}</span>
+                    <span>${log.message}</span>
                 </div>`
             },
             renderLatestImage: (name) =>
