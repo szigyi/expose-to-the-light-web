@@ -51,7 +51,9 @@
             getLogsSince: (ts, success) =>
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
-                $.get('/convert', success)
+                $.get('/convert', success),
+            runEttl: (success) =>
+                $.post('/ettl', JSON.stringify({intervalSeconds: 5}), success)
         };
 
         const Template = {
@@ -113,6 +115,11 @@
                     config = conf;
                     $('#configuration').html(Template.renderConfig(config));
                 });
+            },
+            runEttl: () => {
+                Api.runEttl(resp => {
+                    console.log("Running ettl:", JSON.stringify(resp));
+                });
             }
         };
 
@@ -122,6 +129,7 @@
             Page.loadLatestLogFile();
             Page.pollLogs();
             Page.pollImages();
+            $('#run-ettl').on('click', Page.runEttl)
         });
     </script>
 </head>
@@ -130,6 +138,7 @@
     <span class="title-config">
         <h1>ettl web</h1>
         <span id="configuration"></span>
+        <button id="run-ettl" type="button" class="btn btn-success"><i class="bi bi-play-circle"></i> ettl</button>
     </span>
     <section>
         <h4>Latest Image</h4>
