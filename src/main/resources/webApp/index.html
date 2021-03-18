@@ -59,13 +59,14 @@
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success),
-            runEttl: (dummyCamera, setSettings, numberOfCaptures, success) =>
+            runEttl: (dummyCamera, setSettings, numberOfCaptures, rawFileExtension, success) =>
                 $.post('/ettl', JSON.stringify(
                     {
                         dummyCamera: dummyCamera,
                         setSettings: setSettings,
                         numberOfCaptures: numberOfCaptures,
-                        intervalSeconds: 5
+                        intervalSeconds: 5,
+                        rawFileExtension: rawFileExtension
                     }), success)
         };
 
@@ -135,8 +136,9 @@
                 let dummyCamera = !realCamera;
                 let setSettings = $('#setSettingsInput').is(':checked');
                 let numberOfCaptures = $('#numberOfCaptures').val();
+                let rawFileExtension = $('#rawFileExtension').val();
 
-                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, resp => {
+                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, rawFileExtension, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
             }
@@ -180,6 +182,13 @@
                 <div class="input-group">
                     <div class="input-group-text"># of Captures</div>
                     <input type="number" class="form-control" id="numberOfCaptures" value="10" min="1" max="9999" step="1">
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="rawFileExtension" class="visually-hidden">RAW file's extension</label>
+                <div class="input-group">
+                    <div class="input-group-text">RAW type</div>
+                    <input type="text" class="form-control" id="rawFileExtension" value="JPG" placeholder="CR2">
                 </div>
             </div>
         </form>

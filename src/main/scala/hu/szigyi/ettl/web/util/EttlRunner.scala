@@ -9,7 +9,8 @@ object EttlRunner extends StrictLogging {
   def executeEttl(dummyCamera: Boolean,
                   setSettings: Boolean,
                   numberOfCaptures: Int,
-                  intervalSeconds: Int): Unit = {
+                  intervalSeconds: Int,
+                  rawFileExtension: String): Unit = {
     val ettl = s"""ettl
        |/Users/szabolcs/dev/expose-to-the-light/logs
        |${if (dummyCamera) "--dummyCamera" else ""}
@@ -17,7 +18,7 @@ object EttlRunner extends StrictLogging {
        |${if (setSettings) "--setSettings" else ""}
        |--numberOfCaptures $numberOfCaptures
        |--intervalSeconds $intervalSeconds
-       |--rawFileExtension JPG""".stripMargin
+       |--rawFileExtension $rawFileExtension""".stripMargin
 
     logger.info(ettl)
     ettl lazyLines_!
