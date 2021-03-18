@@ -42,8 +42,11 @@
             font-size: 0.6rem;
         }
 
-        .configuration pre {
-            display: flex;
+        .title-config, .title-config pre {
+            display: inline-flex;
+        }
+        .title-config pre {
+            margin: 1rem;
         }
     </style>
     <script>
@@ -56,8 +59,8 @@
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success),
-            runEttl: (success) =>
-                $.post('/ettl', JSON.stringify({intervalSeconds: 5}), success)
+            runEttl: (dummyCamera, success) =>
+                $.post('/ettl', JSON.stringify({dummyCamera: dummyCamera, intervalSeconds: 5}), success)
         };
 
         const Template = {
@@ -96,7 +99,7 @@
                 setInterval(Page.loadLatestImage, 1000),
             handleLogs: (noAnimation) => (logs) => {
                 if (logs.length > 0) {
-                    $('#logs').prepend(logs.map(Template.renderLog(noAnimation)));
+                    $('#logs').prepend(logs.map(log => Template.renderLog(noAnimation)(log)));
                     let datePart = new Date(Date.now()).toISOString().split('T')[0];
                     latestTimestamp = new Date(datePart + 'T' + logs[0].timestamp + 'Z'); // FIXME potential bug if user is not in UTC
                 }
@@ -122,7 +125,9 @@
                 });
             },
             runEttl: () => {
-                Api.runEttl(resp => {
+                let dummyCamera = !$('#realCameraInput').is(':checked');
+
+                Api.runEttl(dummyCamera, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
             }
@@ -143,8 +148,20 @@
     <span class="title-config">
         <h1>ettl web</h1>
         <span id="configuration"></span>
-        <button id="run-ettl" type="button" class="btn btn-success"><i class="bi bi-play-circle"></i> ettl</button>
     </span>
+    <section id="ettl">
+        <form class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <button id="run-ettl" type="button" class="btn btn-success"><i class="bi bi-play-circle"></i> ettl</button>
+            </div>
+            <div class="col-12">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="realCameraInput" checked>
+                    <label class="form-check-label" for="realCameraInput">Real Camera</label>
+                </div>
+            </div>
+        </form>
+    </section>
     <section>
         <h4>Latest Image</h4>
         <section id="latest-image-section"></section>

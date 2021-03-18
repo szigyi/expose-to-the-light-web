@@ -6,15 +6,17 @@ import com.typesafe.scalalogging.StrictLogging
 
 object EttlRunner extends StrictLogging {
 
-  def executeEttl(intervalSeconds: Int): Unit = {
-    logger.info(s"Running ettl $intervalSeconds")
-    s"""ettl
+  def executeEttl(dummyCamera: Boolean, intervalSeconds: Int): Unit = {
+    val ettl = s"""ettl
        |/Users/szabolcs/dev/expose-to-the-light/logs
-       |--dummyCamera
+       |${if (dummyCamera) "--dummyCamera"}
        |--imagesBasePath /Users/szabolcs/dev/expose-to-the-light/captured-images
        |--setSettings
        |--numberOfCaptures 5
        |--intervalSeconds $intervalSeconds
-       |--rawFileExtension JPG""".stripMargin lazyLines_!
+       |--rawFileExtension JPG""".stripMargin
+
+    logger.info(ettl)
+    ettl lazyLines_!
   }
 }

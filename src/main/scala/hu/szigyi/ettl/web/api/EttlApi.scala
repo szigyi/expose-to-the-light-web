@@ -14,8 +14,8 @@ class EttlApi extends Http4sDsl[IO] with StrictLogging {
 
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case request @ POST -> Root =>
-      request.decode[EttlRequest] { ettlRequest =>
-        Ok(EttlRunner.executeEttl(ettlRequest.intervalSeconds))
+      request.decode[EttlRequest] { req =>
+        Ok(EttlRunner.executeEttl(req.dummyCamera, req.intervalSeconds))
       }
   }
 }
@@ -23,5 +23,5 @@ class EttlApi extends Http4sDsl[IO] with StrictLogging {
 object EttlApi {
   implicit val ettlRequestCodec: Codec[EttlRequest] = deriveCodec[EttlRequest]
 
-  case class EttlRequest(intervalSeconds: Int)
+  case class EttlRequest(dummyCamera: Boolean, intervalSeconds: Int)
 }
