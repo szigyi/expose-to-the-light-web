@@ -59,13 +59,13 @@
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success),
-            runEttl: (dummyCamera, setSettings, numberOfCaptures, rawFileExtension, success) =>
+            runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, rawFileExtension, success) =>
                 $.post('/ettl', JSON.stringify(
                     {
                         dummyCamera: dummyCamera,
                         setSettings: setSettings,
                         numberOfCaptures: numberOfCaptures,
-                        intervalSeconds: 5,
+                        intervalSeconds: intervalSeconds,
                         rawFileExtension: rawFileExtension
                     }), success)
         };
@@ -136,9 +136,10 @@
                 let dummyCamera = !realCamera;
                 let setSettings = $('#setSettingsInput').is(':checked');
                 let numberOfCaptures = $('#numberOfCaptures').val();
+                let intervalSeconds = $('#intervalSeconds').val();
                 let rawFileExtension = $('#rawFileExtension').val();
 
-                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, rawFileExtension, resp => {
+                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, rawFileExtension, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
             }
@@ -182,6 +183,13 @@
                 <div class="input-group">
                     <div class="input-group-text"># of Captures</div>
                     <input type="number" class="form-control" id="numberOfCaptures" value="10" min="1" max="9999" step="1">
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="intervalSeconds" class="visually-hidden">Interval (seconds)</label>
+                <div class="input-group">
+                    <div class="input-group-text">Interval (sec)</div>
+                    <input type="number" class="form-control" id="intervalSeconds" value="5" min="1" max="9999" step="1">
                 </div>
             </div>
             <div class="col-12">
