@@ -53,6 +53,8 @@
         const Api = {
             getConfig: (success) =>
                 $.get('/config', success),
+            setConfig: (rawDirectoryPath, logDirectoryPath, success) =>
+                $.post('/config', JSON.stringify({rawDirectoryPath: rawDirectoryPath, logDirectoryPath: logDirectoryPath}), success),
             getLatestLogFile: (success) =>
                 $.get('/log', success),
             getLogsSince: (ts, success) =>
@@ -91,13 +93,10 @@
                 </div>`
             },
             renderLatestImage: (name) =>
-                `<img class="responsive" id="latest-image" data-name="${name}" src="/image/${name}">`,
-            renderConfig: (conf) =>
-                `<pre>${conf.rawDirectoryPath}</pre><pre>${conf.logDirectoryPath}</pre>`
+                `<img class="responsive" id="latest-image" data-name="${name}" src="/image/${name}">`
         };
 
         let latestTimestamp = new Date(Date.now());
-        let config = null;
 
         const Page = {
             pollLogs: () =>
@@ -125,10 +124,18 @@
                     }
                 });
             },
+            setConfigs: () => {
+                Api.setConfig($('#capturedImagesLocation').val(), $('#logsLocation').val(), resp => {
+                    console.log("Set Config:", JSON.stringify(resp));
+                });
+            },
             loadConfig: () => {
                 Api.getConfig(conf => {
-                    config = conf;
-                    $('#configuration').html(Template.renderConfig(config));
+                    $('#capturedImagesLocation').val(conf.rawDirectoryPath);
+                    $('#logsLocation').val(conf.logDirectoryPath);
+
+                    $('#capturedImagesLocation').on('change', Page.setConfigs);
+                    $('#logsLocation').on('change', Page.setConfigs);
                 });
             },
             runEttl: () => {
@@ -162,6 +169,22 @@
         <span id="configuration"></span>
     </span>
     <section id="ettl">
+        <form class="row row-cols-auto g-3 align-items-center">
+            <div class="col-6">
+                <label for="capturedImagesLocation" class="visually-hidden">Location of Captured Images</label>
+                <div class="input-group">
+                    <div class="input-group-text">Captured Images</div>
+                    <input type="text" class="form-control" id="capturedImagesLocation" value="/Users/szabolcs/dev/expose-to-the-light/captured-images">
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="logsLocation" class="visually-hidden">Location of Logs</label>
+                <div class="input-group">
+                    <div class="input-group-text">Logs</div>
+                    <input type="text" class="form-control" id="logsLocation" value="/Users/szabolcs/dev/expose-to-the-light/logs">
+                </div>
+            </div>
+        </form>
         <form class="row row-cols-lg-auto g-3 align-items-center">
             <div class="col-12">
                 <button id="run-ettl" type="button" class="btn btn-success"><i class="bi bi-play-circle"></i> ettl</button>

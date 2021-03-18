@@ -14,9 +14,18 @@ class ConfigApi(config: AppConfiguration) extends Http4sDsl[IO] with StrictLoggi
 
   val service = HttpRoutes.of[IO] {
     case GET -> Root => Ok(config)
+
+      // TODO not supported yet -> not easy to change the AppConfig as it is wired to everywhere and have to maybe recreate ImageService as well
+    case request@POST -> Root =>
+      request.decode[ConfigRequest] { config =>
+        InternalServerError()
+      }
   }
 }
 
 object ConfigApi {
   implicit val appConfigurationCodec: Codec[AppConfiguration] = deriveCodec[AppConfiguration]
+  implicit val configRequestCodec: Codec[ConfigRequest] = deriveCodec[ConfigRequest]
+
+  case class ConfigRequest(rawDirectoryPath: String, logDirectoryPath: String)
 }
