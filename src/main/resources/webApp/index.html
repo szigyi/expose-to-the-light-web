@@ -59,8 +59,14 @@
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success),
-            runEttl: (dummyCamera, setSettings, success) =>
-                $.post('/ettl', JSON.stringify({dummyCamera: dummyCamera, setSettings: setSettings, intervalSeconds: 5}), success)
+            runEttl: (dummyCamera, setSettings, numberOfCaptures, success) =>
+                $.post('/ettl', JSON.stringify(
+                    {
+                        dummyCamera: dummyCamera,
+                        setSettings: setSettings,
+                        numberOfCaptures: numberOfCaptures,
+                        intervalSeconds: 5
+                    }), success)
         };
 
         const Template = {
@@ -128,8 +134,9 @@
                 let realCamera = $('#realCameraInput').is(':checked');
                 let dummyCamera = !realCamera;
                 let setSettings = $('#setSettingsInput').is(':checked');
+                let numberOfCaptures = $('#numberOfCaptures').val();
 
-                Api.runEttl(dummyCamera, setSettings, resp => {
+                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
             }
@@ -166,6 +173,13 @@
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="setSettingsInput">
                     <label class="form-check-label" for="setSettingsInput">Set Settings</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="numberOfCaptures" class="visually-hidden"># of Captures</label>
+                <div class="input-group">
+                    <div class="input-group-text"># of Captures</div>
+                    <input type="number" class="form-control" id="numberOfCaptures" value="10" min="1" max="9999" step="1">
                 </div>
             </div>
         </form>
