@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext
 // 13 raw directory path and log path are coming from command line args and UI can get them -> makes the code more flexible and independent where it is running
 // 14 can handle empty raw directory
 // 15 read only known files types from folder
-// TODO 16 can start the ettl command line tool from the UI
+// 16 can start the ettl command line tool from the UI
 // 17 responsive image on the UI
 // 18 log's timestamp is separated and smaller then the message
 // 19 newly added log lines should glow or should be obvious that was added recently
