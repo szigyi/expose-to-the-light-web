@@ -41,6 +41,10 @@
         .log-timestamp {
             font-size: 0.6rem;
         }
+
+        .configuration pre {
+            display: flex;
+        }
     </style>
     <script>
         const Api = {
@@ -57,7 +61,7 @@
         };
 
         const Template = {
-            renderLog: (log) => {
+            renderLog: (noAnimation) => (log) => {
                 let logLevel;
                 switch (log.logLevel) {
                     case 'D':
@@ -69,8 +73,9 @@
                     default:
                         logLevel = 'bg-light text-dark';
                 };
+                let highlight = noAnimation ? '' : 'highlight'
                 return `
-                <div class="highlight">
+                <div class="${highlight}">
                     <span class="log-timestamp badge rounded-pill ${logLevel}" title="Log Level: ${log.logLevel}">${log.timestamp}</span>
                     <span>${log.message}</span>
                 </div>`
@@ -89,18 +94,18 @@
                 setInterval(Page.loadLogsSince, 500),
             pollImages: () =>
                 setInterval(Page.loadLatestImage, 1000),
-            handleLogs: (logs) => {
+            handleLogs: (noAnimation) => (logs) => {
                 if (logs.length > 0) {
-                    $('#logs').prepend(logs.map(Template.renderLog));
+                    $('#logs').prepend(logs.map(Template.renderLog(noAnimation)));
                     let datePart = new Date(Date.now()).toISOString().split('T')[0];
                     latestTimestamp = new Date(datePart + 'T' + logs[0].timestamp + 'Z'); // FIXME potential bug if user is not in UTC
                 }
             },
             loadLatestLogFile: () => {
-                Api.getLatestLogFile(Page.handleLogs)
+                Api.getLatestLogFile(Page.handleLogs(true))
             },
             loadLogsSince: () => {
-                Api.getLogsSince(latestTimestamp.toISOString(), Page.handleLogs);
+                Api.getLogsSince(latestTimestamp.toISOString(), Page.handleLogs(false));
             },
             loadLatestImage: () => {
                 let latestImage = $('#latest-image').data('name');
