@@ -59,8 +59,8 @@
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success),
-            runEttl: (dummyCamera, success) =>
-                $.post('/ettl', JSON.stringify({dummyCamera: dummyCamera, intervalSeconds: 5}), success)
+            runEttl: (dummyCamera, setSettings, success) =>
+                $.post('/ettl', JSON.stringify({dummyCamera: dummyCamera, setSettings: setSettings, intervalSeconds: 5}), success)
         };
 
         const Template = {
@@ -125,9 +125,11 @@
                 });
             },
             runEttl: () => {
-                let dummyCamera = !$('#realCameraInput').is(':checked');
+                let realCamera = $('#realCameraInput').is(':checked');
+                let dummyCamera = !realCamera;
+                let setSettings = $('#setSettingsInput').is(':checked');
 
-                Api.runEttl(dummyCamera, resp => {
+                Api.runEttl(dummyCamera, setSettings, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
             }
@@ -156,8 +158,14 @@
             </div>
             <div class="col-12">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="realCameraInput" checked>
+                    <input class="form-check-input" type="checkbox" id="realCameraInput">
                     <label class="form-check-label" for="realCameraInput">Real Camera</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="setSettingsInput">
+                    <label class="form-check-label" for="setSettingsInput">Set Settings</label>
                 </div>
             </div>
         </form>
