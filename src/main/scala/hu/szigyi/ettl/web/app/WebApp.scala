@@ -36,8 +36,9 @@ import scala.concurrent.ExecutionContext
 // 18 log's timestamp is separated and smaller then the message
 // 19 newly added log lines should glow or should be obvious that was added recently
 // TODO 20 remove RAW file that is already converted
-// TODO 21 use customizable settings to run ettl from the UI
+// 21 use customizable settings to run ettl from the UI
 // TODO 22 images and logs directory is driven from the UI when running ettl
+// TODO 23 add deploy, install and run scripts
 
 
 object WebApp extends IOApp with StrictLogging {
