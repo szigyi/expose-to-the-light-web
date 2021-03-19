@@ -39,6 +39,7 @@ import scala.concurrent.ExecutionContext
 // 21 use customizable settings to run ettl from the UI
 // TODO 22 images and logs directory is driven from the UI when running ettl
 // TODO 23 add deploy, install and run scripts
+// 24 read raw images from session's sub folder
 
 
 object WebApp extends IOApp with StrictLogging {

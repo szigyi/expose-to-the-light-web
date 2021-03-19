@@ -4,7 +4,7 @@ import sys.process._
 import scala.language.postfixOps
 import com.typesafe.scalalogging.StrictLogging
 
-import java.io.File
+import java.nio.file.Paths
 
 object RawToJpg extends StrictLogging {
   val jpgNameAddition: String = ".JPG"
@@ -26,6 +26,8 @@ object RawToJpg extends StrictLogging {
   def filePathToJpg(path: String): String =
     path.replaceAll("\\.[^.]*$", "") + jpgNameAddition
 
-  def fileName(path: String): String =
-    new File(path).getName
+  def getPathFromParentDirectory(path: String): String = {
+    val p = Paths.get(path)
+    p.subpath(p.getNameCount - 2, p.getNameCount).toString
+  }
 }

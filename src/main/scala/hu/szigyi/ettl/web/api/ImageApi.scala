@@ -17,7 +17,7 @@ class ImageApi(blocker: Blocker,
 
   val convertService: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root =>
-      Ok(ImageResponse(imgService.getFileNameOfLatestImage))
+      Ok(ImageResponse(imgService.getRelativePathOfLatestImage))
   }
 
   val imageFileService: HttpRoutes[IO] = fileService[IO](FileService.Config(rawDirectoryPath, blocker))
