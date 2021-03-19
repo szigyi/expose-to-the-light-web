@@ -1,9 +1,10 @@
 package hu.szigyi.ettl.web.service
 
-import hu.szigyi.ettl.web.util.Dir.getLatestFileInLatestSubDirectory
-import hu.szigyi.ettl.web.util.RawToJpg.{convertToJpg, getPathFromParentDirectory, filePathToJpg}
+import com.typesafe.scalalogging.StrictLogging
+import hu.szigyi.ettl.web.util.Dir.{deleteFile, getLatestFileInLatestSubDirectory, getPathFromParentDirectory}
+import hu.szigyi.ettl.web.util.RawToJpg.{convertToJpg, filePathToJpg}
 
-class ImageService(rawDirectoryPath: String, rawFileExtension: String) {
+class ImageService(rawDirectoryPath: String, rawFileExtension: String) extends StrictLogging {
 
   private var convertedStorage: Set[String] = Set.empty
 
@@ -15,7 +16,10 @@ class ImageService(rawDirectoryPath: String, rawFileExtension: String) {
         case true =>
           getPathFromParentDirectory(jpgPath)
         case false =>
-          convertToJpg(latestRawPath)
+          if (convertToJpg(latestRawPath)) {
+            logger.info(s"Deleting RAW image: $latestRawPath")
+            deleteFile(latestRawPath)
+          }
           convertedStorage = convertedStorage + jpgPath
           getPathFromParentDirectory(jpgPath)
       }
