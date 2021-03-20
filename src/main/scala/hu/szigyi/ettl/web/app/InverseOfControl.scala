@@ -16,5 +16,5 @@ class InverseOfControl(env: String, config: AppConfiguration)(implicit cs: Conte
   val configApi = new ConfigApi(config)
   val logApi    = new LogApi(logService)
   val imageApi  = new ImageApi(blocker, config.rawDirectoryPath, imageService)
-  val ettlApi   = new EttlApi()
+  val ettlApi   = new EttlApi(config)
 }
