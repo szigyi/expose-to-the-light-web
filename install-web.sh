@@ -62,3 +62,5 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 else
   echo "big problemo! No OSTYPE"
 fi
+
+echo "Install is finished"
