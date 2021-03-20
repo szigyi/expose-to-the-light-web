@@ -42,7 +42,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   sudo chown -R pi /usr/local/bin/ettl-web
 
   echo "Installing dependencies"
-  apt install imagemagick
+  sudo apt install imagemagick
+  sudo apt install exiftool
   source ~/.bashrc
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
