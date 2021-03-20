@@ -24,7 +24,7 @@ curl -L -o "$artifact" "$artifact_link"
 echo "Downloading ettl script to /usr/local/opt/ettl..."
 curl -L -o "ettl-web" "$ettl_web_link"
 
-sudo chmod u+x ettl
+sudo chmod u+x ettl-web
 
 echo "Artifact's Manifest file:"
 jar xf "$artifact" META-INF/MANIFEST.MF && cat META-INF/MANIFEST.MF
