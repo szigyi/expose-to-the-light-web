@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext
 // 17 responsive image on the UI
 // 18 log's timestamp is separated and smaller then the message
 // 19 newly added log lines should glow or should be obvious that was added recently
-// TODO 20 remove RAW file that is already converted
+// 20 remove RAW file that is already converted
 // 21 use customizable settings to run ettl from the UI
 // TODO 22 images and logs directory is driven from the UI when running ettl
 // TODO 23 add deploy, install and run scripts
