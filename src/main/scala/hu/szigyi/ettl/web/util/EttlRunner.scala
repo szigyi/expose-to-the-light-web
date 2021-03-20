@@ -10,11 +10,13 @@ object EttlRunner extends StrictLogging {
                   setSettings: Boolean,
                   numberOfCaptures: Int,
                   intervalSeconds: Int,
-                  rawFileExtension: String): Unit = {
+                  rawFileExtension: String,
+                  logDirectoryPath: String,
+                  rawDirectoryPath: String): Unit = {
     val ettl = s"""ettl
-       |/Users/szabolcs/dev/expose-to-the-light/logs
+       |$logDirectoryPath
        |${if (dummyCamera) "--dummyCamera" else ""}
-       |--imagesBasePath /Users/szabolcs/dev/expose-to-the-light/captured-images
+       |--imagesBasePath $rawDirectoryPath
        |${if (setSettings) "--setSettings" else ""}
        |--numberOfCaptures $numberOfCaptures
        |--intervalSeconds $intervalSeconds
