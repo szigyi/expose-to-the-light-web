@@ -3,7 +3,7 @@
 # -help
 # ettl-web --rawDirectoryPath /home/pi/dev/expose-to-the-light/captured-images/ --logDirectoryPath /home/pi/dev/expose-to-the-light/logs --rawFileExtension CR2
 
-artif="expose-to-the-light-web_2.13-0.1.3.jar"
+artif="expose-to-the-light-web_2.13-0.1.4.jar"
 
 echo "Starting application..."
 java -jar "$artif" "$@"
