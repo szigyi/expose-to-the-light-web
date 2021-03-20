@@ -1,7 +1,7 @@
 package hu.szigyi.ettl.web.service
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.service.LogService.parseLocalDate
+import hu.szigyi.ettl.web.service.LogService.parseLocalTime
 import hu.szigyi.ettl.web.util.ClosableOps._
 import hu.szigyi.ettl.web.util.Dir.getLatestFileInDirectory
 
@@ -23,7 +23,7 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
               case Nil =>
                 logger.info("Empty file. No logs in the file.")
                 None
-              case timestampString :: logLevel :: message :: Nil => parseLocalDate(timestampString) match {
+              case timestampString :: logLevel :: message :: Nil => parseLocalTime(timestampString) match {
                 case Success(timestamp) =>
                   Some((timestamp, logLevel, message))
                 case Failure(exception) =>
@@ -48,7 +48,7 @@ class LogService(logDirectoryPath: String) extends StrictLogging {
 }
 
 object LogService {
-  def parseLocalDate(ts: String): Try[LocalTime] =
+  def parseLocalTime(ts: String): Try[LocalTime] =
     Try(DateTimeFormatter
       .ofPattern("HH:mm:ss.SSS")
       .withZone(ZoneOffset.UTC)
