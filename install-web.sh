@@ -42,9 +42,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   sudo chown -R pi /usr/local/bin/ettl-web
 
   echo "Installing dependencies"
-  brew install imagemagick
-  brew install ufraw
-  brew install exiftool
   source ~/.bashrc
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -54,6 +51,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   sudo ln -fs /usr/local/opt/ettl/ettl-web ettl-web
 
   echo "Installing dependencies"
+  brew install imagemagick
+  brew install ufraw
+  brew install exiftool
 
   source "$ZSH"/oh-my-zsh.sh
 
