@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# -help
+# ettl-web --rawDirectoryPath /home/pi/dev/expose-to-the-light/captured-images/ --logDirectoryPath /home/pi/dev/expose-to-the-light/logs
+
+artif="expose-to-the-light-web_2.13-0.1.14.jar"
+
+echo "Starting application..."
+java -jar "$artif" "$@"

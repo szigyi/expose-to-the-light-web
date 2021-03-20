@@ -1,8 +1,15 @@
 # expose-to-the-light-web
 expose-to-the-light-web client
 
-# Install dependencies
-## On Mac Os
+## Install application
+### Download installer
+`curl -L -o install-web.sh https://www.dropbox.com/s/c1mm6l07hfo2kdd/install.sh?dl=1`
+
+### Install
+* `chmod u+x install-web.sh`
+* `./install-web.sh`
+
+### On Mac Os
 * `brew install imagemagick`
 * `brew install ufraw`
 * `brew install exiftool`
@@ -10,5 +17,5 @@ expose-to-the-light-web client
 #### On Raspberry Pi (unix)
 TODO add apt install commands
 
-# Run the app
-`./run-ettl-web.sh 0.1.4 --rawDirectoryPath /home/pi/dev/expose-to-the-light/captured-images/ --logDirectoryPath /home/pi/dev/expose-to-the-light/logs`
+## Run the app
+`./ettl-web --rawDirectoryPath /home/pi/dev/expose-to-the-light/captured-images/ --logDirectoryPath /home/pi/dev/expose-to-the-light/logs`
