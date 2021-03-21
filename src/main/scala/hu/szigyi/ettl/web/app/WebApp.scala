@@ -40,7 +40,7 @@ import scala.concurrent.ExecutionContext
 // 22 images and logs directory is driven from the UI when running ettl
 // 23 add deploy, install and run scripts
 // 24 read raw images from session's sub folder
-// TODO 25 raw, log path and raw extension can be stored in the url so user can bookmark it
+// 25 raw, log path and raw extension can be stored in the url so user can bookmark it
 
 
 object WebApp extends IOApp with StrictLogging {
