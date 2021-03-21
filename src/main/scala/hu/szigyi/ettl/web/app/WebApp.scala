@@ -42,14 +42,13 @@ import scala.concurrent.ExecutionContext
 // 25 raw, log path and raw extension can be stored in the url so user can bookmark it
 // TODO 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
 
-
 object WebApp extends IOApp with StrictLogging {
 
   private val port = sys.env.getOrElse("http_port", "8230").toInt
-  private val env = sys.env.getOrElse("ENV", "local")
+  private val env  = sys.env.getOrElse("ENV", "local")
 
   private val threadPool = Executors.newFixedThreadPool(1)
-  private val ec = ExecutionContext.fromExecutor(threadPool)
+  private val ec         = ExecutionContext.fromExecutor(threadPool)
 
   override def run(args: List[String]): IO[ExitCode] =
     BlazeServerBuilder[IO](ec)
@@ -72,6 +71,7 @@ object WebApp extends IOApp with StrictLogging {
       "/log"     -> ioc.logApi.service,
       "/convert" -> ioc.imageApi.convertService,
       "/image"   -> ioc.imageApi.imageFileService,
+      "/images"  -> ioc.imageApi.allImagesService,
       "/ettl"    -> ioc.ettlApi.service,
     ).orNotFound
 

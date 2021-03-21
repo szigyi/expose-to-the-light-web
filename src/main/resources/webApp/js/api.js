@@ -8,6 +8,8 @@ const Api = {
         $.post('/log', JSON.stringify({timestamp: ts}), success),
     getFileNameOfLatestImage: (success) =>
         $.get('/convert', success),
+    getFileNamesOfAllImages: (success) =>
+        $.get('/images', success),
     runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, success) =>
         $.post('/ettl', JSON.stringify(
             {

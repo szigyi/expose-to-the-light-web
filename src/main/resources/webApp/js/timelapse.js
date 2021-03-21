@@ -1,16 +1,34 @@
 const Template = {
-
+    renderTimelapsePreview: (timelapseSource) =>
+        `<img id="timelapse-preview" class="responsive" src="${timelapseSource}"/>`
 };
 
 const Page = {
+    createTimelapse: () => {
+        Api.getFileNamesOfAllImages(imagePaths => {
+            if (imagePaths.length > 0) {
+                $("<img/>").attr('src', `/image${imagePaths[0].latestImageName}`)
+                    .on('load', function () {
+                        const gif = Page.createGif(this.height, this.width);
+                        imagePaths.forEach(imgPath => {
+                            const img = document.createElement("img");
+                            img.src = `/image${imgPath.latestImageName}`;
+                            gif.addFrame(img);
+                        });
+                        gif.render();
+                    });
+            }
+        });
+    },
     createGif: (h, w) => {
-        const newGif =new GIF({
+        const newGif = new GIF({
             workers: 2,
             height: h,
             width: w,
-            quality: 1
+            quality: 1,
+            workerScript: 'js/gif.worker.js'
         });
-        newGif.on('finished', function(blob) {
+        newGif.on('finished', function (blob) {
             console.log('GIF render is finished');
             let src = URL.createObjectURL(blob);
             let img = Template.renderTimelapsePreview(src);
@@ -19,25 +37,10 @@ const Page = {
             $('#timelapse-section').html(img);
         });
         return newGif;
-    },
-    addImageAndRenderGif: (imgElement) => {
-        console.log('img element', imgElement);
-        console.log('img src', imgElement.src);
-
-        timelapseImageSources.push(imgElement.src);
-
-        console.log(`Creating GIF h:${imgElement.naturalHeight}, w:${imgElement.naturalWidth} and Adding new image to the GIF`);
-        gif = Page.createGif(imgElement.naturalHeight, imgElement.naturalWidth);
-
-        timelapseImageSources.forEach(src => {
-            let img = document.createElement("img");
-            img.src = src;
-            gif.addFrame(img);
-        });
-        gif.render();
     }
 };
 
 $(function () {
     Shared.copyQueryParamsToMenu();
+    Page.createTimelapse();
 });

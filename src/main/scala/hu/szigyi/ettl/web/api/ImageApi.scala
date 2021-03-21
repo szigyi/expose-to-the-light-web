@@ -18,6 +18,11 @@ class ImageApi(blocker: Blocker, imgService: ImageService)(implicit cs: ContextS
       Ok(ImageResponse(imgService.getPathOfLatestImage))
   }
 
+  val allImagesService: HttpRoutes[IO] = HttpRoutes.of[IO] {
+    case GET -> Root =>
+      Ok(imgService.getPathOfAllImages.map(p => ImageResponse(Some(p))))
+  }
+
   // FIXME this is fishy, maybe security issue, but I haven't got better idea now
   val imageFileService: HttpRoutes[IO] =
     fileService[IO](FileService.Config("/", blocker))

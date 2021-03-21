@@ -37,14 +37,10 @@ const Template = {
                 <div class="input-group">
                     <div class="input-group-text">RAW type</div>
                     <input type="text" class="form-control" id="raw-file-extension-input" value="${rawFileExtension}" placeholder="CR2">
-                </div>`,
-    renderTimelapsePreview: (timelapseSource) =>
-        `<img id="timelapse-preview" class="responsive" src="${timelapseSource}"/>`
+                </div>`
 };
 
 let latestTimestamp = new Date(Date.now());
-let timelapseImageSources = [];
-let gif;
 
 const Page = {
     pollLogs: () =>
