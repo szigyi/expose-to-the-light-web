@@ -8,7 +8,6 @@ import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.{Request, Response}
-import org.rogach.scallop.{ScallopConf, ScallopOption}
 
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
@@ -18,7 +17,7 @@ import scala.concurrent.ExecutionContext
 // 3 UI should poll every half a second the log lines
 // 4 UI should use the latest timestamp from the returned log lines or now to poll
 // 5 show the latest image on the UI
-// TODO 6 create mini timelapse from the images on the UI :D
+// TODO 6 create mini timelapse from the images on the UI :D - js based so raspberry pi has CPU to do other things
 // TODO 7 filter log messages at server side based on log levels
 // 8 as it is bugged and cannot download the jpg version of the image from the camera
 //        compare the speed of exiftool (extract thumbnail and then resize with magick) and magick (raw to jpg)
@@ -41,6 +40,7 @@ import scala.concurrent.ExecutionContext
 // 23 add deploy, install and run scripts
 // 24 read raw images from session's sub folder
 // 25 raw, log path and raw extension can be stored in the url so user can bookmark it
+// TODO 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
 
 
 object WebApp extends IOApp with StrictLogging {
