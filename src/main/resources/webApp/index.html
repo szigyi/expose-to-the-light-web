@@ -92,7 +92,25 @@
                 </div>`
             },
             renderLatestImage: (name) =>
-                `<a href="/image${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image${name}"></a>`
+                `<a href="/image${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image${name}"></a>`,
+            renderRawDirectoryPathInput: (rawDirectoryPath) =>
+                `<label for="raw-directory-path-input" class="visually-hidden">Location of Captured Images</label>
+                <div class="input-group">
+                    <div class="input-group-text">Captured Images</div>
+                    <input type="text" class="form-control" id="raw-directory-path-input" value="${rawDirectoryPath}" placeholder="/home/pi/dev/ettl/captured-images">
+                </div>`,
+            renderLogDirectoryPathInput: (logDirectoryPath) =>
+                `<label for="log-directory-path-input" class="visually-hidden">Location of Logs</label>
+                <div class="input-group">
+                    <div class="input-group-text">Logs</div>
+                    <input type="text" class="form-control" id="log-directory-path-input" value="${logDirectoryPath}" placeholder="/home/pi/dev/ettl/logs">
+                </div>`,
+            renderRawFileExtensionInput: (rawFileExtension) =>
+                `<label for="raw-file-extension-input" class="visually-hidden">RAW file's extension</label>
+                <div class="input-group">
+                    <div class="input-group-text">RAW type</div>
+                    <input type="text" class="form-control" id="raw-file-extension-input" value="${rawFileExtension}" placeholder="CR2">
+                </div>`
         };
 
         let latestTimestamp = new Date(Date.now());
@@ -124,31 +142,42 @@
                 });
             },
             setConfigs: () => {
-                Api.setConfig($('#capturedImagesLocation').val(), $('#logsLocation').val(), $('#rawFileExtension').val(), resp => {
+                Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), resp => {
                     console.log("Set Config:", JSON.stringify(resp));
                 });
             },
             runEttl: () => {
-                let realCamera = $('#realCameraInput').is(':checked');
+                let realCamera = $('#real-camera-input').is(':checked');
                 let dummyCamera = !realCamera;
-                let setSettings = $('#setSettingsInput').is(':checked');
-                let numberOfCaptures = $('#numberOfCaptures').val();
-                let intervalSeconds = $('#intervalSeconds').val();
+                let setSettings = $('#set-settings-input').is(':checked');
+                let numberOfCaptures = $('#number-of-captures').val();
+                let intervalSeconds = $('#interval-seconds').val();
 
                 Page.setConfigs();
                 Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
+            },
+            fetchUrlParams: () => {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const useParamOrEmpty = (paramName, set) => {
+                    const value = urlParams.has(paramName) ? urlParams.get(paramName) : "";
+                    set(value);
+                }
+                useParamOrEmpty('raw', (raw) => $('#raw-directory-path-section').html(Template.renderRawDirectoryPathInput(raw)));
+                useParamOrEmpty('log', (log) => $('#log-directory-path-section').html(Template.renderLogDirectoryPathInput(log)));
+                useParamOrEmpty('ext', (ext) => $('#raw-file-extension-section').html(Template.renderRawFileExtensionInput(ext)));
             }
         };
 
-
         $(function () {
+            Page.fetchUrlParams();
             Page.setConfigs();
             Page.loadLatestLogFile();
             Page.pollLogs();
             Page.pollImages();
-            $('#run-ettl').on('click', Page.runEttl)
+            $('#run-ettl').on('click', Page.runEttl);
         });
     </script>
 </head>
@@ -160,27 +189,9 @@
     </span>
     <section id="ettl">
         <form class="row row-cols-auto g-3 align-items-center">
-            <div class="col-5">
-                <label for="capturedImagesLocation" class="visually-hidden">Location of Captured Images</label>
-                <div class="input-group">
-                    <div class="input-group-text">Captured Images</div>
-                    <input type="text" class="form-control" id="capturedImagesLocation" value="/Users/szabolcs/dev/expose-to-the-light/captured-images">
-                </div>
-            </div>
-            <div class="col-5">
-                <label for="logsLocation" class="visually-hidden">Location of Logs</label>
-                <div class="input-group">
-                    <div class="input-group-text">Logs</div>
-                    <input type="text" class="form-control" id="logsLocation" value="/Users/szabolcs/dev/expose-to-the-light/logs">
-                </div>
-            </div>
-            <div class="col-2">
-                <label for="rawFileExtension" class="visually-hidden">RAW file's extension</label>
-                <div class="input-group">
-                    <div class="input-group-text">RAW type</div>
-                    <input type="text" class="form-control" id="rawFileExtension" value="JPG" placeholder="CR2">
-                </div>
-            </div>
+            <div class="col-5" id="raw-directory-path-section"></div>
+            <div class="col-5" id="log-directory-path-section"></div>
+            <div class="col-2" id="raw-file-extension-section"></div>
         </form>
         <form class="row row-cols-lg-auto g-3 align-items-center">
             <div class="col-12">
@@ -188,28 +199,28 @@
             </div>
             <div class="col-12">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="realCameraInput">
-                    <label class="form-check-label" for="realCameraInput">Real Camera</label>
+                    <input class="form-check-input" type="checkbox" id="real-camera-input">
+                    <label class="form-check-label" for="real-camera-input">Real Camera</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="setSettingsInput">
-                    <label class="form-check-label" for="setSettingsInput">Set Settings</label>
+                    <input class="form-check-input" type="checkbox" id="set-settings-input">
+                    <label class="form-check-label" for="set-settings-input">Set Settings</label>
                 </div>
             </div>
             <div class="col-12">
-                <label for="numberOfCaptures" class="visually-hidden"># of Captures</label>
+                <label for="number-of-captures" class="visually-hidden"># of Captures</label>
                 <div class="input-group">
                     <div class="input-group-text"># of Captures</div>
-                    <input type="number" inputmode="numeric" class="form-control" id="numberOfCaptures" value="10" min="1" max="9999" step="1">
+                    <input type="number" inputmode="numeric" class="form-control" id="number-of-captures" value="10" min="1" max="9999" step="1">
                 </div>
             </div>
             <div class="col-12">
-                <label for="intervalSeconds" class="visually-hidden">Interval (seconds)</label>
+                <label for="interval-seconds" class="visually-hidden">Interval (seconds)</label>
                 <div class="input-group">
                     <div class="input-group-text">Interval (sec)</div>
-                    <input type="number" inputmode="numeric" class="form-control" id="intervalSeconds" value="5" min="1" max="9999" step="1">
+                    <input type="number" inputmode="numeric" class="form-control" id="interval-seconds" value="5" min="1" max="9999" step="1">
                 </div>
             </div>
         </form>
