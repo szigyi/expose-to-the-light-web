@@ -18,4 +18,4 @@ expose-to-the-light-web client
 TODO add apt install commands
 
 ## Run the app
-`./ettl-web --rawDirectoryPath /home/pi/dev/expose-to-the-light/captured-images/ --logDirectoryPath /home/pi/dev/expose-to-the-light/logs`
+`ettl-web`

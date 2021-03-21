@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # -help
-# ettl-web --rawDirectoryPath /home/pi/dev/expose-to-the-light/captured-images/ --logDirectoryPath /home/pi/dev/expose-to-the-light/logs --rawFileExtension CR2
+# ettl-web
 
 artif="expose-to-the-light-web_2.13-0.1.5.jar"
 
