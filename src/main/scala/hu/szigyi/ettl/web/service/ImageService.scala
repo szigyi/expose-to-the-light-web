@@ -1,7 +1,7 @@
 package hu.szigyi.ettl.web.service
 
 import com.typesafe.scalalogging.StrictLogging
-import Dir.{deleteFile, getLatestFileInLatestSubDirectory, getPathFromParentDirectory}
+import Dir.{deleteFile, getLatestFileInLatestSubDirectory}
 import hu.szigyi.ettl.web.util.RawToJpg.{convertToJpg, filePathToJpg}
 
 class ImageService(rawDirectoryPath: => Option[String], rawFileExtension: => String) extends StrictLogging {
@@ -13,16 +13,15 @@ class ImageService(rawDirectoryPath: => Option[String], rawFileExtension: => Str
       getLatestFileInLatestSubDirectory(path, rawFileExtension).map { latestRaw =>
         val latestRawPath = latestRaw.getAbsolutePath
         val jpgPath       = filePathToJpg(latestRawPath)
-        convertedStorage(jpgPath) match {
-          case true =>
-            jpgPath
-          case false =>
-            if (convertToJpg(latestRawPath)) {
-              logger.info(s"Deleting RAW image: $latestRawPath")
-              deleteFile(latestRawPath)
-            }
-            convertedStorage = convertedStorage + jpgPath
-            jpgPath
+        if (convertedStorage(jpgPath)) {
+          jpgPath
+        } else {
+          if (convertToJpg(latestRawPath)) {
+            logger.info(s"Deleting RAW image: $latestRawPath")
+            deleteFile(latestRawPath)
+          }
+          convertedStorage = convertedStorage + jpgPath
+          jpgPath
         }
       }
     }
