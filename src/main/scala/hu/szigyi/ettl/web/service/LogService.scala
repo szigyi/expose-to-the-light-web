@@ -3,20 +3,19 @@ package hu.szigyi.ettl.web.service
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.service.LogService.parseLocalTime
 import hu.szigyi.ettl.web.util.ClosableOps._
-import Dir.getLatestFileInDirectory
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalTime, ZoneOffset}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
-class LogService(logDirectoryPath: => Option[String]) extends StrictLogging {
+class LogService(dir: DirectoryService, logDirectoryPath: => Option[String]) extends StrictLogging {
 
   def readLatestLogFile: Seq[(LocalTime, String, String)] = {
     logDirectoryPath match {
       case None => Seq.empty
       case Some(path) =>
-        getLatestFileInDirectory(path, ".log") match {
+        dir.getLatestFileInDirectory(path, ".log") match {
           case Some(latestLogFile) =>
             logger.trace(s"Reading log file: ${latestLogFile.toString}")
 

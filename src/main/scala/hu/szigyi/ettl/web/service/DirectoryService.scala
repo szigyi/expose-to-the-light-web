@@ -6,7 +6,7 @@ import java.io.{File, FilenameFilter}
 import java.nio.file.Paths
 import scala.util.Try
 
-object Dir {
+class DirectoryService {
 
   def getLatestFileInDirectory(dir: String, allowedExtension: String): Option[File] =
     filesInDirectory(new File(dir), allowedExtension)

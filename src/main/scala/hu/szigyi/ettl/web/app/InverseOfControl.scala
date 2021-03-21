@@ -2,14 +2,15 @@ package hu.szigyi.ettl.web.app
 
 import cats.effect.{Blocker, ContextShift, IO}
 import hu.szigyi.ettl.web.api.{ConfigApi, EttlApi, HealthApi, ImageApi, LogApi, StaticApi}
-import hu.szigyi.ettl.web.service.{ConfigurationService, ImageService, LogService}
+import hu.szigyi.ettl.web.service.{ConfigurationService, DirectoryService, ImageService, LogService}
 
 class InverseOfControl(env: String)(implicit cs: ContextShift[IO]) {
   private val blocker: Blocker = Blocker[IO].allocated.unsafeRunSync()._1
 
-  private val configService = new ConfigurationService
-  private val logService = new LogService(configService.logDirectoryPath)
-  private val imageService = new ImageService(configService.rawDirectoryPath, configService.rawFileExtension)
+  private val configService    = new ConfigurationService
+  private val directoryService = new DirectoryService
+  private val logService       = new LogService(directoryService, configService.logDirectoryPath)
+  private val imageService     = new ImageService(directoryService, configService.rawDirectoryPath, configService.rawFileExtension)
 
   val staticApi = new StaticApi(blocker)
   val healthApi = new HealthApi(env)
