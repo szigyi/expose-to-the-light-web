@@ -53,22 +53,21 @@
         const Api = {
             getConfig: (success) =>
                 $.get('/config', success),
-            setConfig: (rawDirectoryPath, logDirectoryPath, success) =>
-                $.post('/config', JSON.stringify({rawDirectoryPath: rawDirectoryPath, logDirectoryPath: logDirectoryPath}), success),
+            setConfig: (rawDirectoryPath, logDirectoryPath, rawFileExtension, success) =>
+                $.post('/config', JSON.stringify({rawDirectoryPath: rawDirectoryPath, logDirectoryPath: logDirectoryPath, rawFileExtension: rawFileExtension}), success),
             getLatestLogFile: (success) =>
                 $.get('/log', success),
             getLogsSince: (ts, success) =>
                 $.post('/log', JSON.stringify({timestamp: ts}), success),
             getFileNameOfLatestImage: (success) =>
                 $.get('/convert', success),
-            runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, rawFileExtension, success) =>
+            runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, success) =>
                 $.post('/ettl', JSON.stringify(
                     {
                         dummyCamera: dummyCamera,
                         setSettings: setSettings,
                         numberOfCaptures: numberOfCaptures,
-                        intervalSeconds: intervalSeconds,
-                        rawFileExtension: rawFileExtension
+                        intervalSeconds: intervalSeconds
                     }), success)
         };
 
@@ -93,7 +92,7 @@
                 </div>`
             },
             renderLatestImage: (name) =>
-                `<a href="/image/${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image/${name}"></a>`
+                `<a href="/image${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image${name}"></a>`
         };
 
         let latestTimestamp = new Date(Date.now());
@@ -125,17 +124,8 @@
                 });
             },
             setConfigs: () => {
-                Api.setConfig($('#capturedImagesLocation').val(), $('#logsLocation').val(), resp => {
+                Api.setConfig($('#capturedImagesLocation').val(), $('#logsLocation').val(), $('#rawFileExtension').val(), resp => {
                     console.log("Set Config:", JSON.stringify(resp));
-                });
-            },
-            loadConfig: () => {
-                Api.getConfig(conf => {
-                    $('#capturedImagesLocation').val(conf.rawDirectoryPath);
-                    $('#logsLocation').val(conf.logDirectoryPath);
-
-                    $('#capturedImagesLocation').on('change', Page.setConfigs);
-                    $('#logsLocation').on('change', Page.setConfigs);
                 });
             },
             runEttl: () => {
@@ -144,9 +134,9 @@
                 let setSettings = $('#setSettingsInput').is(':checked');
                 let numberOfCaptures = $('#numberOfCaptures').val();
                 let intervalSeconds = $('#intervalSeconds').val();
-                let rawFileExtension = $('#rawFileExtension').val();
 
-                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, rawFileExtension, resp => {
+                Page.setConfigs();
+                Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
             }
@@ -154,7 +144,7 @@
 
 
         $(function () {
-            Page.loadConfig();
+            Page.setConfigs();
             Page.loadLatestLogFile();
             Page.pollLogs();
             Page.pollImages();
@@ -170,18 +160,25 @@
     </span>
     <section id="ettl">
         <form class="row row-cols-auto g-3 align-items-center">
-            <div class="col-6">
+            <div class="col-5">
                 <label for="capturedImagesLocation" class="visually-hidden">Location of Captured Images</label>
                 <div class="input-group">
                     <div class="input-group-text">Captured Images</div>
                     <input type="text" class="form-control" id="capturedImagesLocation" value="/Users/szabolcs/dev/expose-to-the-light/captured-images">
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <label for="logsLocation" class="visually-hidden">Location of Logs</label>
                 <div class="input-group">
                     <div class="input-group-text">Logs</div>
                     <input type="text" class="form-control" id="logsLocation" value="/Users/szabolcs/dev/expose-to-the-light/logs">
+                </div>
+            </div>
+            <div class="col-2">
+                <label for="rawFileExtension" class="visually-hidden">RAW file's extension</label>
+                <div class="input-group">
+                    <div class="input-group-text">RAW type</div>
+                    <input type="text" class="form-control" id="rawFileExtension" value="JPG" placeholder="CR2">
                 </div>
             </div>
         </form>
@@ -213,13 +210,6 @@
                 <div class="input-group">
                     <div class="input-group-text">Interval (sec)</div>
                     <input type="number" inputmode="numeric" class="form-control" id="intervalSeconds" value="5" min="1" max="9999" step="1">
-                </div>
-            </div>
-            <div class="col-12">
-                <label for="rawFileExtension" class="visually-hidden">RAW file's extension</label>
-                <div class="input-group">
-                    <div class="input-group-text">RAW type</div>
-                    <input type="text" class="form-control" id="rawFileExtension" value="JPG" placeholder="CR2">
                 </div>
             </div>
         </form>

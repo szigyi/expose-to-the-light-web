@@ -37,9 +37,10 @@ import scala.concurrent.ExecutionContext
 // 19 newly added log lines should glow or should be obvious that was added recently
 // 20 remove RAW file that is already converted
 // 21 use customizable settings to run ettl from the UI
-// TODO 22 images and logs directory is driven from the UI when running ettl
+// 22 images and logs directory is driven from the UI when running ettl
 // TODO 23 add deploy, install and run scripts
 // 24 read raw images from session's sub folder
+// TODO 25 raw, log path and raw extension can be stored in the url so user can bookmark it
 
 
 object WebApp extends IOApp with StrictLogging {
@@ -50,16 +51,11 @@ object WebApp extends IOApp with StrictLogging {
   private val threadPool = Executors.newFixedThreadPool(1)
   private val ec = ExecutionContext.fromExecutor(threadPool)
 
-  override def run(args: List[String]): IO[ExitCode] = {
-    val conf = new Conf(args)
-    val appConfig = AppConfiguration(
-      conf.rawDirectoryPath.apply(),
-      conf.logDirectoryPath.apply(),
-      conf.rawFileExtension.apply())
+  override def run(args: List[String]): IO[ExitCode] =
     BlazeServerBuilder[IO](ec)
       .bindHttp(port, "0.0.0.0")
       .withBanner(Seq(banner(env)))
-      .withHttpApp(httpApp(new InverseOfControl(env, appConfig)))
+      .withHttpApp(httpApp(new InverseOfControl(env)))
       .serve
       .compile
       .drain
@@ -67,7 +63,6 @@ object WebApp extends IOApp with StrictLogging {
       .map(_ => threadPool.shutdown())
       .map(_ => finalWords())
       .as(ExitCode.Success)
-  }
 
   private def httpApp(ioc: InverseOfControl): Kleisli[IO, Request[IO], Response[IO]] =
     Router(
@@ -103,16 +98,4 @@ object WebApp extends IOApp with StrictLogging {
 
   private def finalWords(): Unit =
     logger.info(s"App is terminating as you said so!")
-
-  class Conf(args: Seq[String]) extends ScallopConf(args) {
-    val rawDirectoryPath: ScallopOption[String] =
-      opt[String](name = "rawDirectoryPath", required = true, descr = "Directory where the captured, raw images are")
-    val logDirectoryPath: ScallopOption[String] =
-      opt[String](name = "logDirectoryPath", required = true, descr = "Directory where the logs are")
-    val rawFileExtension: ScallopOption[String] =
-      opt[String](name = "rawFileExtension", required = true, descr = "Extension of your Raw file ie: CR2, NEF")
-    verify()
-  }
-
-  case class AppConfiguration(rawDirectoryPath: String, logDirectoryPath: String, rawFileExtension: String)
 }

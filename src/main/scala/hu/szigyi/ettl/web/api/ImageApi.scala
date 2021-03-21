@@ -11,16 +11,17 @@ import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.staticcontent.{FileService, fileService}
 
-class ImageApi(blocker: Blocker,
-               rawDirectoryPath: String,
-               imgService: ImageService)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging {
+class ImageApi(blocker: Blocker, imgService: ImageService)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging {
 
   val convertService: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root =>
-      Ok(ImageResponse(imgService.getRelativePathOfLatestImage))
+      Ok(ImageResponse(imgService.getPathOfLatestImage))
   }
 
-  val imageFileService: HttpRoutes[IO] = fileService[IO](FileService.Config(rawDirectoryPath, blocker))
+  // FIXME this is fishy, maybe security issue, but I haven't got better idea now
+  val imageFileService: HttpRoutes[IO] =
+    fileService[IO](FileService.Config("/", blocker))
+
 }
 
 object ImageApi {
