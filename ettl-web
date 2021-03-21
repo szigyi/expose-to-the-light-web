@@ -3,7 +3,7 @@
 # -help
 # ettl-web
 
-artif="expose-to-the-light-web_2.13-0.1.8.jar"
+artif="expose-to-the-light-web_2.13-0.1.9.jar"
 
 echo "Starting application..."
 java -jar "$artif" "$@"
