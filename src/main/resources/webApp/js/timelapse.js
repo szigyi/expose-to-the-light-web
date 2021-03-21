@@ -13,7 +13,7 @@ const Page = {
                 $("<img/>").attr('src', `/image${imagePaths[0].latestImageName}`)
                     .on('load', function () {
                         console.log('First image is loaded, we know its size from now');
-                        $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p)));
+                        $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p.latestImageName)));
                         const gif = Page.createGif(this.height, this.width);
                         imagePaths.forEach(imgPath => {
                             const img = document.createElement("img");

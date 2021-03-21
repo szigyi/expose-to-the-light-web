@@ -43,58 +43,58 @@ object LogAnalyser extends App with StrictLogging {
 
   val log =
     """
-      16:16:08.566:::I:::             Clock: SystemClock[Europe/London]
-16:16:08.588:::I:::      Dummy Camera: false
-16:16:08.589:::I:::  Images Base Path: /home/pi/dev/ettl/captured-images
-16:16:08.590:::I:::     # of Captures: 10
-16:16:08.591:::I:::      Set Settings: false
-16:16:08.592:::I:::          Interval: 11 seconds
-16:16:08.592:::I:::Raw File Extension: CR2
-16:16:08.826:::I:::Connecting to camera...
-16:16:10.771:::I:::[1/10] Taking photo...
-16:16:21.663:::D:::[1/10] Capture took: 10887ms | 10887937655ns
-16:16:21.757:::I:::[1/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5456.CR2
-16:16:21.758:::D:::[1/10] Schedule took: 11008ms | 11008248538ns
-16:16:21.792:::I:::[2/10] Taking photo...
-16:16:32.929:::D:::[2/10] Capture took: 11135ms | 11135218906ns
-16:16:33.001:::I:::[2/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5457.CR2
-16:16:33.002:::D:::[2/10] Schedule took: 11227ms | 11227661369ns
-16:16:33.003:::I:::[3/10] Taking photo...
-16:16:43.988:::D:::[3/10] Capture took: 10984ms | 10984509753ns
-16:16:44.062:::I:::[3/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5458.CR2
-16:16:44.063:::D:::[3/10] Schedule took: 11059ms | 11059740311ns
-16:16:44.064:::I:::[4/10] Taking photo...
-16:16:55.179:::D:::[4/10] Capture took: 11114ms | 11114950575ns
-16:16:55.254:::I:::[4/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5459.CR2
-16:16:55.256:::D:::[4/10] Schedule took: 11192ms | 11192175708ns
-16:16:55.257:::I:::[5/10] Taking photo...
-16:17:06.429:::D:::[5/10] Capture took: 11171ms | 11171827446ns
-16:17:06.514:::I:::[5/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5460.CR2
-16:17:06.515:::D:::[5/10] Schedule took: 11258ms | 11258803630ns
-16:17:06.516:::I:::[6/10] Taking photo...
-16:17:17.209:::D:::[6/10] Capture took: 10691ms | 10691549157ns
-16:17:17.296:::I:::[6/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5461.CR2
-16:17:17.297:::D:::[6/10] Schedule took: 10780ms | 10780598561ns
-16:17:17.298:::I:::[7/10] Taking photo...
-16:17:27.938:::D:::[7/10] Capture took: 10639ms | 10639794056ns
-16:17:28.009:::I:::[7/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5462.CR2
-16:17:28.010:::D:::[7/10] Schedule took: 10712ms | 10712631811ns
-16:17:28.011:::I:::[8/10] Taking photo...
-16:17:38.828:::D:::[8/10] Capture took: 10815ms | 10815976138ns
-16:17:38.899:::I:::[8/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5463.CR2
-16:17:38.900:::D:::[8/10] Schedule took: 10889ms | 10889200038ns
-16:17:38.901:::I:::[9/10] Taking photo...
-16:17:50.019:::D:::[9/10] Capture took: 11116ms | 11116316377ns
-16:17:50.089:::I:::[9/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5464.CR2
-16:17:50.090:::D:::[9/10] Schedule took: 11189ms | 11189073507ns
-16:17:50.095:::I:::[10/10] Taking photo...
-16:18:01.209:::D:::[10/10] Capture took: 11112ms | 11112457524ns
-16:18:01.300:::I:::[10/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_16_16_08/_MG_5465.CR2
-16:18:01.301:::D:::[10/10] Schedule took: 11205ms | 11205470400ns
-16:18:01.443:::I:::App finished
+22:27:12.813:::I:::             Clock: SystemClock[Europe/London]
+22:27:12.827:::I:::      Dummy Camera: false
+22:27:12.827:::I:::  Images Base Path: /home/pi/dev/ettl/captured-images
+22:27:12.828:::I:::     # of Captures: 10
+22:27:12.828:::I:::      Set Settings: false
+22:27:12.829:::I:::          Interval: 4 seconds
+22:27:12.830:::I:::Raw File Extension: CR2
+22:27:13.130:::I:::Connecting to camera...
+22:27:15.667:::I:::[1/10] Taking photo...
+22:27:19.344:::D:::[1/10] Capture took: 3672ms | 3672952638ns
+22:27:19.474:::I:::[1/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5477.CR2
+22:27:19.476:::D:::[1/10] Schedule took: 3830ms | 3830288810ns
+22:27:19.518:::I:::[2/10] Taking photo...
+22:27:23.420:::D:::[2/10] Capture took: 3900ms | 3900996392ns
+22:27:23.528:::I:::[2/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5478.CR2
+22:27:23.529:::D:::[2/10] Schedule took: 4036ms | 4036054248ns
+22:27:23.530:::I:::[3/10] Taking photo...
+22:27:27.331:::D:::[3/10] Capture took: 3799ms | 3799989444ns
+22:27:27.540:::I:::[3/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5479.CR2
+22:27:27.542:::D:::[3/10] Schedule took: 4011ms | 4011942348ns
+22:27:27.543:::I:::[4/10] Taking photo...
+22:27:31.234:::D:::[4/10] Capture took: 3689ms | 3689832025ns
+22:27:31.467:::I:::[4/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5480.CR2
+22:27:31.468:::D:::[4/10] Schedule took: 3925ms | 3925172510ns
+22:27:31.469:::I:::[5/10] Taking photo...
+22:27:35.031:::D:::[5/10] Capture took: 3560ms | 3560126120ns
+22:27:35.241:::I:::[5/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5481.CR2
+22:27:35.242:::D:::[5/10] Schedule took: 3773ms | 3773008237ns
+22:27:35.243:::I:::[6/10] Taking photo...
+22:27:38.879:::D:::[6/10] Capture took: 3634ms | 3634971856ns
+22:27:39.009:::I:::[6/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5482.CR2
+22:27:39.010:::D:::[6/10] Schedule took: 3766ms | 3766705928ns
+22:27:39.012:::I:::[7/10] Taking photo...
+22:27:43.041:::D:::[7/10] Capture took: 4028ms | 4028586476ns
+22:27:43.151:::I:::[7/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5483.CR2
+22:27:43.152:::D:::[7/10] Schedule took: 4140ms | 4140826592ns
+22:27:43.154:::I:::[8/10] Taking photo...
+22:27:47.052:::D:::[8/10] Capture took: 3897ms | 3897619848ns
+22:27:47.175:::I:::[8/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5484.CR2
+22:27:47.176:::D:::[8/10] Schedule took: 4022ms | 4022855727ns
+22:27:47.178:::I:::[9/10] Taking photo...
+22:27:57.855:::D:::[9/10] Capture took: 10675ms | 10675477812ns
+22:27:58.232:::I:::[9/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5485.CR2
+22:27:58.235:::D:::[9/10] Schedule took: 11057ms | 11057271454ns
+22:27:58.248:::I:::[10/10] Taking photo...
+22:28:07.613:::D:::[10/10] Capture took: 9318ms | 9318066270ns
+22:28:07.922:::I:::[10/10] Saved image: /home/pi/dev/ettl/captured-images/2021_03_21_22_27_12/_MG_5486.CR2
+22:28:07.977:::D:::[10/10] Schedule took: 9729ms | 9729068817ns
+22:28:18.407:::I:::App finished
       """
 
   private val logLines = stringToLogLines(log)
   timesBetweenShots(logLines)
-  expectedShotVsActual(11, logLines)
+  expectedShotVsActual(4, logLines)
 }
