@@ -4,6 +4,7 @@ import cats.effect.IO
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.LogApi._
 import hu.szigyi.ettl.web.service.LogService
+import hu.szigyi.ettl.web.service.LogService.LogLine
 import io.circe.Codec
 import io.circe.generic.semiauto.deriveCodec
 import org.http4s.HttpRoutes
@@ -16,7 +17,7 @@ class LogApi(logService: LogService) extends Http4sDsl[IO] with StrictLogging {
 
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root =>
-      Ok(logService.readLatestLogFile.map(LogResponse.apply))
+      Ok(logService.readLatestLog.map(LogResponse.apply))
 
     case request@POST -> Root =>
       request.decode[LogRequest] { logRequest =>
@@ -35,8 +36,8 @@ object LogApi {
 
   case class LogResponse(timestamp: LocalTime, logLevel: String, message: String)
   object LogResponse {
-    def apply(tup: (LocalTime, String, String)): LogResponse =
-      LogResponse(tup._1, tup._2, tup._3)
+    def apply(log: LogLine): LogResponse =
+      LogResponse(log.time, log.level, log.message)
   }
 
 }

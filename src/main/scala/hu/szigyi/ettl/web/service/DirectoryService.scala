@@ -1,9 +1,11 @@
 package hu.szigyi.ettl.web.service
 
 import cats.data.NonEmptyList
+import hu.szigyi.ettl.web.util.ClosableOps._
 
 import java.io.{File, FilenameFilter}
 import java.nio.file.Paths
+import scala.io.Source
 import scala.util.Try
 
 class DirectoryService {
@@ -26,6 +28,11 @@ class DirectoryService {
 
   def deleteFile(path: String): Try[Unit] =
     Try(new File(path).delete())
+
+  def getLinesOfFile(file: File): Seq[String] =
+    withResources(Source.fromFile(file)) { source =>
+      source.getLines().toSeq
+    }
 
   private def directoriesInDirectory(d: File): Option[NonEmptyList[File]] =
     if (d.exists && d.isDirectory)
