@@ -68,9 +68,6 @@ const Page = {
         let latestImage = $('#latest-image').data('name');
         Api.getFileNameOfLatestImage(response => {
             if (response.latestImageName && response.latestImageName !== latestImage) {
-                Page.waitUntilExists(document.getElementById('latest-image-section'), () => {
-                    Page.addImageAndRenderGif(document.getElementById("latest-image"));
-                });
                 $('#latest-image-section').html(Template.renderLatestImage(response.latestImageName));
             }
         });
@@ -89,6 +86,7 @@ const Page = {
 
         Page.setConfigs();
         Page.setUrlParams();
+        Shared.copyQueryParamsToMenu();
         Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
             console.log("Running ettl:", JSON.stringify(resp));
         });
@@ -110,58 +108,11 @@ const Page = {
         urlParams.set('log', $('#log-directory-path-input').val());
         urlParams.set('ext', $('#raw-file-extension-input').val());
         window.history.replaceState('', '', `index.html?${urlParams.toString()}`);
-    },
-    createGif: (h, w) => {
-        const newGif =new GIF({
-            workers: 2,
-            height: h,
-            width: w,
-            quality: 1
-        });
-        newGif.on('finished', function(blob) {
-            console.log('GIF render is finished');
-            let src = URL.createObjectURL(blob);
-            let img = Template.renderTimelapsePreview(src);
-            console.log(src);
-            console.log(img);
-            $('#timelapse-section').html(img);
-        });
-        return newGif;
-    },
-    addImageAndRenderGif: (imgElement) => {
-        console.log('img element', imgElement);
-        console.log('img src', imgElement.src);
-
-        timelapseImageSources.push(imgElement.src);
-
-        console.log(`Creating GIF h:${imgElement.naturalHeight}, w:${imgElement.naturalWidth} and Adding new image to the GIF`);
-        gif = Page.createGif(imgElement.naturalHeight, imgElement.naturalWidth);
-
-        timelapseImageSources.forEach(src => {
-            let img = document.createElement("img");
-            img.src = src;
-            gif.addFrame(img);
-        });
-        gif.render();
-    },
-    waitUntilExists: (targetNode, whenExists) => {
-        const config = { childList: true };
-        const callback = function(mutationsList, observer) {
-            // Use traditional 'for loops' for IE 11
-            for(const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    console.log('A child node has been added or removed.');
-                    whenExists();
-                    observer.disconnect();
-                }
-            }
-        };
-        const observer = new MutationObserver(callback);
-        observer.observe(targetNode, config);
     }
 };
 
 $(function () {
+    Shared.copyQueryParamsToMenu();
     Page.fetchUrlParams();
     Page.setConfigs();
     Page.loadLatestLogFile();
