@@ -1,4 +1,4 @@
-package hu.szigyi.ettl.web.util
+package hu.szigyi.ettl.web.service
 
 import cats.data.NonEmptyList
 

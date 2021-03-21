@@ -1,7 +1,7 @@
 package hu.szigyi.ettl.web.service
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.util.Dir.{deleteFile, getLatestFileInLatestSubDirectory, getPathFromParentDirectory}
+import Dir.{deleteFile, getLatestFileInLatestSubDirectory, getPathFromParentDirectory}
 import hu.szigyi.ettl.web.util.RawToJpg.{convertToJpg, filePathToJpg}
 
 class ImageService(rawDirectoryPath: => Option[String], rawFileExtension: => String) extends StrictLogging {

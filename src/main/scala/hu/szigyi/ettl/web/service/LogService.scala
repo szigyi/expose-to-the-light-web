@@ -3,7 +3,7 @@ package hu.szigyi.ettl.web.service
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.service.LogService.parseLocalTime
 import hu.szigyi.ettl.web.util.ClosableOps._
-import hu.szigyi.ettl.web.util.Dir.getLatestFileInDirectory
+import Dir.getLatestFileInDirectory
 
 import java.time.format.DateTimeFormatter
 import java.time.{LocalTime, ZoneOffset}
