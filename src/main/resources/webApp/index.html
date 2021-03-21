@@ -51,8 +51,6 @@
     </style>
     <script>
         const Api = {
-            getConfig: (success) =>
-                $.get('/config', success),
             setConfig: (rawDirectoryPath, logDirectoryPath, rawFileExtension, success) =>
                 $.post('/config', JSON.stringify({rawDirectoryPath: rawDirectoryPath, logDirectoryPath: logDirectoryPath, rawFileExtension: rawFileExtension}), success),
             getLatestLogFile: (success) =>
