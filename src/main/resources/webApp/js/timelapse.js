@@ -1,14 +1,19 @@
 const Template = {
     renderTimelapsePreview: (timelapseSource) =>
-        `<img id="timelapse-preview" class="responsive" src="${timelapseSource}"/>`
+        `<img id="timelapse-preview" class="responsive" src="${timelapseSource}"/>`,
+    renderImagePath: (path) =>
+        `<p>${path}</p>`
 };
 
 const Page = {
     createTimelapse: () => {
         Api.getFileNamesOfAllImages(imagePaths => {
+            console.log('Got back image paths:', imagePaths.length);
             if (imagePaths.length > 0) {
                 $("<img/>").attr('src', `/image${imagePaths[0].latestImageName}`)
                     .on('load', function () {
+                        console.log('First image is loaded, we know its size from now');
+                        $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p)));
                         const gif = Page.createGif(this.height, this.width);
                         imagePaths.forEach(imgPath => {
                             const img = document.createElement("img");
