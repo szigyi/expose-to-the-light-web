@@ -3,7 +3,7 @@ expose-to-the-light-web client
 
 ## Install application
 ### Download installer
-`curl -L -o install-web.sh https://www.dropbox.com/s/nb9e0oza9iq2rk7/install-web.sh?dl=1`
+`curl -L -o install-web.sh https://www.dropbox.com/s/8wr5asn1r53m0l1/install-web.sh?dl=1`
 
 ### Install
 * `chmod u+x install-web.sh`
