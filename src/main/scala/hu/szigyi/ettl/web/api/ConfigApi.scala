@@ -15,6 +15,7 @@ class ConfigApi(configService: ConfigurationService) extends Http4sDsl[IO] with 
   val service = HttpRoutes.of[IO] {
     case request@POST -> Root =>
       request.decode[ConfigRequest] { config =>
+      logger.info(s"Changing config to: $config")
         configService.setRawDirectoryPath(Some(config.rawDirectoryPath))
         configService.setLogDirectoryPath(Some(config.logDirectoryPath))
         configService.setRawFileExtension(config.rawFileExtension)
