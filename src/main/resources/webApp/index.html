@@ -152,6 +152,7 @@
                 let intervalSeconds = $('#interval-seconds').val();
 
                 Page.setConfigs();
+                Page.setUrlParams();
                 Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
                     console.log("Running ettl:", JSON.stringify(resp));
                 });
@@ -166,6 +167,13 @@
                 useParamOrEmpty('raw', (raw) => $('#raw-directory-path-section').html(Template.renderRawDirectoryPathInput(raw)));
                 useParamOrEmpty('log', (log) => $('#log-directory-path-section').html(Template.renderLogDirectoryPathInput(log)));
                 useParamOrEmpty('ext', (ext) => $('#raw-file-extension-section').html(Template.renderRawFileExtensionInput(ext)));
+            },
+            setUrlParams: () => {
+                const urlParams = new URLSearchParams();
+                urlParams.set('raw', $('#raw-directory-path-input').val());
+                urlParams.set('log', $('#log-directory-path-input').val());
+                urlParams.set('ext', $('#raw-file-extension-input').val());
+                window.history.replaceState('', '', `index.html?${urlParams.toString()}`);
             }
         };
 
