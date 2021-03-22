@@ -3,7 +3,6 @@ package hu.szigyi.ettl.web.service
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.service.ImageService.jpgPathStorage
 
-// track folder and give back only latest??
 class ImageService extends StrictLogging {
   def getPathOfAllImages: Seq[String] = jpgPathStorage
   def getPathOfLatestImage: Option[String] = jpgPathStorage.headOption
@@ -11,10 +10,16 @@ class ImageService extends StrictLogging {
 
 object ImageService {
   private var jpgPathStorage: Seq[String] = Seq.empty
+  private var finishedSessionStorage: Seq[String] = Seq.empty
 
   def containsJpgPath(p: String): Boolean =
-    jpgPathStorage.contains(p)
+    finishedSessionStorage.contains(p) || jpgPathStorage.contains(p)
 
   def addJpgPath(p: String): Unit =
-    jpgPathStorage = jpgPathStorage :+ p
+    if (!finishedSessionStorage.contains(p)) jpgPathStorage = jpgPathStorage :+ p
+
+  def startNewSession: Unit = {
+    finishedSessionStorage = finishedSessionStorage ++ jpgPathStorage
+    jpgPathStorage = Seq.empty
+  }
 }
