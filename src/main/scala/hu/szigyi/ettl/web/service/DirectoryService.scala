@@ -2,6 +2,7 @@ package hu.szigyi.ettl.web.service
 
 import cats.data.NonEmptyList
 import hu.szigyi.ettl.web.util.ClosableOps._
+import collection.JavaConverters._
 
 import java.io.{File, FilenameFilter}
 import java.nio.file.Paths
@@ -11,15 +12,15 @@ import scala.util.Try
 class DirectoryService {
 
   def getLatestFileInDirectory(dir: String, allowedExtension: String): Option[File] =
-    filesInDirectory(new File(dir), allowedExtension)
+    filesInDirectory(new File(dir), Some(allowedExtension))
       .map(_.sortBy(_.getName).reverse.head)
 
-  def getLatestFileInLatestSubDirectory(dir: String, allowedExtension: String): Option[File] =
+  def getAllFilePathsInLatestSubDirectory(dir: String): Option[NonEmptyList[String]] =
     directoriesInDirectory(new File(dir))
       .map(_.sortBy(_.getName).reverse.head)
       .flatMap(latestSubDirectory =>
-        filesInDirectory(latestSubDirectory, allowedExtension)
-          .map(_.sortBy(_.getName).reverse.head))
+        filesInDirectory(latestSubDirectory, None)
+          .map(_.sortBy(_.getName).reverse.map(_.getAbsolutePath)))
 
   def getPathFromParentDirectory(path: String): String = {
     val p = Paths.get(path)
@@ -40,10 +41,16 @@ class DirectoryService {
     else
       None
 
-  private def filesInDirectory(d: File, allowedExtension: String): Option[NonEmptyList[File]] =
-    if (d.exists && d.isDirectory)
-      NonEmptyList.fromList(d.listFiles(allowedExtensionFilter(allowedExtension)).filter(_.isFile).toList)
-    else
+  private def filesInDirectory(d: File, allowedExtension: Option[String]): Option[NonEmptyList[File]] =
+    if (d.exists && d.isDirectory) {
+      val files = allowedExtension match {
+        case Some(ext) =>
+          d.listFiles(allowedExtensionFilter(ext))
+        case None =>
+          d.listFiles()
+      }
+      NonEmptyList.fromList(files.filter(_.isFile).toList)
+    } else
       None
 
   private def allowedExtensionFilter(extension: String): FilenameFilter =

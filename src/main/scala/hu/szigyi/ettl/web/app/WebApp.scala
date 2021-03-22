@@ -3,6 +3,8 @@ package hu.szigyi.ettl.web.app
 import cats.data.Kleisli
 import cats.effect.{ExitCode, IO, IOApp}
 import com.typesafe.scalalogging.StrictLogging
+import hu.szigyi.ettl.web.job.Job
+import hu.szigyi.ettl.web.service.ConvertService
 import hu.szigyi.ettl.web.util.ManifestReader
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -17,7 +19,7 @@ import scala.concurrent.ExecutionContext
 // 3 UI should poll every half a second the log lines
 // 4 UI should use the latest timestamp from the returned log lines or now to poll
 // 5 show the latest image on the UI
-// TODO 6 create mini timelapse from the images on the UI :D - js based so raspberry pi has CPU to do other things
+// 6 create mini timelapse from the images on the UI :D - js based so raspberry pi has CPU to do other things
 // TODO 7 filter log messages at server side based on log levels
 // 8 as it is bugged and cannot download the jpg version of the image from the camera
 //        compare the speed of exiftool (extract thumbnail and then resize with magick) and magick (raw to jpg)
@@ -50,18 +52,21 @@ object WebApp extends IOApp with StrictLogging {
   private val threadPool = Executors.newFixedThreadPool(1)
   private val ec         = ExecutionContext.fromExecutor(threadPool)
 
-  override def run(args: List[String]): IO[ExitCode] =
+  override def run(args: List[String]): IO[ExitCode] = {
+    val ioc = new InverseOfControl(env)
+
     BlazeServerBuilder[IO](ec)
       .bindHttp(port, "0.0.0.0")
       .withBanner(Seq(banner(env)))
-      .withHttpApp(httpApp(new InverseOfControl(env)))
-      .serve
+      .withHttpApp(httpApp(ioc))
+      .serve.merge(ioc.convertJob)
       .compile
       .drain
       .handleErrorWith(logErrorAsAFinalFrontier)
       .map(_ => threadPool.shutdown())
       .map(_ => finalWords())
       .as(ExitCode.Success)
+  }
 
   private def httpApp(ioc: InverseOfControl): Kleisli[IO, Request[IO], Response[IO]] =
     Router(
