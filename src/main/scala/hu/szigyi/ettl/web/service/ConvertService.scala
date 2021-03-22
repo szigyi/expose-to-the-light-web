@@ -26,7 +26,9 @@ class ConvertService(dir: DirectoryService, rawDirectoryPath: => Option[String],
         val raws = files.toList.filter(_.endsWith(rawFileExtension))
 
         jpgs.foreach(jpg => if (!ImageService.containsJpgPath(jpg)) ImageService.addJpgPath(jpg))
-        if (!"jpg".equalsIgnoreCase(rawFileExtension)) convertToJpg(raws.last)
+        if (!"jpg".equalsIgnoreCase(rawFileExtension)) {
+          if (convertToJpg(raws.last)) dir.deleteFile(raws.last)
+        }
       }
     }
   }
