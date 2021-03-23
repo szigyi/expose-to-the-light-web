@@ -24,5 +24,5 @@ class InverseOfControl(env: String)(implicit cs: ContextShift[IO], timer: Timer[
   val imageApi  = new ImageApi(blocker, imageRepository)
   val ettlApi   = new EttlApi(imageRepository, configService.rawDirectoryPath, configService.logDirectoryPath, configService.rawFileExtension)
 
-  val convertJob = Job.streamingTask(convertService.run, 100.milliseconds)
+  val convertJob: fs2.Stream[IO, Unit] = Job.streamingTask(convertService.run, 100.milliseconds)
 }
