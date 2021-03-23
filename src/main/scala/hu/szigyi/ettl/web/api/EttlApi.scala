@@ -11,7 +11,12 @@ import io.circe.generic.semiauto.deriveCodec
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 
-class EttlApi(rawDirectoryPath: => Option[String], logDirectoryPath: => Option[String], rawFileExtension: => String) extends Http4sDsl[IO] with StrictLogging {
+class EttlApi(imageRepository: ImageRepository,
+              rawDirectoryPath: => Option[String],
+              logDirectoryPath: => Option[String],
+              rawFileExtension: => String)
+    extends Http4sDsl[IO]
+    with StrictLogging {
 
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case request @ POST -> Root =>
@@ -19,16 +24,17 @@ class EttlApi(rawDirectoryPath: => Option[String], logDirectoryPath: => Option[S
         (logDirectoryPath, rawDirectoryPath) match {
           case (Some(logPath), Some(rawPath)) =>
             logger.info(s"Request: $req")
-            ImageRepository.startNewSession
-            Ok(EttlRunner.executeEttl(
-              req.dummyCamera,
-              req.setSettings,
-              req.numberOfCaptures,
-              req.intervalSeconds,
-              rawFileExtension,
-              logPath,
-              rawPath
-            ))
+            imageRepository.startNewSession
+            Ok(
+              EttlRunner.executeEttl(
+                req.dummyCamera,
+                req.setSettings,
+                req.numberOfCaptures,
+                req.intervalSeconds,
+                rawFileExtension,
+                logPath,
+                rawPath
+              ))
           case other =>
             logger.error(s"Cannot run Ettl. Missing configuration(s). rawDirectoryPath: $rawDirectoryPath, logDirectoryPath: $logDirectoryPath")
             InternalServerError()
@@ -40,8 +46,5 @@ class EttlApi(rawDirectoryPath: => Option[String], logDirectoryPath: => Option[S
 object EttlApi {
   implicit val ettlRequestCodec: Codec[EttlRequest] = deriveCodec[EttlRequest]
 
-  case class EttlRequest(dummyCamera: Boolean,
-                         setSettings: Boolean,
-                         numberOfCaptures: Int,
-                         intervalSeconds: Int)
+  case class EttlRequest(dummyCamera: Boolean, setSettings: Boolean, numberOfCaptures: Int, intervalSeconds: Int)
 }
