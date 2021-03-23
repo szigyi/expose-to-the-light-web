@@ -46,7 +46,8 @@ const Template = {
     }
 };
 
-let latestTimestamp = new Date(Date.now());
+let latestLogTimestamp = new Date(Date.now());
+let latestMetricTimestamp = new Date(Date.now());
 
 const Page = {
     pollLogs: () =>
@@ -54,19 +55,28 @@ const Page = {
     pollImages: () =>
         setInterval(Page.loadLatestImage, 1000),
     pollMetrics: () =>
-        setInterval(Page.loadLatestMetrics, 500),
+        setInterval(Page.loadLatestMetricsSince, 500),
+    localTimeToDate: (time) => {
+        let datePart = new Date(Date.now()).toISOString().split('T')[0];
+        return new Date(datePart + 'T' + time + 'Z'); // FIXME potential bug if user is not in UTC
+    },
     handleLogs: (noAnimation) => (logs) => {
         if (logs.length > 0) {
             $('#logs-section').prepend(logs.map(log => Template.renderLog(noAnimation)(log)));
-            let datePart = new Date(Date.now()).toISOString().split('T')[0];
-            latestTimestamp = new Date(datePart + 'T' + logs[0].timestamp + 'Z'); // FIXME potential bug if user is not in UTC
+            latestLogTimestamp = Page.localTimeToDate(logs[0].timestamp);
+        }
+    },
+    handleMetrics: (metrics) => {
+        if (metrics.length > 0) {
+            $('#metrics-section').prepend(metrics.reverse().map(Template.renderMetric));
+            latestMetricTimestamp = Page.localTimeToDate(metrics[0].actual);
         }
     },
     loadLatestLogFile: () => {
         Api.getLatestLogFile(Page.handleLogs(true))
     },
     loadLogsSince: () => {
-        Api.getLogsSince(latestTimestamp.toISOString(), Page.handleLogs(false));
+        Api.getLogsSince(latestLogTimestamp.toISOString(), Page.handleLogs(false));
     },
     loadLatestImage: () => {
         let latestImage = $('#latest-image').data('name');
@@ -77,11 +87,10 @@ const Page = {
         });
     },
     loadLatestMetrics: () => {
-        Api.getLatestMetrics($('#interval-seconds').val(), metrics => {
-            if (metrics.length > 0) {
-                $('#metrics-section').html(metrics.map(Template.renderMetric));
-            }
-        });
+        Api.getLatestMetrics($('#interval-seconds').val(), Page.handleMetrics);
+    },
+    loadLatestMetricsSince: () => {
+        Api.getLatestMetricsSince($('#interval-seconds').val(), latestMetricTimestamp.toISOString(), Page.handleMetrics);
     },
     setConfigs: () => {
         Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), resp => {

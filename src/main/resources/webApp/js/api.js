@@ -12,6 +12,8 @@ const Api = {
         $.get('/images', success),
     getLatestMetrics: (intervalSeconds, success) =>
         $.get(`/metrics/${intervalSeconds}`, success),
+    getLatestMetricsSince: (intervalSeconds, ts, success) =>
+        $.post(`/metrics/${intervalSeconds}`, JSON.stringify({since: ts}), success),
     runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, success) =>
         $.post('/ettl', JSON.stringify(
             {
