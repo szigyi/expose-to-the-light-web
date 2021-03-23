@@ -87,10 +87,10 @@ const Page = {
         });
     },
     loadLatestMetrics: () => {
-        Api.getLatestMetrics($('#interval-seconds').val(), Page.handleMetrics);
+        Api.getLatestMetrics(Page.handleMetrics);
     },
     loadLatestMetricsSince: () => {
-        Api.getLatestMetricsSince($('#interval-seconds').val(), latestMetricTimestamp.toISOString(), Page.handleMetrics);
+        Api.getLatestMetricsSince(latestMetricTimestamp.toISOString(), Page.handleMetrics);
     },
     setConfigs: () => {
         Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), resp => {

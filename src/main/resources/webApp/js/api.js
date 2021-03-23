@@ -10,10 +10,10 @@ const Api = {
         $.get('/convert', success),
     getFileNamesOfAllImages: (success) =>
         $.get('/images', success),
-    getLatestMetrics: (intervalSeconds, success) =>
-        $.get(`/metrics/${intervalSeconds}`, success),
-    getLatestMetricsSince: (intervalSeconds, ts, success) =>
-        $.post(`/metrics/${intervalSeconds}`, JSON.stringify({since: ts}), success),
+    getLatestMetrics: (success) =>
+        $.get('/metrics', success),
+    getLatestMetricsSince: (ts, success) =>
+        $.post('/metrics', JSON.stringify({since: ts}), success),
     runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, success) =>
         $.post('/ettl', JSON.stringify(
             {

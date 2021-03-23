@@ -15,18 +15,17 @@ import java.time.{Duration, Instant, LocalTime}
 
 class MetricsApi(metricsService: MetricsService) extends Http4sDsl[IO] with StrictLogging {
   val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
-    case GET -> Root / IntVar(intervalSeconds) =>
+    case GET -> Root =>
       Ok {
-        metricsService
-          .getLatestTimeResiduals(intervalSeconds)
+        metricsService.getLatestTimeResiduals
           .map(TimeResidualResponse.apply)
       }
 
-    case request @ POST -> Root / IntVar(intervalSeconds) =>
+    case request @ POST -> Root =>
       request.decode[TimeResidualRequest] { req =>
         Ok {
           metricsService
-            .getLatestTimeResidualsSince(intervalSeconds, req.since)
+            .getLatestTimeResidualsSince(req.since)
             .map(TimeResidualResponse.apply)
         }
       }
