@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 class MetricsService(logService: LogService) {
 
   def getLatestTimeResiduals(intervalSeconds: Int): Seq[TimeResidualDomain] =
-    logLinesToTimeResiduals(intervalSeconds, logService.readLatestLog)
+    logLinesToTimeResiduals(intervalSeconds, logService.readLatestLog.reverse)
 
   def getLatestTimeResidualsSince(intervalSeconds: Int, since: Instant): Seq[TimeResidualDomain] =
     getLatestTimeResiduals(intervalSeconds)
@@ -20,14 +20,17 @@ class MetricsService(logService: LogService) {
 
 object MetricsService {
   def logLinesToTimeResiduals(intervalSeconds: Int, lines: Seq[LogLine]): Seq[TimeResidualDomain] = {
-    val photosTaken = lines.filter(_.message.contains("Taking photo"))
-    val baseLine    = photosTaken.head.time
-    photosTaken.zipWithIndex.map {
-      case (photo, index) => {
-        val expectedTime = baseLine.plusSeconds(index * intervalSeconds)
-        val diff         = MILLIS.between(expectedTime, photo.time)
-        TimeResidualDomain(Duration(diff, MILLISECONDS), photo.time, expectedTime)
-      }
+    lines.filter(_.message.contains("Taking photo")).toList match {
+      case Nil => Seq.empty
+      case photosTaken =>
+        val baseLine = photosTaken.head.time
+        photosTaken.zipWithIndex.map {
+          case (photo, index) => {
+            val expectedTime = baseLine.plusSeconds(index * intervalSeconds)
+            val diff         = MILLIS.between(expectedTime, photo.time)
+            TimeResidualDomain(Duration(diff, MILLISECONDS), photo.time, expectedTime)
+          }
+        }
     }
   }
 }
