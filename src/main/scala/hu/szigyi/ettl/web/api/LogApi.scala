@@ -22,7 +22,7 @@ class LogApi(logService: LogService) extends Http4sDsl[IO] with StrictLogging {
     case request@POST -> Root =>
       request.decode[LogRequest] { logRequest =>
         Ok(logService.readLogsSince(
-          logRequest.timestamp.atZone(ZoneId.systemDefault()).toLocalTime
+          logRequest.since.atZone(ZoneId.systemDefault()).toLocalTime
         ).map(LogResponse.apply))
       }
   }
@@ -32,7 +32,7 @@ object LogApi {
   implicit val logRequestCodec: Codec[LogRequest] = deriveCodec[LogRequest]
   implicit val logResponseCodec: Codec[LogResponse] = deriveCodec[LogResponse]
 
-  case class LogRequest(timestamp: Instant)
+  case class LogRequest(since: Instant)
 
   case class LogResponse(timestamp: LocalTime, logLevel: String, message: String)
   object LogResponse {

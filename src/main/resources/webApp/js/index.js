@@ -11,12 +11,12 @@ const Template = {
             default:
                 logLevel = 'bg-light text-dark';
         };
-        let highlight = noAnimation ? '' : 'highlight'
+        let highlight = noAnimation ? '' : 'highlight';
         return `
                 <div class="${highlight}">
                     <span class="log-timestamp badge rounded-pill ${logLevel}" title="Log Level: ${log.logLevel}">${log.timestamp}</span>
                     <span>${log.message}</span>
-                </div>`
+                </div>`;
     },
     renderLatestImage: (name) =>
         `<a href="/image${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image${name}"></a>`,
@@ -37,7 +37,13 @@ const Template = {
                 <div class="input-group">
                     <div class="input-group-text">RAW type</div>
                     <input type="text" class="form-control" id="raw-file-extension-input" value="${rawFileExtension}" placeholder="CR2">
-                </div>`
+                </div>`,
+    renderMetric: (metric) => {
+        let resLevel = 'alert alert-light';
+        if (metric.difference < -1000) resLevel = 'alert alert-danger';
+        else if (metric.difference < -500) resLevel = 'alert alert-warning';
+        return `<span class="metric ${resLevel}" role="alert" title="Expected: ${metric.expected} - ${metric.actual} :Actual">${metric.difference}</span>`;
+    }
 };
 
 let latestTimestamp = new Date(Date.now());
@@ -47,9 +53,11 @@ const Page = {
         setInterval(Page.loadLogsSince, 500),
     pollImages: () =>
         setInterval(Page.loadLatestImage, 1000),
+    pollMetrics: () =>
+        setInterval(Page.loadLatestMetrics, 500),
     handleLogs: (noAnimation) => (logs) => {
         if (logs.length > 0) {
-            $('#logs').prepend(logs.map(log => Template.renderLog(noAnimation)(log)));
+            $('#logs-section').prepend(logs.map(log => Template.renderLog(noAnimation)(log)));
             let datePart = new Date(Date.now()).toISOString().split('T')[0];
             latestTimestamp = new Date(datePart + 'T' + logs[0].timestamp + 'Z'); // FIXME potential bug if user is not in UTC
         }
@@ -65,6 +73,13 @@ const Page = {
         Api.getFileNameOfLatestImage(response => {
             if (response.latestImageName && response.latestImageName !== latestImage) {
                 $('#latest-image-section').html(Template.renderLatestImage(response.latestImageName));
+            }
+        });
+    },
+    loadLatestMetrics: () => {
+        Api.getLatestMetrics($('#interval-seconds').val(), metrics => {
+            if (metrics.length > 0) {
+                $('#metrics-section').html(metrics.map(Template.renderMetric));
             }
         });
     },
@@ -112,7 +127,9 @@ $(function () {
     Page.fetchUrlParams();
     Page.setConfigs();
     Page.loadLatestLogFile();
+    Page.loadLatestMetrics();
     Page.pollLogs();
     Page.pollImages();
+    Page.pollMetrics();
     $('#run-ettl').on('click', Page.runEttl);
 });

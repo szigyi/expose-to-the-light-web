@@ -59,7 +59,8 @@ object WebApp extends IOApp with StrictLogging {
       .bindHttp(port, "0.0.0.0")
       .withBanner(Seq(banner(env)))
       .withHttpApp(httpApp(ioc))
-      .serve.merge(ioc.convertJob)
+      .serve
+      .merge(ioc.convertJob)
       .compile
       .drain
       .handleErrorWith(logErrorAsAFinalFrontier)
@@ -77,6 +78,7 @@ object WebApp extends IOApp with StrictLogging {
       "/convert" -> ioc.imageApi.convertService,
       "/image"   -> ioc.imageApi.imageFileService,
       "/images"  -> ioc.imageApi.allImagesService,
+      "/metrics" -> ioc.metricsApi.service,
       "/ettl"    -> ioc.ettlApi.service,
     ).orNotFound
 

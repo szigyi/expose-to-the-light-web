@@ -5,11 +5,13 @@ const Api = {
     getLatestLogFile: (success) =>
         $.get('/log', success),
     getLogsSince: (ts, success) =>
-        $.post('/log', JSON.stringify({timestamp: ts}), success),
+        $.post('/log', JSON.stringify({since: ts}), success),
     getFileNameOfLatestImage: (success) =>
         $.get('/convert', success),
     getFileNamesOfAllImages: (success) =>
         $.get('/images', success),
+    getLatestMetrics: (intervalSeconds, success) =>
+        $.get(`/metrics/${intervalSeconds}`, success),
     runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, success) =>
         $.post('/ettl', JSON.stringify(
             {
