@@ -3,7 +3,7 @@ package hu.szigyi.ettl.web.api
 import cats.effect.{Blocker, ContextShift, IO}
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.ImageApi.ImageResponse
-import hu.szigyi.ettl.web.service.ImageService
+import hu.szigyi.ettl.web.repository.ImageService
 import io.circe.Codec
 import io.circe.generic.semiauto.deriveCodec
 import org.http4s.HttpRoutes

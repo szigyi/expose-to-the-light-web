@@ -1,7 +1,7 @@
-package hu.szigyi.ettl.web.service
+package hu.szigyi.ettl.web.repository
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.service.ImageService.jpgPathStorage
+import hu.szigyi.ettl.web.repository.ImageService.jpgPathStorage
 
 class ImageService extends StrictLogging {
   def getPathOfAllImages: Seq[String] = jpgPathStorage

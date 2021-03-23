@@ -3,7 +3,8 @@ package hu.szigyi.ettl.web.app
 import cats.effect.{Blocker, ContextShift, IO, Timer}
 import hu.szigyi.ettl.web.api.{ConfigApi, EttlApi, HealthApi, ImageApi, LogApi, StaticApi}
 import hu.szigyi.ettl.web.job.Job
-import hu.szigyi.ettl.web.service.{ConfigurationService, ConvertService, DirectoryService, ImageService, LogService}
+import hu.szigyi.ettl.web.repository.ImageService
+import hu.szigyi.ettl.web.service.{ConfigurationService, ConvertService, DirectoryService, LogService}
 
 import scala.concurrent.duration._
 

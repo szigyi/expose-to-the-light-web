@@ -3,7 +3,7 @@ package hu.szigyi.ettl.web.api
 import cats.effect.IO
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.EttlApi.EttlRequest
-import hu.szigyi.ettl.web.service.ImageService
+import hu.szigyi.ettl.web.repository.ImageService
 import hu.szigyi.ettl.web.util.EttlRunner
 import org.http4s.circe.CirceEntityCodec._
 import io.circe.Codec
