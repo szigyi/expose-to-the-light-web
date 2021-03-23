@@ -1,14 +1,14 @@
 package hu.szigyi.ettl.web.repository
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.repository.ImageService.jpgPathStorage
+import hu.szigyi.ettl.web.repository.ImageRepository.jpgPathStorage
 
-class ImageService extends StrictLogging {
+class ImageRepository extends StrictLogging {
   def getPathOfAllImages: Seq[String] = jpgPathStorage
   def getPathOfLatestImage: Option[String] = jpgPathStorage.headOption
 }
 
-object ImageService {
+object ImageRepository {
   private var jpgPathStorage: Seq[String] = Seq.empty
   private var finishedSessionStorage: Seq[String] = Seq.empty
 

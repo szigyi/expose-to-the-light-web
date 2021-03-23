@@ -3,7 +3,7 @@ package hu.szigyi.ettl.web.app
 import cats.effect.{Blocker, ContextShift, IO, Timer}
 import hu.szigyi.ettl.web.api.{ConfigApi, EttlApi, HealthApi, ImageApi, LogApi, StaticApi}
 import hu.szigyi.ettl.web.job.Job
-import hu.szigyi.ettl.web.repository.ImageService
+import hu.szigyi.ettl.web.repository.ImageRepository
 import hu.szigyi.ettl.web.service.{ConfigurationService, ConvertService, DirectoryService, LogService}
 
 import scala.concurrent.duration._
@@ -14,7 +14,7 @@ class InverseOfControl(env: String)(implicit cs: ContextShift[IO], timer: Timer[
   private val configService    = new ConfigurationService
   private val directoryService = new DirectoryService
   private val logService       = new LogService(directoryService, configService.logDirectoryPath)
-  private val imageService     = new ImageService
+  private val imageService     = new ImageRepository
   private val convertService           = new ConvertService(directoryService, configService.rawDirectoryPath, configService.rawFileExtension)
 
   val staticApi = new StaticApi(blocker)
