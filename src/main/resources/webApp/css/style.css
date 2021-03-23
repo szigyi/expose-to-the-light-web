@@ -26,9 +26,7 @@
     font-size: 0.6rem;
 }
 
-.title-config, .title-config pre {
-    display: inline-flex;
-}
-.title-config pre {
-    margin: 1rem;
+#metrics-section {
+    overflow-y: hidden;
+    display: flex;
 }
