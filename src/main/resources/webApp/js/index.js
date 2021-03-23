@@ -42,7 +42,7 @@ const Template = {
         let resLevel = 'alert alert-light';
         if (metric.difference < -1000) resLevel = 'alert alert-danger';
         else if (metric.difference < -500) resLevel = 'alert alert-warning';
-        return `<span class="metric ${resLevel}" role="alert" title="Expected: ${metric.expected} - ${metric.actual} :Actual">${metric.difference}</span>`;
+        return `<span class="metric ${resLevel}" role="alert" title="Expected: ${metric.expected} - ${metric.actual} :Actual"><span class="order-number">[${metric.orderNumber}]</span>${metric.difference}ms</span>`;
     }
 };
 

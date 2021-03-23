@@ -30,3 +30,9 @@
     overflow-y: hidden;
     display: flex;
 }
+.metric .order-number {
+    font-size: 0.8rem;
+    top: -14px;
+    left: 4px;
+    position: relative;
+}

@@ -14,6 +14,6 @@ class MetricsRepository {
 }
 
 object MetricsRepository {
-  case class TimeResidualDomain(difference: Duration, actual: LocalTime, expected: LocalTime)
+  case class TimeResidualDomain(orderNumber: String, difference: Duration, actual: LocalTime, expected: LocalTime)
   private var timeResidualStorage: Seq[TimeResidualDomain] = Seq.empty
 }

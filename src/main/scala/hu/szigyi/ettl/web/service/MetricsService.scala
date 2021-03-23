@@ -19,6 +19,7 @@ class MetricsService(logService: LogService) {
 }
 
 object MetricsService {
+  // TODO read interval secs from log
   def logLinesToTimeResiduals(intervalSeconds: Int, lines: Seq[LogLine]): Seq[TimeResidualDomain] = {
     lines.filter(_.message.contains("Taking photo")).toList match {
       case Nil => Seq.empty
@@ -26,9 +27,10 @@ object MetricsService {
         val baseLine = photosTaken.head.time
         photosTaken.zipWithIndex.map {
           case (photo, index) => {
+            val orderNumber = "[^\\[][0-9]*".r.findFirstIn(photo.message).getOrElse("")
             val expectedTime = baseLine.plusSeconds(index * intervalSeconds)
             val diff         = MILLIS.between(expectedTime, photo.time)
-            TimeResidualDomain(Duration(diff, MILLISECONDS), photo.time, expectedTime)
+            TimeResidualDomain(orderNumber, Duration(diff, MILLISECONDS), photo.time, expectedTime)
           }
         }
     }

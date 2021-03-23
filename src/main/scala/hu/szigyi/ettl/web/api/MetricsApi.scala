@@ -40,9 +40,9 @@ object MetricsApi {
 
   case class TimeResidualRequest(since: Instant)
 
-  case class TimeResidualResponse(difference: Duration, actual: LocalTime, expected: LocalTime)
+  case class TimeResidualResponse(orderNumber: String, difference: Duration, actual: LocalTime, expected: LocalTime)
   object TimeResidualResponse {
     def apply(t: TimeResidualDomain): TimeResidualResponse =
-      TimeResidualResponse(Duration.ofMillis(t.difference.toMillis), t.actual, t.expected)
+      TimeResidualResponse(t.orderNumber, Duration.ofMillis(t.difference.toMillis), t.actual, t.expected)
   }
 }
