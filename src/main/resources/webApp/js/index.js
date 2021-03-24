@@ -48,9 +48,9 @@ const Template = {
 
 let latestLogTimestamp = new Date(Date.now());
 let latestMetricTimestamp = new Date(Date.now());
-let logPollingRate = 1000;
-let imagePollingRate = 2000;
-let metricPollingRate = 2000;
+let logPollingRate = 900;
+let imagePollingRate = 1100;
+let metricPollingRate = 1200;
 
 const Page = {
     pollLogs: () =>
