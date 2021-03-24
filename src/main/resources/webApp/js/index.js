@@ -48,14 +48,17 @@ const Template = {
 
 let latestLogTimestamp = new Date(Date.now());
 let latestMetricTimestamp = new Date(Date.now());
+let logPollingRate = 1000;
+let imagePollingRate = 2000;
+let metricPollingRate = 2000;
 
 const Page = {
     pollLogs: () =>
-        setInterval(Page.loadLogsSince, 500),
+        setInterval(Page.loadLogsSince, logPollingRate),
     pollImages: () =>
-        setInterval(Page.loadLatestImage, 1000),
+        setInterval(Page.loadLatestImage, imagePollingRate),
     pollMetrics: () =>
-        setInterval(Page.loadLatestMetricsSince, 500),
+        setInterval(Page.loadLatestMetricsSince, metricPollingRate),
     localTimeToDate: (time) => {
         let datePart = new Date(Date.now()).toISOString().split('T')[0];
         return new Date(datePart + 'T' + time + 'Z'); // FIXME potential bug if user is not in UTC
