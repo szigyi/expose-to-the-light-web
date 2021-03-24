@@ -15,7 +15,9 @@ expose-to-the-light-web client
 * `brew install exiftool`
 
 #### On Raspberry Pi (unix)
-TODO add apt install commands
+* `sudo apt-get -y install openjdk-11-jdk`
+* `sudo apt -y install imagemagick`
+* `sudo apt -y install exiftool`
 
 ## Run the app
 `ettl-web`
