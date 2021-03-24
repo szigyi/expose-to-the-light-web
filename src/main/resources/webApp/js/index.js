@@ -96,7 +96,7 @@ const Page = {
         Api.getLatestMetricsSince(latestMetricTimestamp.toISOString(), Page.handleMetrics);
     },
     setConfigs: () => {
-        Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), resp => {
+        Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), $('#log-level').text(), resp => {
             console.log("Set Config:", JSON.stringify(resp));
         });
     },
@@ -117,19 +117,20 @@ const Page = {
     fetchUrlParams: () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        const useParamOrEmpty = (paramName, set) => {
-            const value = urlParams.has(paramName) ? urlParams.get(paramName) : "";
-            set(value);
+        const useParamIfExists = (paramName, set) => {
+            if (urlParams.has(paramName)) set(urlParams.get(paramName));
         }
-        useParamOrEmpty('raw', (raw) => $('#raw-directory-path-section').html(Template.renderRawDirectoryPathInput(raw)));
-        useParamOrEmpty('log', (log) => $('#log-directory-path-section').html(Template.renderLogDirectoryPathInput(log)));
-        useParamOrEmpty('ext', (ext) => $('#raw-file-extension-section').html(Template.renderRawFileExtensionInput(ext)));
+        useParamIfExists('raw', (raw) => $('#raw-directory-path-section').html(Template.renderRawDirectoryPathInput(raw)));
+        useParamIfExists('log', (log) => $('#log-directory-path-section').html(Template.renderLogDirectoryPathInput(log)));
+        useParamIfExists('ext', (ext) => $('#raw-file-extension-section').html(Template.renderRawFileExtensionInput(ext)));
+        useParamIfExists('level', (level) => $('#log-level').html(level));
     },
     setUrlParams: () => {
         const urlParams = new URLSearchParams();
         urlParams.set('raw', $('#raw-directory-path-input').val());
         urlParams.set('log', $('#log-directory-path-input').val());
         urlParams.set('ext', $('#raw-file-extension-input').val());
+        urlParams.set('level', $('#log-level').text());
         window.history.replaceState('', '', `index.html?${urlParams.toString()}`);
     }
 };

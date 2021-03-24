@@ -14,7 +14,8 @@ import org.http4s.dsl.Http4sDsl
 class EttlApi(imageRepository: ImageRepository,
               rawDirectoryPath: => Option[String],
               logDirectoryPath: => Option[String],
-              rawFileExtension: => String)
+              rawFileExtension: => String,
+              logLevel: => String)
     extends Http4sDsl[IO]
     with StrictLogging {
 
@@ -33,7 +34,8 @@ class EttlApi(imageRepository: ImageRepository,
                 req.intervalSeconds,
                 rawFileExtension,
                 logPath,
-                rawPath
+                rawPath,
+                logLevel
               ))
           case other =>
             logger.error(s"Cannot run Ettl. Missing configuration(s). rawDirectoryPath: $rawDirectoryPath, logDirectoryPath: $logDirectoryPath")

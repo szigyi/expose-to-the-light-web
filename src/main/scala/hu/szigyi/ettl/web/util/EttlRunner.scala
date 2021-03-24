@@ -12,8 +12,10 @@ object EttlRunner extends StrictLogging {
                   intervalSeconds: Int,
                   rawFileExtension: String,
                   logDirectoryPath: String,
-                  rawDirectoryPath: String): Unit = {
+                  rawDirectoryPath: String,
+                  logLevel: String): Unit = {
     val ettl = s"""ettl
+       |$logLevel
        |$logDirectoryPath
        |${if (dummyCamera) "--dummyCamera" else ""}
        |--imagesBasePath $rawDirectoryPath

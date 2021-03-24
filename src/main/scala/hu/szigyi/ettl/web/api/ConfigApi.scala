@@ -19,6 +19,7 @@ class ConfigApi(configService: ConfigurationService) extends Http4sDsl[IO] with 
         configService.setRawDirectoryPath(Some(config.rawDirectoryPath))
         configService.setLogDirectoryPath(Some(config.logDirectoryPath))
         configService.setRawFileExtension(config.rawFileExtension)
+        configService.setLogLevel(config.logLevel)
         Ok()
       }
   }
@@ -27,5 +28,5 @@ class ConfigApi(configService: ConfigurationService) extends Http4sDsl[IO] with 
 object ConfigApi {
   implicit val configRequestCodec: Codec[ConfigRequest] = deriveCodec[ConfigRequest]
 
-  case class ConfigRequest(rawDirectoryPath: String, logDirectoryPath: String, rawFileExtension: String)
+  case class ConfigRequest(rawDirectoryPath: String, logDirectoryPath: String, rawFileExtension: String, logLevel: String)
 }
