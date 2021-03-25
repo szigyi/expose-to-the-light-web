@@ -7,7 +7,9 @@ const Template = {
             case 'E':
                 logLevel = 'bg-danger text-light'; break;
             case 'W':
-                logLevel = 'bg-warning text-light'; break;
+                logLevel = 'bg-warning text-dark'; break;
+            case 'T':
+                logLevel = 'bg-dark text-light'; break;
             default:
                 logLevel = 'bg-light text-dark';
         };
