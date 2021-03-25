@@ -21,25 +21,30 @@ class MetricsService(logService: LogService) {
 
 object MetricsService {
   def logLinesToTimeResiduals(lines: Seq[LogLine]): Seq[TimeResidualDomain] = {
-    lines.find(_.message.contains("Interval:")).flatMap(intervalLine => {
-      "[^Interval: ][0-9]*".r.findFirstIn(intervalLine.message).flatMap(i => Try(i.toInt).toOption)
-    }) match {
-      case None =>
-        Seq.empty
-      case Some(intervalSeconds) =>
+    (findInterval(lines), findStartTime(lines)) match {
+      case (Some(intervalSeconds), Some(scheduleStartsAt)) =>
         lines.filter(_.message.contains("Taking photo")).toList match {
           case Nil => Seq.empty
           case photosTaken =>
-            val baseLine = photosTaken.head.time
             photosTaken.zipWithIndex.map {
               case (photo, index) => {
                 val orderNumber = "[^\\[][0-9]*".r.findFirstIn(photo.message).getOrElse("")
-                val expectedTime = baseLine.plusSeconds(index * intervalSeconds)
+                val expectedTime = scheduleStartsAt.plusSeconds(index * intervalSeconds)
                 val diff         = MILLIS.between(expectedTime, photo.time)
                 TimeResidualDomain(orderNumber, Duration(diff, MILLISECONDS), photo.time, expectedTime)
               }
             }
         }
+      case _ =>
+        Seq.empty
     }
   }
+
+  private def findInterval(lines: Seq[LogLine]): Option[Int] =
+    lines.find(_.message.contains("Interval:")).flatMap(intervalLine => {
+      "[^Interval: ][0-9]*".r.findFirstIn(intervalLine.message).flatMap(i => Try(i.toInt).toOption)
+    })
+
+  private def findStartTime(lines: Seq[LogLine]): Option[LocalTime] =
+    lines.find(_.message.contains("Schedule starts:")).map(_.time)
 }
