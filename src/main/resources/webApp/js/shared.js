@@ -1,9 +1,8 @@
 
 const Shared = {
-    renderMenu: (params) =>
-        `<a href="index.html?${params}"><h1>ettl web</h1></a>
-        <a href="timelapse.html?${params}"><h4>timelapse</h4></a>`,
-
-    copyQueryParamsToMenu: () =>
-        $('#title').html(Shared.renderMenu(new URLSearchParams(window.location.search)))
+    copyQueryParamsToMenu: () => {
+        const params = new URLSearchParams(window.location.search);
+        $('#nav-index').attr('href', `index.html?${params}`);
+        $('#nav-timelapse').attr('href', `timelapse.html?${params}`);
+    }
 }

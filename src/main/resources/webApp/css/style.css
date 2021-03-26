@@ -36,3 +36,12 @@
     left: 4px;
     position: relative;
 }
+
+#ettl form {
+    padding: .3rem 0;
+}
+
+.alert {
+    padding: .6rem .2rem;
+    margin: 0 .2rem;
+}
