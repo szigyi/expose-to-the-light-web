@@ -31,17 +31,28 @@
                         <li class="nav-item">
                             <a id="nav-timelapse" class="nav-link" href="timelapse.html">timelapse</a>
                         </li>
+                        <li class="nav-item">
+                            <a id="nav-app-settings" class="nav-link" data-bs-toggle="collapse" data-bs-target="#app-settings" aria-expanded="true" aria-controls="app-settings"
+                               href="#"><i class="bi bi-gear"></i> settings</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </secion>
     <section id="ettl">
-        <form class="row row-cols-auto g-3 align-items-center">
-            <div class="col-5" id="raw-directory-path-section"></div>
-            <div class="col-5" id="log-directory-path-section"></div>
-            <div class="col-2" id="raw-file-extension-section"></div>
-        </form>
+        <div class="collapse show" id="app-settings">
+            <form class="row">
+                <div id="raw-directory-path-section"></div>
+            </form>
+            <form class="row">
+                <div id="log-directory-path-section"></div>
+            </form>
+            <form class="row">
+                <div id="raw-file-extension-section"></div>
+            </form>
+        </div>
+
         <form class="row row-cols-lg-auto g-3 align-items-center">
             <div class="col-12">
                 <button id="run-ettl" type="button" class="btn btn-success"><i class="bi bi-play-circle"></i> ettl</button>

@@ -116,6 +116,9 @@ const Page = {
             console.log("Running ettl:", JSON.stringify(resp));
         });
     },
+    hideAppSettings: () => {
+        $('#app-settings').removeClass('show');
+    },
     fetchUrlParams: () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -126,6 +129,8 @@ const Page = {
         useParamIfExists('log', (log) => $('#log-directory-path-section').html(Template.renderLogDirectoryPathInput(log)));
         useParamIfExists('ext', (ext) => $('#raw-file-extension-section').html(Template.renderRawFileExtensionInput(ext)));
         useParamIfExists('level', (level) => $('#log-level').html(level));
+
+        // if (urlParams.has('raw') && urlParams.has('log') && urlParams.has('ext')) Page.hideAppSettings();
     },
     setUrlParams: () => {
         const urlParams = new URLSearchParams();
