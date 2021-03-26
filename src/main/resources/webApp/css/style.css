@@ -1,14 +1,14 @@
 /*https://stackoverflow.com/a/16877398*/
 @-webkit-keyframes yellow-fade {
     0% {box-shadow: none;}
-    25% {box-shadow: 0px 0px 5px 0px yellow;}
-    75% {box-shadow: 0px 0px 5px 0px yellow;}
+    25% {box-shadow: 0 0 5px 0 yellow;}
+    75% {box-shadow: 0 0 5px 0 yellow;}
     100% {box-shadow: none;}
 }
 @keyframes yellow-fade {
     0% {box-shadow: none;}
-    25% {box-shadow: 0px 0px 5px 0px yellow;}
-    75% {box-shadow: 0px 0px 5px 0px yellow;}
+    25% {box-shadow: 0 0 5px 0 yellow;}
+    75% {box-shadow: 0 0 5px 0 yellow;}
     100% {box-shadow: none;}
 }
 .highlight {

@@ -1,6 +1,6 @@
 const Template = {
     renderTimelapsePreview: (timelapseSource) =>
-        `<img id="timelapse-preview" class="responsive" src="${timelapseSource}"/>`,
+        `<img id="timelapse-preview" alt="latest image" class="responsive" src="${timelapseSource}"/>`,
     renderImagePath: (path) =>
         `<p>${path}</p>`
 };

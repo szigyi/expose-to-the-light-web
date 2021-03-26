@@ -12,7 +12,7 @@ const Template = {
                 logLevel = 'bg-dark text-light'; break;
             default:
                 logLevel = 'bg-light text-dark';
-        };
+        }
         let highlight = noAnimation ? '' : 'highlight';
         return `
                 <div class="${highlight}">
@@ -21,7 +21,7 @@ const Template = {
                 </div>`;
     },
     renderLatestImage: (name) =>
-        `<a href="/image${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image${name}"></a>`,
+        `<a href="/image${name}" target="_blank"><img class="responsive" alt="latest image" id="latest-image" data-name="${name}" src="/image${name}"></a>`,
     renderMetric: (metric) => {
         let resLevel = 'alert alert-light';
         if (Math.abs(metric.difference) > 1000) resLevel = 'alert alert-danger';
@@ -94,7 +94,7 @@ const Page = {
         Page.setConfigs();
         Page.setUrlParams();
         Shared.copyQueryParamsToMenu();
-        Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
+        Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, () => {
             Page.showEttlStopper();
         });
     },
