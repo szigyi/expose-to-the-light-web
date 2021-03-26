@@ -43,13 +43,31 @@
     <section id="ettl">
         <div class="collapse show" id="app-settings">
             <form class="row">
-                <div id="raw-directory-path-section"></div>
+                <div id="raw-directory-path-section">
+                    <label for="raw-directory-path-input" class="visually-hidden">Location of Captured Images</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Captured Images</div>
+                        <input type="text" class="form-control" id="raw-directory-path-input" value="" placeholder="/home/pi/dev/ettl/captured-images">
+                    </div>
+                </div>
             </form>
             <form class="row">
-                <div id="log-directory-path-section"></div>
+                <div id="log-directory-path-section">
+                    <label for="log-directory-path-input" class="visually-hidden">Location of Logs</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Logs</div>
+                        <input type="text" class="form-control" id="log-directory-path-input" value="" placeholder="/home/pi/dev/ettl/logs">
+                    </div>
+                </div>
             </form>
             <form class="row">
-                <div id="raw-file-extension-section"></div>
+                <div id="raw-file-extension-section">
+                    <label for="raw-file-extension-input" class="visually-hidden">RAW file's extension</label>
+                    <div class="input-group">
+                        <div class="input-group-text">RAW type</div>
+                        <input type="text" class="form-control" id="raw-file-extension-input" value="" placeholder="CR2">
+                    </div>
+                </div>
             </form>
         </div>
 

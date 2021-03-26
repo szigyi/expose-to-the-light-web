@@ -22,24 +22,6 @@ const Template = {
     },
     renderLatestImage: (name) =>
         `<a href="/image${name}" target="_blank"><img class="responsive" id="latest-image" data-name="${name}" src="/image${name}"></a>`,
-    renderRawDirectoryPathInput: (rawDirectoryPath) =>
-        `<label for="raw-directory-path-input" class="visually-hidden">Location of Captured Images</label>
-                <div class="input-group">
-                    <div class="input-group-text">Captured Images</div>
-                    <input type="text" class="form-control" id="raw-directory-path-input" value="${rawDirectoryPath}" placeholder="/home/pi/dev/ettl/captured-images">
-                </div>`,
-    renderLogDirectoryPathInput: (logDirectoryPath) =>
-        `<label for="log-directory-path-input" class="visually-hidden">Location of Logs</label>
-                <div class="input-group">
-                    <div class="input-group-text">Logs</div>
-                    <input type="text" class="form-control" id="log-directory-path-input" value="${logDirectoryPath}" placeholder="/home/pi/dev/ettl/logs">
-                </div>`,
-    renderRawFileExtensionInput: (rawFileExtension) =>
-        `<label for="raw-file-extension-input" class="visually-hidden">RAW file's extension</label>
-                <div class="input-group">
-                    <div class="input-group-text">RAW type</div>
-                    <input type="text" class="form-control" id="raw-file-extension-input" value="${rawFileExtension}" placeholder="CR2">
-                </div>`,
     renderMetric: (metric) => {
         let resLevel = 'alert alert-light';
         if (Math.abs(metric.difference) > 1000) resLevel = 'alert alert-danger';
@@ -125,12 +107,12 @@ const Page = {
         const useParamIfExists = (paramName, set) => {
             if (urlParams.has(paramName)) set(urlParams.get(paramName));
         }
-        useParamIfExists('raw', (raw) => $('#raw-directory-path-section').html(Template.renderRawDirectoryPathInput(raw)));
-        useParamIfExists('log', (log) => $('#log-directory-path-section').html(Template.renderLogDirectoryPathInput(log)));
-        useParamIfExists('ext', (ext) => $('#raw-file-extension-section').html(Template.renderRawFileExtensionInput(ext)));
+        useParamIfExists('raw', (raw) => $('#raw-directory-path-input').val(raw));
+        useParamIfExists('log', (log) => $('#log-directory-path-input').val(log));
+        useParamIfExists('ext', (ext) => $('#raw-file-extension-input').val(ext));
         useParamIfExists('level', (level) => $('#log-level').html(level));
 
-        // if (urlParams.has('raw') && urlParams.has('log') && urlParams.has('ext')) Page.hideAppSettings();
+        if (urlParams.has('raw') && urlParams.has('log') && urlParams.has('ext')) Page.hideAppSettings();
     },
     setUrlParams: () => {
         const urlParams = new URLSearchParams();
