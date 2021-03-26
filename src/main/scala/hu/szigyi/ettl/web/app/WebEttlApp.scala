@@ -42,7 +42,7 @@ import scala.concurrent.ExecutionContext
 // 23 add deploy, install and run scripts
 // 24 read raw images from session's sub folder
 // 25 raw, log path and raw extension can be stored in the url so user can bookmark it
-// TODO 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
+// 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
 
 object WebEttlApp extends IOApp with StrictLogging {
 
