@@ -95,14 +95,17 @@ const Page = {
         Page.setUrlParams();
         Shared.copyQueryParamsToMenu();
         Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
-            Page.hideTimelapseSettings();
+            Page.showEttlStopper();
         });
     },
     hideAppSettings: () => {
         $('#app-settings').removeClass('show');
     },
-    hideTimelapseSettings: () => {
-        $('#timelapse-settings').removeClass('show');
+    showEttlStopper: () => {
+        $('#timelapse-stop').addClass('show');
+    },
+    hideEttlStopper: () => {
+        $('#timelapse-stop').removeClass('show');
     },
     fetchUrlParams: () => {
         const queryString = window.location.search;
@@ -137,4 +140,5 @@ $(function () {
     Page.pollImages();
     Page.pollMetrics();
     $('#run-ettl').on('click', Page.runEttl);
+    $('#stop-ettl').on('click', Page.hideEttlStopper);
 });

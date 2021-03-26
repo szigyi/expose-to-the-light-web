@@ -86,19 +86,26 @@
                 <label for="number-of-captures" class="visually-hidden"># of Captures</label>
                 <div class="input-group">
                     <div class="input-group-text"># of Captures</div>
-                    <input type="number" inputmode="numeric" class="form-control" id="number-of-captures" value="10" min="1" max="9999" step="1">
+                    <input type="number" inputmode="numeric" class="form-control" id="number-of-captures" value="5" min="1" max="9999" step="1">
                 </div>
             </div>
             <div class="col-12">
                 <label for="interval-seconds" class="visually-hidden">Interval (seconds)</label>
                 <div class="input-group">
                     <div class="input-group-text">Interval (sec)</div>
-                    <input type="number" inputmode="numeric" class="form-control" id="interval-seconds" value="5" min="1" max="9999" step="1">
+                    <input type="number" inputmode="numeric" class="form-control" id="interval-seconds" value="2" min="1" max="9999" step="1">
                 </div>
             </div>
             <div class="col-12">
-                <button id="run-ettl" type="button" class="btn btn-success"><i class="bi bi-play-circle"></i> ettl</button>
+                <button id="run-ettl" type="button" class="btn btn-success"
+                        data-bs-toggle="collapse" href="#timelapse-settings" role="button" aria-expanded="true" aria-controls="timelapse-settings"
+                ><i class="bi bi-play-circle"></i> ettl</button>
             </div>
+        </div>
+        <div id="timelapse-stop" class="collapse">
+            <button id="stop-ettl" type="button" class="btn btn-danger"
+                    data-bs-toggle="collapse" href="#timelapse-settings" role="button" aria-expanded="true" aria-controls="timelapse-settings"
+            ><i class="bi bi-stop-circle"></i> stop</button>
         </div>
     </section>
     <section>
