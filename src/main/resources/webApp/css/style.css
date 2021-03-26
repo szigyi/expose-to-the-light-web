@@ -26,6 +26,10 @@
     font-size: 0.6rem;
 }
 
+#timelapse-settings {
+    padding: .3rem 0;
+}
+
 #metrics-section {
     overflow-y: hidden;
     display: flex;
@@ -37,11 +41,7 @@
     position: relative;
 }
 
-#ettl form {
-    padding: .3rem 0;
-}
-
-.alert {
+#metrics-section .alert {
     padding: .6rem .2rem;
     margin: 0 .2rem;
 }

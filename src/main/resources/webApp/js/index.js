@@ -95,11 +95,14 @@ const Page = {
         Page.setUrlParams();
         Shared.copyQueryParamsToMenu();
         Api.runEttl(dummyCamera, setSettings, numberOfCaptures, intervalSeconds, resp => {
-            console.log("Running ettl:", JSON.stringify(resp));
+            Page.hideTimelapseSettings();
         });
     },
     hideAppSettings: () => {
         $('#app-settings').removeClass('show');
+    },
+    hideTimelapseSettings: () => {
+        $('#timelapse-settings').removeClass('show');
     },
     fetchUrlParams: () => {
         const queryString = window.location.search;
