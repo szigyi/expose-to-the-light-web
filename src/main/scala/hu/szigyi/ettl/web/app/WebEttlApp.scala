@@ -44,7 +44,7 @@ import scala.concurrent.ExecutionContext
 // 25 raw, log path and raw extension can be stored in the url so user can bookmark it
 // TODO 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
 
-object WebApp extends IOApp with StrictLogging {
+object WebEttlApp extends IOApp with StrictLogging {
 
   private val port = sys.env.getOrElse("http_port", "8230").toInt
   private val env  = sys.env.getOrElse("ENV", "local")
