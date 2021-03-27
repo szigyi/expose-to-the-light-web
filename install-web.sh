@@ -61,6 +61,36 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt -y install exiftool
   fi
 
+  echo "Installing systemd service file aka autorunner"
+  cat > ettl-web.service << EOT
+[Unit]
+Description=web client of expose-to-the-light
+Wants=network-online.target
+After=network.target
+
+StartLimitIntervalSec=30
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=ettl-web
+ExecStop=/usr/bin/killall -9 ettl-web
+User=pi
+
+Restart=on-failure
+RestartSec=5s
+
+# Useful during debugging; remove it once the service is working
+#StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
+EOT
+
+  sudo ln -s /usr/local/bin/ettl-web.service /etc/systemd/system/ettl-web.service
+  sudo systemctl enable ettl-web.service
+  sudo systemctl start ettl-web.service
+
   source ~/.bashrc
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -81,3 +111,6 @@ else
 fi
 
 echo "Install is finished"
+
+echo "ettl-web logs:"
+journalctl -u ettl-web.service

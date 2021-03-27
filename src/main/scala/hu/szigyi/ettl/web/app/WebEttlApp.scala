@@ -45,7 +45,7 @@ import scala.concurrent.ExecutionContext
 // 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
 // 27 add html dependencies to the jar
 // TODO 28 add logback to store logs in a file
-// TODO 29 add autorunner for systemd
+// 29 add autorunner for systemd
 
 object WebEttlApp extends IOApp with StrictLogging {
 
