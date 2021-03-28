@@ -4,7 +4,7 @@ import cats.effect.IO
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.MetricsApi.{TimeResidualRequest, TimeResidualResponse}
 import hu.szigyi.ettl.web.service.MetricsService
-import hu.szigyi.ettl.web.service.MetricsService.TimeResidualDomain
+import hu.szigyi.ettl.web.service.MetricsService.TimeResidual
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 import io.circe.{Decoder, Encoder, Json}
 import org.http4s.HttpRoutes
@@ -41,7 +41,7 @@ object MetricsApi {
 
   case class TimeResidualResponse(orderNumber: Int, difference: Duration, actual: LocalTime, expected: LocalTime)
   object TimeResidualResponse {
-    def apply(t: TimeResidualDomain): TimeResidualResponse =
+    def apply(t: TimeResidual): TimeResidualResponse =
       TimeResidualResponse(t.orderNumber, Duration.ofMillis(t.difference.toMillis), t.actual, t.expected)
   }
 }
