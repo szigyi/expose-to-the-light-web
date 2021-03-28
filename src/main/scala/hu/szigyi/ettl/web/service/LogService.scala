@@ -11,7 +11,9 @@ class LogService(dir: DirectoryService, logDirectoryPath: => Option[String]) ext
 
   def readLatestLog: Seq[LogLine] = {
     logDirectoryPath match {
-      case None => Seq.empty
+      case None =>
+        logger.trace(s"Log Directory Path is not provided")
+        Seq.empty
       case Some(path) =>
         dir.getLatestFileInDirectory(path, ".log") match {
           case Some(latestLogFile) =>
@@ -19,8 +21,10 @@ class LogService(dir: DirectoryService, logDirectoryPath: => Option[String]) ext
             dir
               .getLinesOfFile(latestLogFile)
               .flatMap(parseLogLine)
+              .sortBy(_.time)
               .reverse
           case None =>
+            logger.trace(s"Not found latest log file in the log directory")
             Seq.empty
         }
     }
