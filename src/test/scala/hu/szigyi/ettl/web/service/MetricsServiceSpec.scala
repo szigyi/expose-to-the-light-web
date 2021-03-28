@@ -1,9 +1,10 @@
 package hu.szigyi.ettl.web.service
 
-import hu.szigyi.ettl.web.repository.MetricsRepository.TimeResidualDomain
+import hu.szigyi.ettl.web.service.MetricsService.TimeResidualDomain
 import hu.szigyi.ettl.web.tool.LogAnalyser
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
 import scala.concurrent.duration._
 import java.time.LocalTime.{parse => localTime}
 

@@ -3,8 +3,8 @@ package hu.szigyi.ettl.web.api
 import cats.effect.IO
 import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.api.MetricsApi.{TimeResidualRequest, TimeResidualResponse}
-import hu.szigyi.ettl.web.repository.MetricsRepository.TimeResidualDomain
 import hu.szigyi.ettl.web.service.MetricsService
+import hu.szigyi.ettl.web.service.MetricsService.TimeResidualDomain
 import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 import io.circe.{Decoder, Encoder, Json}
 import org.http4s.HttpRoutes

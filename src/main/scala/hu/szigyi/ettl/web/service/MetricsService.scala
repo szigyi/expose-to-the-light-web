@@ -1,8 +1,7 @@
 package hu.szigyi.ettl.web.service
 
-import hu.szigyi.ettl.web.repository.MetricsRepository.TimeResidualDomain
 import hu.szigyi.ettl.web.service.LogService.LogLine
-import hu.szigyi.ettl.web.service.MetricsService.logLinesToTimeResiduals
+import hu.szigyi.ettl.web.service.MetricsService.{TimeResidualDomain, logLinesToTimeResiduals}
 
 import java.time.{Instant, LocalTime, ZoneId}
 import java.time.temporal.ChronoUnit.MILLIS
@@ -20,6 +19,8 @@ class MetricsService(logService: LogService) {
 }
 
 object MetricsService {
+  case class TimeResidualDomain(orderNumber: Int, difference: Duration, actual: LocalTime, expected: LocalTime)
+
   def logLinesToTimeResiduals(lines: Seq[LogLine]): Seq[TimeResidualDomain] = {
     (findInterval(lines), findStartTime(lines)) match {
       case (Some(intervalSeconds), Some(scheduleStartsAt)) =>

@@ -1,10 +1,8 @@
 package hu.szigyi.ettl.web.repository
 
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.repository.MetricsRepository.{TimeResidualDomain, timeResidualStorage}
-
-import java.time.LocalTime
-import scala.concurrent.duration.Duration
+import hu.szigyi.ettl.web.repository.MetricsRepository.timeResidualStorage
+import hu.szigyi.ettl.web.service.MetricsService.TimeResidualDomain
 
 class MetricsRepository extends StrictLogging {
   def getAllTimeResiduals: Seq[TimeResidualDomain] = {
@@ -19,6 +17,6 @@ class MetricsRepository extends StrictLogging {
 }
 
 object MetricsRepository {
-  case class TimeResidualDomain(orderNumber: Int, difference: Duration, actual: LocalTime, expected: LocalTime)
+
   private var timeResidualStorage: Seq[TimeResidualDomain] = Seq.empty
 }
