@@ -12,7 +12,7 @@ import scala.util.Try
 class MetricsService(logService: LogService) {
 
   def getLatestTimeResiduals: Seq[TimeResidualDomain] =
-    logLinesToTimeResiduals(logService.readLatestLog.reverse)
+    logLinesToTimeResiduals(logService.readLatestLog).sortBy(_.orderNumber).reverse
 
   def getLatestTimeResidualsSince(since: Instant): Seq[TimeResidualDomain] =
     getLatestTimeResiduals
@@ -26,10 +26,9 @@ object MetricsService {
         lines.filter(_.message.contains("Taking photo")).toList match {
           case Nil => Seq.empty
           case photosTaken =>
-            photosTaken.zipWithIndex.map {
-              case (photo, index) => {
-                val orderNumber = "[^\\[][0-9]*".r.findFirstIn(photo.message).getOrElse("")
-                val expectedTime = scheduleStartsAt.plusSeconds(index * intervalSeconds)
+            photosTaken.flatMap { photo =>
+              findOrderNumber(photo.message).map { orderNumber =>
+                val expectedTime = scheduleStartsAt.plusSeconds((orderNumber - 1) * intervalSeconds)
                 val diff         = MILLIS.between(expectedTime, photo.time)
                 TimeResidualDomain(orderNumber, Duration(diff, MILLISECONDS), photo.time, expectedTime)
               }
@@ -41,10 +40,15 @@ object MetricsService {
   }
 
   private def findInterval(lines: Seq[LogLine]): Option[Int] =
-    lines.find(_.message.contains("Interval:")).flatMap(intervalLine => {
-      "[^Interval: ][0-9]*".r.findFirstIn(intervalLine.message).flatMap(i => Try(i.toInt).toOption)
-    })
+    lines
+      .find(_.message.contains("Interval:"))
+      .flatMap(intervalLine => {
+        "[^Interval: ][0-9]*".r.findFirstIn(intervalLine.message).flatMap(i => Try(i.toInt).toOption)
+      })
 
   private def findStartTime(lines: Seq[LogLine]): Option[LocalTime] =
     lines.find(_.message.contains("Schedule starts:")).map(_.time)
+
+  private def findOrderNumber(message: String): Option[Int] =
+    "[^\\[][0-9]*".r.findFirstIn(message).flatMap(s => Try(s.toInt).toOption)
 }

@@ -14,11 +14,11 @@ class MetricsRepository extends StrictLogging {
 
   def addResidual(r: TimeResidualDomain): Unit = {
     logger.debug(s"Adding to time residual storage: $r")
-    timeResidualStorage = timeResidualStorage :+ r
+    timeResidualStorage = (timeResidualStorage :+ r).sortBy(_.orderNumber)
   }
 }
 
 object MetricsRepository {
-  case class TimeResidualDomain(orderNumber: String, difference: Duration, actual: LocalTime, expected: LocalTime)
+  case class TimeResidualDomain(orderNumber: Int, difference: Duration, actual: LocalTime, expected: LocalTime)
   private var timeResidualStorage: Seq[TimeResidualDomain] = Seq.empty
 }

@@ -30,16 +30,16 @@ class MetricsServiceSpec extends AnyFreeSpec with Matchers {
     val result = MetricsService.logLinesToTimeResiduals(logLines)
 
     result shouldBe Seq(
-      TimeResidualDomain("1", 1474.millis, localTime("21:23:36.413"), localTime("21:23:34.939")),
-      TimeResidualDomain("2", 957.millis, localTime("21:23:37.896"), localTime("21:23:36.939")),
-      TimeResidualDomain("3", 40.millis, localTime("21:23:38.979"), localTime("21:23:38.939")),
-      TimeResidualDomain("4", 23.millis, localTime("21:23:40.962"), localTime("21:23:40.939")),
-      TimeResidualDomain("5", -10.millis, localTime("21:23:42.929"), localTime("21:23:42.939")),
-      TimeResidualDomain("6", -46.millis, localTime("21:23:44.893"), localTime("21:23:44.939")),
-      TimeResidualDomain("7", 45.millis, localTime("21:23:46.984"), localTime("21:23:46.939")),
-      TimeResidualDomain("8", 15.millis, localTime("21:23:48.954"), localTime("21:23:48.939")),
-      TimeResidualDomain("9", 21.millis, localTime("21:23:50.960"), localTime("21:23:50.939")),
-      TimeResidualDomain("10", -15.millis, localTime("21:23:52.924"), localTime("21:23:52.939")),
+      TimeResidualDomain(1, 1474.millis, localTime("21:23:36.413"), localTime("21:23:34.939")),
+      TimeResidualDomain(2, 957.millis, localTime("21:23:37.896"), localTime("21:23:36.939")),
+      TimeResidualDomain(3, 40.millis, localTime("21:23:38.979"), localTime("21:23:38.939")),
+      TimeResidualDomain(4, 23.millis, localTime("21:23:40.962"), localTime("21:23:40.939")),
+      TimeResidualDomain(5, -10.millis, localTime("21:23:42.929"), localTime("21:23:42.939")),
+      TimeResidualDomain(6, -46.millis, localTime("21:23:44.893"), localTime("21:23:44.939")),
+      TimeResidualDomain(7, 45.millis, localTime("21:23:46.984"), localTime("21:23:46.939")),
+      TimeResidualDomain(8, 15.millis, localTime("21:23:48.954"), localTime("21:23:48.939")),
+      TimeResidualDomain(9, 21.millis, localTime("21:23:50.960"), localTime("21:23:50.939")),
+      TimeResidualDomain(10, -15.millis, localTime("21:23:52.924"), localTime("21:23:52.939")),
     )
   }
 }

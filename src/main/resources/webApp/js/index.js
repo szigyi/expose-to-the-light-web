@@ -55,7 +55,7 @@ const Page = {
     },
     handleMetrics: (metrics) => {
         if (metrics.length > 0) {
-            $('#metrics-section').prepend(metrics.reverse().map(Template.renderMetric));
+            $('#metrics-section').prepend(metrics.map(Template.renderMetric));
             latestMetricTimestamp = Page.localTimeToDate(metrics[0].actual);
         }
     },
