@@ -30,8 +30,8 @@ const Template = {
     }
 };
 
-let latestLogTimestamp = new Date(Date.now());
-let latestMetricTimestamp = new Date(Date.now());
+let latestLogTimestamp = new Date('1995-12-17T00:00:00');
+let latestMetricTimestamp = new Date('1995-12-17T00:00:00');
 let logPollingRate = 900;
 let imagePollingRate = 1100;
 let metricPollingRate = 1200;
@@ -59,8 +59,11 @@ const Page = {
             latestMetricTimestamp = Page.localTimeToDate(metrics[0].actual);
         }
     },
-    loadLatestLogFile: () => {
-        Api.getLatestLogFile(Page.handleLogs(true))
+    loadLatestLogFile: (success) => {
+        Api.getLatestLogFile((logs) => {
+            Page.handleLogs(true)(logs);
+            success();
+        })
     },
     loadLogsSince: () => {
         Api.getLogsSince(latestLogTimestamp.toISOString(), Page.handleLogs(false));
@@ -73,16 +76,17 @@ const Page = {
             }
         });
     },
-    loadLatestMetrics: () => {
-        Api.getLatestMetrics(Page.handleMetrics);
+    loadLatestMetrics: (success) => {
+        Api.getLatestMetrics((metrics) => {
+            Page.handleMetrics(metrics);
+            success();
+        });
     },
     loadLatestMetricsSince: () => {
         Api.getLatestMetricsSince(latestMetricTimestamp.toISOString(), Page.handleMetrics);
     },
-    setConfigs: () => {
-        Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), $('#log-level').text(), resp => {
-            console.log("Set Config:", JSON.stringify(resp));
-        });
+    setConfigs: (success) => {
+        Api.setConfig($('#raw-directory-path-input').val(), $('#log-directory-path-input').val(), $('#raw-file-extension-input').val(), $('#log-level').text(), success);
     },
     runEttl: () => {
         let realCamera = $('#real-camera-input').is(':checked');
@@ -133,12 +137,11 @@ const Page = {
 $(function () {
     Shared.copyQueryParamsToMenu();
     Page.fetchUrlParams();
-    Page.setConfigs();
-    Page.loadLatestLogFile();
-    Page.loadLatestMetrics();
-    Page.pollLogs();
-    Page.pollImages();
-    Page.pollMetrics();
+    Page.setConfigs(() => {
+        Page.pollImages();
+        Page.loadLatestLogFile(Page.pollLogs);
+        Page.loadLatestMetrics(Page.pollMetrics);
+    });
     $('#run-ettl').on('click', Page.runEttl);
     $('#stop-ettl').on('click', Page.hideEttlStopper);
 });
