@@ -66,7 +66,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   fi
 
   echo "Installing systemd service file aka autorunner"
-  sudo ln -fs /usr/local/bin/ettl-web.service /etc/systemd/system/ettl-web.service
+  sudo ln -fs /usr/local/opt/ettl/ettl-web.service /etc/systemd/system/ettl-web.service
   sudo systemctl enable ettl-web.service
   sudo systemctl start ettl-web.service
 
