@@ -36,6 +36,11 @@ Installer should install these dependencies for you.
 
 `ettl-web`
 
+systemd starts the app after the pi is booted, so most of the time you don't have to start it manually.
+
+To see the logs of the app when systemd started it:
+* `journalctl -u ettl-web.service -f`
+
 ## Install on raspberry pi
 
 * Installing raspbian on SD card
