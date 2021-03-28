@@ -12,17 +12,17 @@ class ConvertService(imageRepository: ImageRepository,
                      rawDirectoryPath: => Option[String],
                      rawFileExtension: => String) extends StrictLogging {
 
-  def run: Unit =
+  def run(): Unit =
     converterRef.get().state match {
       case Idle =>
         converterRef.set(Converter(Converting))
-        convert
+        convert()
         converterRef.set(Converter(Idle))
       case Converting =>
         logger.debug(s"Conversion is in progress...")
     }
 
-  private def convert: Unit =
+  private def convert(): Unit =
     rawDirectoryPath.flatMap { rawPath =>
       dir.getAllFilePathsInLatestSubDirectory(rawPath).map { files =>
         val jpgs = files.toList.filter(_.endsWith("JPG"))
@@ -30,7 +30,13 @@ class ConvertService(imageRepository: ImageRepository,
 
         jpgs.foreach(jpg => if (!imageRepository.containsJpgPath(jpg)) imageRepository.addJpgPath(jpg))
         if (raws.nonEmpty && !"jpg".equalsIgnoreCase(rawFileExtension)) {
-          if (convertToJpg(raws.last)) dir.deleteFile(raws.last)
+          val earliestUnconvertedRawImage = raws.last
+          logger.debug(s"Converting $earliestUnconvertedRawImage")
+          val converted = convertToJpg(earliestUnconvertedRawImage)
+          if (converted) {
+            logger.debug(s"Deleting $earliestUnconvertedRawImage")
+            dir.deleteFile(earliestUnconvertedRawImage)
+          }
         }
       }
     }

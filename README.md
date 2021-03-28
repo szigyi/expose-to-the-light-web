@@ -34,9 +34,11 @@ Installer should install these dependencies for you.
 
 ## Run the app
 
-`ettl-web`
+`ettl-web INFO`
 
-systemd starts the app after the pi is booted, so most of the time you don't have to start it manually.
+First argument is the level of the logging ie: `INFO`, `DEBUG`, `WARN`, `ERROR`, `TRACE`
+
+systemd starts the app after the pi is booted, so most of the time you don't have to start it manually. systemd uses `INFO` level logging.
 
 To see the logs of the app when systemd started it:
 * `journalctl -u ettl-web.service -f`

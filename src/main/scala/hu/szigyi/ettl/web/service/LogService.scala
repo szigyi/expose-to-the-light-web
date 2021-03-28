@@ -28,7 +28,9 @@ class LogService(dir: DirectoryService, logDirectoryPath: => Option[String]) ext
 
   def readLogsSince(timestamp: LocalTime): Seq[LogLine] = {
     logger.trace(s"Reading log lines since: $timestamp")
-    readLatestLog.filter(_.time.isAfter(timestamp))
+    val ll = readLatestLog.filter(_.time.isAfter(timestamp))
+    if (ll.nonEmpty) logger.debug(s"Read lines of log: ${ll.size} since: $timestamp")
+    ll
   }
 }
 

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 # -help
-# ettl-web
+# ettl-web INFO
 
 artif="expose-to-the-light-web_2.13-0.1.25.jar"
+export LOG_LEVEL=$1
 
-echo "Starting application..."
+shift
+
+echo "Starting ettl-web application..."
 java -jar "$artif" "$@"

@@ -25,7 +25,7 @@ class EttlApi(imageRepository: ImageRepository,
         (logDirectoryPath, rawDirectoryPath) match {
           case (Some(logPath), Some(rawPath)) =>
             logger.info(s"Request: $req")
-            imageRepository.startNewSession
+            imageRepository.startNewSession()
             Ok(
               EttlRunner.executeEttl(
                 req.dummyCamera,
