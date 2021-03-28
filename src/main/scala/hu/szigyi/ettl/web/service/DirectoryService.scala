@@ -2,7 +2,6 @@ package hu.szigyi.ettl.web.service
 
 import cats.data.NonEmptyList
 import hu.szigyi.ettl.web.util.ClosableOps._
-import collection.JavaConverters._
 
 import java.io.{File, FilenameFilter}
 import java.nio.file.Paths
