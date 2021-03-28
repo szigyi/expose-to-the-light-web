@@ -3,8 +3,6 @@ package hu.szigyi.ettl.web.app
 import cats.data.Kleisli
 import cats.effect.{ExitCode, IO, IOApp}
 import com.typesafe.scalalogging.StrictLogging
-import hu.szigyi.ettl.web.job.Job
-import hu.szigyi.ettl.web.service.ConvertService
 import hu.szigyi.ettl.web.util.ManifestReader
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -44,7 +42,7 @@ import scala.concurrent.ExecutionContext
 // 25 raw, log path and raw extension can be stored in the url so user can bookmark it
 // 26 UI can show the time difference between captures took place - to know when the timelapse is ruined
 // 27 add html dependencies to the jar
-// TODO 28 add logback to store logs in a file
+// 28 add logback to store logs in a file - not needed as journalctl can do this for you `journalctl -u ettl-web.service -f`
 // 29 add autorunner for systemd
 
 object WebEttlApp extends IOApp with StrictLogging {
