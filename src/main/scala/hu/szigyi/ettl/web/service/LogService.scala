@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.StrictLogging
 import hu.szigyi.ettl.web.service.LogService.{LogLine, parseLogLine}
 
 import java.time.format.DateTimeFormatter
-import java.time.{LocalTime, ZoneOffset}
+import java.time.{LocalTime, ZoneId}
 import scala.util.{Failure, Success, Try}
 
 class LogService(dir: DirectoryService, logDirectoryPath: => Option[String]) extends StrictLogging {
@@ -30,10 +30,10 @@ class LogService(dir: DirectoryService, logDirectoryPath: => Option[String]) ext
     }
   }
 
-  def readLogsSince(timestamp: LocalTime): Seq[LogLine] = {
-    logger.trace(s"Reading log lines since: $timestamp")
-    val ll = readLatestLog.filter(_.time.isAfter(timestamp))
-    if (ll.nonEmpty) logger.debug(s"Read lines of log: ${ll.size} since: $timestamp")
+  def readLogsSince(since: LocalTime): Seq[LogLine] = {
+    logger.trace(s"Reading log lines since: $since")
+    val ll = readLatestLog.filter(_.time.isAfter(since))
+    if (ll.nonEmpty) logger.debug(s"Read lines of log: ${ll.size} since: $since")
     ll
   }
 }
@@ -63,7 +63,7 @@ object LogService extends StrictLogging {
     Try(
       DateTimeFormatter
         .ofPattern("HH:mm:ss.SSS")
-        .withZone(ZoneOffset.UTC)
+        .withZone(ZoneId.systemDefault())
         .parse(ts))
       .map(LocalTime.from)
 }

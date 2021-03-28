@@ -3,7 +3,7 @@ package hu.szigyi.ettl.web.service
 import hu.szigyi.ettl.web.service.LogService.LogLine
 import hu.szigyi.ettl.web.service.MetricsService.{TimeResidual, logLinesToTimeResiduals}
 
-import java.time.{Instant, LocalTime, ZoneId}
+import java.time.LocalTime
 import java.time.temporal.ChronoUnit.MILLIS
 import scala.concurrent.duration._
 import scala.util.Try
@@ -11,11 +11,13 @@ import scala.util.Try
 class MetricsService(logService: LogService) {
 
   def getLatestTimeResiduals: Seq[TimeResidual] =
-    logLinesToTimeResiduals(logService.readLatestLog).sortBy(_.orderNumber).reverse
+    logLinesToTimeResiduals(logService.readLatestLog)
+      .sortBy(_.orderNumber)
+      .reverse
 
-  def getLatestTimeResidualsSince(since: Instant): Seq[TimeResidual] =
+  def getLatestTimeResidualsSince(since: LocalTime): Seq[TimeResidual] =
     getLatestTimeResiduals
-      .filter(_.actual.isAfter(LocalTime.from(since.atZone(ZoneId.systemDefault()))))
+      .filter(_.actual.isAfter(since))
 }
 
 object MetricsService {
