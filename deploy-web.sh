@@ -65,6 +65,8 @@ install_src="install-web.sh"
 install_dst="/script/install-web.sh"
 ettl_src="ettl-web"
 ettl_dst="/script/ettl-web"
+service_src="ettl-web.service"
+service_dst="/script/ettl-web.service"
 
 echo ""
 echo "Assembling $version jar package..."
@@ -80,16 +82,26 @@ artifact_link=$(make_file_public "$token" "$asset_dst")
 echo "$artifact_link"
 
 echo ""
+echo "Deploying $version autorunner script..."
+delete_file "$token" "$service_dst"
+upload_script_file "$token" "$service_src" "$service_dst"
+
+echo ""
+echo "Making uploaded autorunner script public..."
+service_link=$(make_file_public "$token" "$service_dst")
+echo "$service_link"
+
+echo ""
 echo "Updating ettl script to use the $version version..."
 replace_string "artif=.*" "artif=\"$artifact\"" "ettl-web"
 
 echo ""
-echo "Deploying $version ettl/run script..."
+echo "Deploying $version ettl-web/run script..."
 delete_file "$token" "$ettl_dst"
 upload_script_file "$token" "$ettl_src" "$ettl_dst"
 
 echo ""
-echo "Making uploaded ettl/run script public..."
+echo "Making uploaded ettl-web/run script public..."
 ettl_link=$(make_file_public "$token" "$ettl_dst")
 echo "$ettl_link"
 
@@ -98,6 +110,7 @@ echo "Updating install script to use the $version version..."
 replace_string "artifact=.*" "artifact=\"$artifact\"" "install-web.sh"
 replace_string "artifact_link=.*" "artifact_link=\"$artifact_link\"" "install-web.sh"
 replace_string "ettl_web_link=.*" "ettl_web_link=\"$ettl_link\"" "install-web.sh"
+replace_string "service_link=.*" "service_link=\"$service_link\"" "install-web.sh"
 
 echo ""
 echo "Deploying $version install script..."

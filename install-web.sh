@@ -11,6 +11,7 @@ replace_string() {
 
 artifact_link="https://www.dropbox.com/s/aj2ksjgo4miijoc/expose-to-the-light-web_2.13-0.1.22.jar?dl=1"
 ettl_web_link="https://www.dropbox.com/s/vot68m6nwbe8nz5/ettl-web?dl=1"
+service_link=""
 artifact="expose-to-the-light-web_2.13-0.1.22.jar"
 
 echo "Creating app folder at /usr/local/opt/ettl"
@@ -23,6 +24,9 @@ curl -L -o "$artifact" "$artifact_link"
 
 echo "Downloading ettl script to /usr/local/opt/ettl..."
 curl -L -o "ettl-web" "$ettl_web_link"
+
+echo "Downloading autorunner script to /usr/local/opt/ettl..."
+curl -L -o "ettl-web.service" "$service_link"
 
 sudo chmod u+x ettl-web
 
@@ -62,32 +66,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   fi
 
   echo "Installing systemd service file aka autorunner"
-  cat > ettl-web.service << EOT
-[Unit]
-Description=web client of expose-to-the-light
-Wants=network-online.target
-After=network.target
-
-StartLimitIntervalSec=30
-StartLimitBurst=5
-
-[Service]
-Type=simple
-ExecStart=ettl-web
-ExecStop=/usr/bin/killall -9 ettl-web
-User=pi
-
-Restart=on-failure
-RestartSec=5s
-
-# Useful during debugging; remove it once the service is working
-#StandardOutput=journal+console
-
-[Install]
-WantedBy=multi-user.target
-EOT
-
-  sudo ln -s /usr/local/bin/ettl-web.service /etc/systemd/system/ettl-web.service
+  sudo ln -fs ettl-web.service /etc/systemd/system/ettl-web.service
   sudo systemctl enable ettl-web.service
   sudo systemctl start ettl-web.service
 
