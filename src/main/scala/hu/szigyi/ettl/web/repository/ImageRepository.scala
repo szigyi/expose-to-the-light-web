@@ -23,7 +23,7 @@ class ImageRepository extends StrictLogging {
     logger.trace(s"Trying to add to image storage: $p")
     if (!finishedSessionStorage.contains(p)) {
       logger.debug(s"Adding to image storage: $p")
-      jpgPathStorage = jpgPathStorage :+ p
+      jpgPathStorage = (jpgPathStorage :+ p).sorted.reverse
     }
   }
 }
