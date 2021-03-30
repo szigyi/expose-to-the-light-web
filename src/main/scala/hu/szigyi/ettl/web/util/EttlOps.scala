@@ -4,7 +4,7 @@ import sys.process._
 import scala.language.postfixOps
 import com.typesafe.scalalogging.StrictLogging
 
-object EttlRunner extends StrictLogging {
+object EttlOps extends StrictLogging {
 
   def executeEttl(dummyCamera: Boolean,
                   setSettings: Boolean,
@@ -26,5 +26,10 @@ object EttlRunner extends StrictLogging {
 
     logger.info(ettl)
     ettl lazyLines_!
+  }
+
+  def stopEttl(): Unit = {
+    logger.info("Interrupting command line ettl")
+    ("ps ax" #| "grep java" #| "grep -v 'grep'" #| "grep expose-to-the-light_2" #| "cut -d '?' -f1" #| "xargs kill -2").!
   }
 }

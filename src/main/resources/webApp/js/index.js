@@ -102,6 +102,9 @@ const Page = {
             Page.showEttlStopper();
         });
     },
+    stopEttl: () => {
+        Api.stopEttl(Page.hideEttlStopper);
+    },
     hideAppSettings: () => {
         $('#app-settings').removeClass('show');
     },
@@ -143,5 +146,5 @@ $(function () {
         Page.loadLatestMetrics(Page.pollMetrics);
     });
     $('#run-ettl').on('click', Page.runEttl);
-    $('#stop-ettl').on('click', Page.hideEttlStopper);
+    $('#stop-ettl').on('click', Page.stopEttl);
 });

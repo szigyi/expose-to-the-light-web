@@ -21,5 +21,7 @@ const Api = {
                 setSettings: setSettings,
                 numberOfCaptures: numberOfCaptures,
                 intervalSeconds: intervalSeconds
-            }), success)
+            }), success),
+    stopEttl: (success) =>
+        $.post('/ettl/stop', success)
 };
