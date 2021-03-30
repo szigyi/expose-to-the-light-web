@@ -9,7 +9,7 @@ StartLimitBurst=5
 [Service]
 Type=simple
 ExecStart=ettl-web INFO
-ExecStop=/usr/bin/killall -9 ettl-web
+ExecStop=/bin/bash -c "ps ax | grep java | grep -v 'grep' | grep expose-to-the-light-web_2 | cut -d '?' -f1 | xargs kill -2"
 User=pi
 
 Restart=on-failure
