@@ -44,6 +44,7 @@ import scala.concurrent.ExecutionContext
 // 27 add html dependencies to the jar
 // 28 add logback to store logs in a file - not needed as journalctl can do this for you `journalctl -u ettl-web.service -f`
 // 29 add autorunner for systemd
+// TODO 30 use night mode in the UI
 
 object WebEttlApp extends IOApp with StrictLogging {
 
