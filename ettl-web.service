@@ -8,7 +8,7 @@ StartLimitBurst=5
 
 [Service]
 Type=simple
-ExecStart=ettl-web DEBUG
+ExecStart=ettl-web INFO
 ExecStop=/usr/bin/killall -9 ettl-web
 User=pi
 
