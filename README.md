@@ -17,7 +17,7 @@ expose-to-the-light-web client
 
 Installer should install these dependencies for you.
 
-### On Mac Os
+#### On Mac Os
 
 * `brew cask install java11` [https://medium.com/macoclock/using-homebrew-to-install-java-jdk11-on-macos-44b30f497b38]
 * `brew install imagemagick`
