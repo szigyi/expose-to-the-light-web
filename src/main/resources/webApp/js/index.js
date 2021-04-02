@@ -3,15 +3,15 @@ const Template = {
         let logLevel;
         switch (log.logLevel) {
             case 'D':
-                logLevel = 'bg-secondary text-light'; break;
+                logLevel = 'bg-secondary'; break;
             case 'E':
-                logLevel = 'bg-danger text-light'; break;
+                logLevel = 'bg-danger'; break;
             case 'W':
-                logLevel = 'bg-warning text-dark'; break;
+                logLevel = 'bg-warning'; break;
             case 'T':
-                logLevel = 'bg-dark text-light'; break;
+                logLevel = 'bg-dark'; break;
             default:
-                logLevel = 'bg-light text-dark';
+                logLevel = 'bg-light';
         }
         let highlight = noAnimation ? '' : 'highlight';
         return `
