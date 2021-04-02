@@ -3,13 +3,17 @@ const Template = {
         let logLevel;
         switch (log.logLevel) {
             case 'D':
-                logLevel = 'bg-secondary'; break;
+                logLevel = 'bg-secondary';
+                break;
             case 'E':
-                logLevel = 'bg-danger'; break;
+                logLevel = 'bg-danger';
+                break;
             case 'W':
-                logLevel = 'bg-warning'; break;
+                logLevel = 'bg-warning';
+                break;
             case 'T':
-                logLevel = 'bg-dark'; break;
+                logLevel = 'bg-dark';
+                break;
             default:
                 logLevel = 'bg-light';
         }
@@ -35,6 +39,7 @@ let latestMetricTimestamp = new Date('1995-12-17T00:00:00');
 let logPollingRate = 900;
 let imagePollingRate = 1100;
 let metricPollingRate = 1200;
+let isEttlRunningPollingRate = 1300;
 
 const Page = {
     pollLogs: () =>
@@ -43,6 +48,8 @@ const Page = {
         setInterval(Page.loadLatestImage, imagePollingRate),
     pollMetrics: () =>
         setInterval(Page.loadLatestMetricsSince, metricPollingRate),
+    pollIsEttlRunning: () =>
+        setInterval(Page.isEttlRunning, isEttlRunningPollingRate),
     localTimeToDate: (time) => {
         let datePart = new Date(Date.now()).toISOString().split('T')[0];
         return new Date(datePart + 'T' + time + 'Z'); // FIXME potential bug if user is not in UTC
@@ -105,9 +112,10 @@ const Page = {
     stopEttl: () => {
         Api.stopEttl(Page.hideEttlStopper);
     },
-    isEttlRunning: () => {
+    isEttlRunning: (success) => {
         Api.isEttlRunning(resp => {
-            if (resp.isRunning) Page.showEttlStopper();
+            resp.isRunning ? Page.showEttlStopper() : Page.hideEttlStopper();
+            success();
         });
     },
     hideAppSettings: () => {
@@ -145,7 +153,7 @@ const Page = {
 };
 
 $(function () {
-    Page.isEttlRunning();
+    Page.isEttlRunning(Page.pollIsEttlRunning);
     Shared.copyQueryParamsToMenu();
     Page.fetchUrlParams();
     Page.setConfigs(() => {
