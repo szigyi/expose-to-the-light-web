@@ -4,7 +4,7 @@ const Template = {
     renderImagePath: (path) =>
         `<p><a target="_blank" href="/image${path}">${path}</a></p>`,
     renderDirectoryPathInDropdown: (path) =>
-        `<option value="${path}">${path}</option>`
+        `<option value="${path}">${path.length > 40 ? `...${path.substring(path.length - 37, path.length)}` : path}</option>`
 };
 
 const Page = {
