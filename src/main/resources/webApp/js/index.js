@@ -80,6 +80,10 @@ const Page = {
         Api.getFileNameOfLatestImage(response => {
             if (response.latestImageName && response.latestImageName !== latestImage) {
                 $('#latest-image-section').html(Template.renderLatestImage(response.latestImageName));
+                $('#latest-image').on('load', _ => {
+                    const h = document.defaultView.getComputedStyle(document.getElementById('latest-image')).height;
+                    $('#latest-image-section').attr('style', `height: ${h}px`);
+                });
             }
         });
     },
