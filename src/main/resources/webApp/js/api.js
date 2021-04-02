@@ -6,10 +6,12 @@ const Api = {
         $.get('/log', success),
     getLogsSince: (ts, success) =>
         $.post('/log', JSON.stringify({since: ts}), success),
+    getImageDirectories: (success) =>
+        $.post('/images/directories', success),
     getFileNameOfLatestImage: (success) =>
         $.post('/images/convert', success),
-    getFileNamesOfAllImages: (success) =>
-        $.get('/images', success),
+    getFileNamesOfAllImages: (baseDir, success) =>
+        $.post('/images', JSON.stringify({ directory: baseDir}), success),
     getLatestMetrics: (success) =>
         $.get('/metrics', success),
     getLatestMetricsSince: (ts, success) =>

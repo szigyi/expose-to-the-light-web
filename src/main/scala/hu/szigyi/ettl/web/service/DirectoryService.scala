@@ -21,6 +21,14 @@ class DirectoryService {
         filesInDirectory(latestSubDirectory, None)
           .map(_.sortBy(_.getName).reverse.map(_.getAbsolutePath)))
 
+  def getAllFilePathsInDirectory(dir: String, allowedExtension: String): Option[NonEmptyList[String]] =
+    filesInDirectory(new File(dir), Some(allowedExtension))
+      .map(_.sortBy(_.getName).reverse.map(_.getAbsolutePath))
+
+  def getDirectoriesInDirectory(dir: String): Option[NonEmptyList[String]] =
+    directoriesInDirectory(new File(dir))
+      .map(_.sortBy(_.getName).reverse.map(_.getAbsolutePath))
+
   def getPathFromParentDirectory(path: String): String = {
     val p = Paths.get(path)
     p.subpath(p.getNameCount - 2, p.getNameCount).toString

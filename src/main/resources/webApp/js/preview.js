@@ -2,12 +2,14 @@ const Template = {
     renderTimelapsePreview: (timelapseSource) =>
         `<img id="timelapse-preview" alt="latest image" class="responsive" src="${timelapseSource}"/>`,
     renderImagePath: (path) =>
-        `<p>${path}</p>`
+        `<p><a target="_blank" href="/image${path}">${path}</a></p>`,
+    renderDirectoryPathInDropdown: (path) =>
+        `<option value="${path}">${path}</option>`
 };
 
 const Page = {
-    createTimelapse: () => {
-        Api.getFileNamesOfAllImages(imagePathsReversed => {
+    createTimelapse: (baseDir) => {
+        Api.getFileNamesOfAllImages(baseDir, imagePathsReversed => {
             const imagePaths = imagePathsReversed.reverse().map(p => p.latestImageName);
             if (imagePaths.length > 0) {
                 $("<img/>").attr('src', `/image${imagePaths[0]}`)
@@ -39,10 +41,18 @@ const Page = {
             $('#timelapse-section').html(Template.renderTimelapsePreview(URL.createObjectURL(blob)));
         });
         return newGif;
+    },
+    loadImageDirectories: (success) => {
+        Api.getImageDirectories(paths => {
+            if (paths.length > 0) {
+                $('#images-directory').html(paths.map(Template.renderDirectoryPathInDropdown));
+                success(paths[0]);
+            }
+        });
     }
 };
 
 $(function () {
     Shared.copyQueryParamsToMenu();
-    Page.createTimelapse();
+    Page.loadImageDirectories(Page.createTimelapse);
 });
