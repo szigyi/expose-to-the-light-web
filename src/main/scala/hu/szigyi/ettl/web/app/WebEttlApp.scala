@@ -49,8 +49,8 @@ import scala.concurrent.ExecutionContext
 // 32 check is the ettl running and then show stop button instead of the start and vice versa
 // TODO 33 add a drop down so user can select folder on the timelapse preview page
 // TODO 34 ass quick mode which ads only the last few pics to the gid on the timelapse preview page
-// TODO 35 timelapse preview page stitches the pics in a reversed order
-// TODO 36 timelapse preview page adds a blank picture instead of the current to the gif
+// 35 timelapse preview page stitches the pics in a reversed order
+// 36 timelapse preview page adds a blank picture instead of the current to the gif
 // TODO 37 first image load (latest image) sets the height of the image container - eliminate jumping logs when next image loading
 
 object WebEttlApp extends IOApp with StrictLogging {
