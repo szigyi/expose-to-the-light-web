@@ -7,17 +7,18 @@ const Template = {
 
 const Page = {
     createTimelapse: () => {
-        Api.getFileNamesOfAllImages(imagePaths => {
-            console.log('Got back image paths:', imagePaths.length);
+        Api.getFileNamesOfAllImages(imagePathsReversed => {
+            const imagePaths = imagePathsReversed.reverse().map(p => p.latestImageName);
             if (imagePaths.length > 0) {
-                $("<img/>").attr('src', `/image${imagePaths[0].latestImageName}`)
+                $("<img/>").attr('src', `/image${imagePaths[0]}`)
                     .on('load', function () {
-                        console.log('First image is loaded, we know its size from now');
-                        $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p.latestImageName)));
+                        // First image is loaded, we know its size from now
+                        $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p)));
                         const gif = Page.createGif(this.height, this.width);
                         imagePaths.forEach(imgPath => {
                             const img = document.createElement("img");
-                            img.src = `/image${imgPath.latestImageName}`;
+                            img.src = `/image${imgPath}`;
+                            console.log('Creating image for', img.src);
                             gif.addFrame(img);
                         });
                         gif.render();
@@ -27,7 +28,7 @@ const Page = {
     },
     createGif: (h, w) => {
         const newGif = new GIF({
-            workers: 2,
+            workers: 1, // increasing the number makes the equivalent amount of first images go black, maybe the worker never merges the result into the main?
             height: h,
             width: w,
             quality: 1,
@@ -35,11 +36,7 @@ const Page = {
         });
         newGif.on('finished', function (blob) {
             console.log('GIF render is finished');
-            let src = URL.createObjectURL(blob);
-            let img = Template.renderTimelapsePreview(src);
-            console.log(src);
-            console.log(img);
-            $('#timelapse-section').html(img);
+            $('#timelapse-section').html(Template.renderTimelapsePreview(URL.createObjectURL(blob)));
         });
         return newGif;
     }
