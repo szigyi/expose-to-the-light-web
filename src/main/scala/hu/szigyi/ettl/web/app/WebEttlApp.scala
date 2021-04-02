@@ -45,6 +45,12 @@ import scala.concurrent.ExecutionContext
 // 28 add logback to store logs in a file - not needed as journalctl can do this for you `journalctl -u ettl-web.service -f`
 // 29 add autorunner for systemd
 // TODO 30 use night mode in the UI
+// TODO 31 ignore upper/lowercase when reading images from folder
+// TODO 32 check is the ettl running and then show stop button instead of the start when loading the page
+// TODO 33 add a drop down so user can select folder on the timelapse preview page
+// TODO 34 ass quick mode which ads only the last few pics to the gid on the timelapse preview page
+// TODO 35 timelapse preview page stitches the pics in a reversed order
+// TODO 36 timelapse preview page adds a blank picture instead of the current to the gif
 
 object WebEttlApp extends IOApp with StrictLogging {
 
