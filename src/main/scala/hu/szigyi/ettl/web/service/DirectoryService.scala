@@ -23,7 +23,7 @@ class DirectoryService {
 
   def getAllFilePathsInDirectory(dir: String, allowedExtension: String): Option[NonEmptyList[String]] =
     filesInDirectory(new File(dir), Some(allowedExtension))
-      .map(_.sortBy(_.getName).reverse.map(_.getAbsolutePath))
+      .map(_.sortBy(_.getName).map(_.getAbsolutePath))
 
   def getDirectoriesInDirectory(dir: String): Option[NonEmptyList[String]] =
     directoriesInDirectory(new File(dir))

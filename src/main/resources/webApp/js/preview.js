@@ -8,9 +8,10 @@ const Template = {
 };
 
 const Page = {
-    createTimelapse: (baseDir) => {
-        Api.getFileNamesOfAllImages(baseDir, imagePathsReversed => {
-            const imagePaths = imagePathsReversed.reverse().map(p => p.latestImageName);
+    createTimelapse: () => {
+        const baseDir = $('#images-directory option:selected').val();
+        Api.getFileNamesOfAllImages(baseDir, imagePathsObj => {
+            const imagePaths = imagePathsObj.map(p => p.latestImageName);
             if (imagePaths.length > 0) {
                 $("<img/>").attr('src', `/image${imagePaths[0]}`)
                     .on('load', function () {
@@ -20,7 +21,6 @@ const Page = {
                         imagePaths.forEach(imgPath => {
                             const img = document.createElement("img");
                             img.src = `/image${imgPath}`;
-                            console.log('Creating image for', img.src);
                             gif.addFrame(img);
                         });
                         gif.render();
@@ -37,7 +37,6 @@ const Page = {
             workerScript: 'js/gif.worker.js'
         });
         newGif.on('finished', function (blob) {
-            console.log('GIF render is finished');
             $('#timelapse-section').html(Template.renderTimelapsePreview(URL.createObjectURL(blob)));
         });
         return newGif;
@@ -46,13 +45,17 @@ const Page = {
         Api.getImageDirectories(paths => {
             if (paths.length > 0) {
                 $('#images-directory').html(paths.map(Template.renderDirectoryPathInDropdown));
-                success(paths[0]);
+                Page.createTimelapse();
+                success();
             }
         });
-    }
+    },
+
 };
 
 $(function () {
     Shared.copyQueryParamsToMenu();
-    Page.loadImageDirectories(Page.createTimelapse);
+    Page.loadImageDirectories(_ => {
+        $('#images-directory').on('change', Page.createTimelapse);
+    });
 });
