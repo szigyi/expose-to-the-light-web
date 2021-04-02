@@ -46,7 +46,7 @@ import scala.concurrent.ExecutionContext
 // 29 add autorunner for systemd
 // 30 use night mode in the UI
 // 31 ignore upper/lowercase raw extension diff when converting images from folder
-// TODO 32 check is the ettl running and then show stop button instead of the start when loading the page
+// TODO 32 check is the ettl running and then show stop button instead of the start and vice versa
 // TODO 33 add a drop down so user can select folder on the timelapse preview page
 // TODO 34 ass quick mode which ads only the last few pics to the gid on the timelapse preview page
 // TODO 35 timelapse preview page stitches the pics in a reversed order

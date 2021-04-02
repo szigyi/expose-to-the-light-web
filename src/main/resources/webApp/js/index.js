@@ -105,14 +105,21 @@ const Page = {
     stopEttl: () => {
         Api.stopEttl(Page.hideEttlStopper);
     },
+    isEttlRunning: () => {
+        Api.isEttlRunning(resp => {
+            if (resp.isRunning) Page.showEttlStopper();
+        });
+    },
     hideAppSettings: () => {
         $('#app-settings').removeClass('show');
     },
     showEttlStopper: () => {
+        $('#timelapse-settings').removeClass('show');
         $('#timelapse-stop').addClass('show');
     },
     hideEttlStopper: () => {
         $('#timelapse-stop').removeClass('show');
+        $('#timelapse-settings').addClass('show');
     },
     fetchUrlParams: () => {
         const queryString = window.location.search;
@@ -138,6 +145,7 @@ const Page = {
 };
 
 $(function () {
+    Page.isEttlRunning();
     Shared.copyQueryParamsToMenu();
     Page.fetchUrlParams();
     Page.setConfigs(() => {

@@ -15,7 +15,7 @@ const Api = {
     getLatestMetricsSince: (ts, success) =>
         $.post('/metrics', JSON.stringify({since: ts}), success),
     runEttl: (dummyCamera, setSettings, numberOfCaptures, intervalSeconds, success) =>
-        $.post('/ettl', JSON.stringify(
+        $.post('/ettl/start', JSON.stringify(
             {
                 dummyCamera: dummyCamera,
                 setSettings: setSettings,
@@ -23,5 +23,7 @@ const Api = {
                 intervalSeconds: intervalSeconds
             }), success),
     stopEttl: (success) =>
-        $.post('/ettl/stop', success)
+        $.post('/ettl/stop', success),
+    isEttlRunning: (success) =>
+        $.post('/ettl/running', success)
 };

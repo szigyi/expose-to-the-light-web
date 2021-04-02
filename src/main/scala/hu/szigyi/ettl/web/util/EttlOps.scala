@@ -32,4 +32,10 @@ object EttlOps extends StrictLogging {
     logger.info("Interrupting command line ettl")
     ("ps ax" #| "grep java" #| "grep -v 'grep'" #| "grep expose-to-the-light_2" #| "cut -d '?' -f1" #| "xargs kill -2").!
   }
+
+  def isEttlRunning: Boolean = {
+    val result = ("ps ax" #| "grep java" #| "grep -v 'grep'" #| "grep expose-to-the-light_2" #| "cut -d '?' -f1").!!
+    logger.trace(s"isEttlRunning: $result pid")
+    result.trim.nonEmpty
+  }
 }
