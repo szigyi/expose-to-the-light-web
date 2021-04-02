@@ -84,9 +84,8 @@ object WebEttlApp extends IOApp with StrictLogging {
       "/health"  -> ioc.healthApi.service,
       "/config"  -> ioc.configApi.service,
       "/log"     -> ioc.logApi.service,
-      "/convert" -> ioc.imageApi.convertService,
+      "/images" -> ioc.imageApi.service,
       "/image"   -> ioc.imageApi.imageFileService,
-      "/images"  -> ioc.imageApi.allImagesService,
       "/metrics" -> ioc.metricsApi.service,
       "/ettl"    -> ioc.ettlApi.service,
     ).orNotFound

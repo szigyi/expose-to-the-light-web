@@ -7,7 +7,7 @@ const Api = {
     getLogsSince: (ts, success) =>
         $.post('/log', JSON.stringify({since: ts}), success),
     getFileNameOfLatestImage: (success) =>
-        $.get('/convert', success),
+        $.post('/images/convert', success),
     getFileNamesOfAllImages: (success) =>
         $.get('/images', success),
     getLatestMetrics: (success) =>

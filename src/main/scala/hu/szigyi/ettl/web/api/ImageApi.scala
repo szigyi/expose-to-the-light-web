@@ -13,12 +13,10 @@ import org.http4s.server.staticcontent.{FileService, fileService}
 
 class ImageApi(blocker: Blocker, imgService: ImageRepository)(implicit cs: ContextShift[IO]) extends Http4sDsl[IO] with StrictLogging {
 
-  val convertService: HttpRoutes[IO] = HttpRoutes.of[IO] {
-    case GET -> Root =>
+  val service: HttpRoutes[IO] = HttpRoutes.of[IO] {
+    case POST -> Root / "convert" =>
       Ok(ImageResponse(imgService.getPathOfLatestImage))
-  }
 
-  val allImagesService: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root =>
       Ok(imgService.getPathOfAllImages.map(p => ImageResponse(Some(p))))
   }
