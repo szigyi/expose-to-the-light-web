@@ -9,6 +9,7 @@ const Template = {
 
 const Page = {
     createTimelapse: () => {
+        Page.showLoadingScreen();
         const baseDir = $('#images-directory option:selected').val();
         Api.getFileNamesOfAllImages(baseDir, imagePathsObj => {
             const imagePaths = imagePathsObj.map(p => p.latestImageName);
@@ -37,6 +38,7 @@ const Page = {
             workerScript: 'js/gif.worker.js'
         });
         newGif.on('finished', function (blob) {
+            Page.hideLoadingScreen();
             $('#timelapse-section').html(Template.renderTimelapsePreview(URL.createObjectURL(blob)));
         });
         return newGif;
@@ -50,7 +52,12 @@ const Page = {
             }
         });
     },
-
+    hideLoadingScreen: () => {
+        $('#loading-screen').addClass('visually-hidden');
+    },
+    showLoadingScreen: () => {
+        $('#loading-screen').removeClass('visually-hidden');
+    }
 };
 
 $(function () {
