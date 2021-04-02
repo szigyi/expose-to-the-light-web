@@ -10,8 +10,9 @@ const Template = {
 const Page = {
     createTimelapse: () => {
         Page.showLoadingScreen();
+        const quickMode = $('#quick-mode-input').is(':checked');
         const baseDir = $('#images-directory option:selected').val();
-        Api.getFileNamesOfAllImages(baseDir, imagePathsObj => {
+        Api.getFileNamesOfAllImages(baseDir, quickMode, imagePathsObj => {
             const imagePaths = imagePathsObj.map(p => p.latestImageName);
             if (imagePaths.length > 0) {
                 $("<img/>").attr('src', `/image${imagePaths[0]}`)
@@ -64,5 +65,6 @@ $(function () {
     Shared.copyQueryParamsToMenu();
     Page.loadImageDirectories(_ => {
         $('#images-directory').on('change', Page.createTimelapse);
+        $('#quick-mode-input').on('change', Page.createTimelapse);
     });
 });

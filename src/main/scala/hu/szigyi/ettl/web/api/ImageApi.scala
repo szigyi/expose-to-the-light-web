@@ -23,7 +23,10 @@ class ImageApi(blocker: Blocker, imageService: ImageService, imgRepository: Imag
 
     case request @ POST -> Root =>
       request.decode[ImagesRequest] { imagesRequest =>
-        Ok(imageService.getImagePathsInDirectory(imagesRequest.directory).map(p => ImageResponse(Some(p))))
+        Ok {
+          val dirPaths = imageService.getImagePathsInDirectory(imagesRequest.directory).map(p => ImageResponse(Some(p)))
+          if (imagesRequest.quickMode) dirPaths.take(10) else dirPaths
+        }
       }
   }
 
@@ -37,6 +40,6 @@ object ImageApi {
   implicit val imagesRequestCodec: Codec[ImagesRequest] = deriveCodec[ImagesRequest]
   implicit val imageResponseCodec: Codec[ImageResponse] = deriveCodec[ImageResponse]
 
-  case class ImagesRequest(directory: String)
+  case class ImagesRequest(directory: String, quickMode: Boolean)
   case class ImageResponse(latestImageName: Option[String])
 }

@@ -10,8 +10,8 @@ const Api = {
         $.post('/images/directories', success),
     getFileNameOfLatestImage: (success) =>
         $.post('/images/convert', success),
-    getFileNamesOfAllImages: (baseDir, success) =>
-        $.post('/images', JSON.stringify({ directory: baseDir}), success),
+    getFileNamesOfAllImages: (baseDir, quickMode, success) =>
+        $.post('/images', JSON.stringify({ directory: baseDir, quickMode: quickMode }), success),
     getLatestMetrics: (success) =>
         $.get('/metrics', success),
     getLatestMetricsSince: (ts, success) =>
