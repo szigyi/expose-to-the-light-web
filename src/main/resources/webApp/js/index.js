@@ -115,7 +115,7 @@ const Page = {
     isEttlRunning: (success) => {
         Api.isEttlRunning(resp => {
             resp.isRunning ? Page.showEttlStopper() : Page.hideEttlStopper();
-            success();
+            if (success) success();
         });
     },
     hideAppSettings: () => {
