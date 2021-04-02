@@ -26,7 +26,7 @@ class ConvertService(imageRepository: ImageRepository,
     rawDirectoryPath.flatMap { rawPath =>
       dir.getAllFilePathsInLatestSubDirectory(rawPath).map { files =>
         val jpgs = files.toList.filter(_.endsWith("JPG"))
-        val raws = files.toList.filter(_.endsWith(rawFileExtension))
+        val raws = files.toList.filter(_.toLowerCase.endsWith(rawFileExtension.toLowerCase))
 
         jpgs.foreach(jpg => if (!imageRepository.containsJpgPath(jpg)) imageRepository.addJpgPath(jpg))
         if (raws.nonEmpty && !"jpg".equalsIgnoreCase(rawFileExtension)) {
