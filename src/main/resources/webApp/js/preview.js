@@ -9,34 +9,63 @@ const Template = {
 
 const Page = {
     createTimelapse: () => {
+        const loadImage = (imagePath, success) =>
+            $("<img/>").attr('src', `/image${imagePath}`).on('load', success);
+
+        const waitForImagesLoaded = (imageURLs, callback) => {
+            let imageElements = [];
+            let remaining = imageURLs.length;
+            const onEachImageLoad = function() {
+                if (--remaining === 0 && callback) {
+                    callback(imageElements);
+                }
+            };
+
+            imageURLs.forEach(imageUrl => {
+                const img = new Image();
+                img.onload = onEachImageLoad;
+                img.src = imageUrl;
+                imageElements.push(img);
+            });
+        };
+
+        const createImgArr = (imagePaths) => {
+            let images = [];
+            imagePaths.forEach(imagePath => {
+                images.push(`/image${imagePath}`);
+            });
+            return images;
+        };
+
         Page.showLoadingScreen();
+        const frameDelay = $('#frame-delay').val();
         const quickMode = $('#quick-mode-input').is(':checked');
         const baseDir = $('#images-directory option:selected').val();
+
         Api.getFileNamesOfAllImages(baseDir, quickMode, imagePathsObj => {
             const imagePaths = imagePathsObj.map(p => p.latestImageName);
             if (imagePaths.length > 0) {
-                $("<img/>").attr('src', `/image${imagePaths[0]}`)
-                    .on('load', function () {
-                        // First image is loaded, we know its size from now
-                        $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p)));
-                        const gif = Page.createGif(this.height, this.width);
-                        imagePaths.forEach(imgPath => {
-                            const img = document.createElement("img");
-                            img.src = `/image${imgPath}`;
-                            gif.addFrame(img);
+                $('#timelapse-paths-section').html(imagePaths.map(p => Template.renderImagePath(p)));
+                loadImage(imagePaths[0], function() {
+                    const gif = Page.createGif(this.height, this.width);
+                    waitForImagesLoaded(createImgArr(imagePaths), function(images) {
+                        images.forEach(image => {
+                            gif.addFrame(image, {delay: frameDelay});
                         });
                         gif.render();
                     });
+                });
             }
         });
     },
     createGif: (h, w) => {
         const newGif = new GIF({
-            workers: 1, // increasing the number makes the equivalent amount of first images go black, maybe the worker never merges the result into the main?
+            workers: 4, // increasing the number makes the equivalent amount of first images go black, maybe the worker never merges the result into the main?
             height: h,
             width: w,
             quality: 1,
-            workerScript: 'js/gif.worker.js'
+            workerScript: 'js/gif.worker.js',
+            debug: true
         });
         newGif.on('finished', function (blob) {
             Page.hideLoadingScreen();
@@ -66,5 +95,6 @@ $(function () {
     Page.loadImageDirectories(_ => {
         $('#images-directory').on('change', Page.createTimelapse);
         $('#quick-mode-input').on('change', Page.createTimelapse);
+        $('#frame-delay').on('change', Page.createTimelapse);
     });
 });
