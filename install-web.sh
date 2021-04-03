@@ -9,10 +9,10 @@ replace_string() {
   sed -i '' -e "s/$placeholder/$ESCAPED_REPLACE/" "$file_name"
 }
 
-artifact_link="https://www.dropbox.com/s/4futbac6kgdtboi/expose-to-the-light-web_2.13-0.1.29.jar?dl=1"
-ettl_web_link="https://www.dropbox.com/s/iwrld1gxzh563vy/ettl-web?dl=1"
-service_link="https://www.dropbox.com/s/3lvrevfoce83nms/ettl-web.service?dl=1"
-artifact="expose-to-the-light-web_2.13-0.1.29.jar"
+artifact_link="https://www.dropbox.com/s/plv3apnz7yt1aqz/expose-to-the-light-web_2.13-0.1.30.jar?dl=1"
+ettl_web_link="https://www.dropbox.com/s/dtc2m60rptjn3iu/ettl-web?dl=1"
+service_link="https://www.dropbox.com/s/6c81dlhx2hlwl8u/ettl-web.service?dl=1"
+artifact="expose-to-the-light-web_2.13-0.1.30.jar"
 
 echo "Creating app folder at /usr/local/opt/ettl"
 sudo mkdir -p /usr/local/opt/ettl
