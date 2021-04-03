@@ -40,14 +40,17 @@ let logPollingRate = 900;
 let imagePollingRate = 1100;
 let metricPollingRate = 1200;
 let isEttlRunningPollingRate = 1300;
+let logsInterval;
+let imagesInterval;
+let metricsInterval;
 
 const Page = {
     pollLogs: () =>
-        setInterval(Page.loadLogsSince, logPollingRate),
+        logsInterval = setInterval(Page.loadLogsSince, logPollingRate),
     pollImages: () =>
-        setInterval(Page.loadLatestImage, imagePollingRate),
+        imagesInterval = setInterval(Page.loadLatestImage, imagePollingRate),
     pollMetrics: () =>
-        setInterval(Page.loadLatestMetricsSince, metricPollingRate),
+        metricsInterval = setInterval(Page.loadLatestMetricsSince, metricPollingRate),
     pollIsEttlRunning: () =>
         setInterval(Page.isEttlRunning, isEttlRunningPollingRate),
     localTimeToDate: (time) => {
@@ -66,11 +69,8 @@ const Page = {
             latestMetricTimestamp = Page.localTimeToDate(metrics[0].actual);
         }
     },
-    loadLatestLogFile: (success) => {
-        Api.getLatestLogFile((logs) => {
-            Page.handleLogs(true)(logs);
-            success();
-        })
+    loadLatestLogFile: () => {
+        Api.getLatestLogFile((logs) => Page.handleLogs(true)(logs));
     },
     loadLogsSince: () => {
         Api.getLogsSince(latestLogTimestamp.toISOString(), Page.handleLogs(false));
@@ -87,11 +87,8 @@ const Page = {
             }
         });
     },
-    loadLatestMetrics: (success) => {
-        Api.getLatestMetrics((metrics) => {
-            Page.handleMetrics(metrics);
-            success();
-        });
+    loadLatestMetrics: () => {
+        Api.getLatestMetrics((metrics) => Page.handleMetrics(metrics));
     },
     loadLatestMetricsSince: () => {
         Api.getLatestMetricsSince(latestMetricTimestamp.toISOString(), Page.handleMetrics);
@@ -116,10 +113,28 @@ const Page = {
     stopEttl: () => {
         Api.stopEttl(Page.hideEttlStopper);
     },
-    isEttlRunning: (success) => {
+    isEttlRunning: () => {
         Api.isEttlRunning(resp => {
-            resp.isRunning ? Page.showEttlStopper() : Page.hideEttlStopper();
-            if (success) success();
+            if (resp.isRunning) {
+                Page.showEttlStopper()
+                if (!logsInterval) Page.pollLogs();
+                if (!imagesInterval) Page.pollImages();
+                if (!metricsInterval) Page.pollMetrics();
+            } else {
+                Page.hideEttlStopper();
+                if (logsInterval) {
+                    clearInterval(logsInterval);
+                    logsInterval = undefined;
+                }
+                if (imagesInterval) {
+                    clearInterval(imagesInterval);
+                    imagesInterval = undefined;
+                }
+                if (metricsInterval) {
+                    clearInterval(metricsInterval);
+                    metricsInterval = undefined;
+                }
+            }
         });
     },
     hideAppSettings: () => {
@@ -157,13 +172,13 @@ const Page = {
 };
 
 $(function () {
-    Page.isEttlRunning(Page.pollIsEttlRunning);
+    Page.pollIsEttlRunning();
     Shared.copyQueryParamsToMenu();
     Page.fetchUrlParams();
-    Page.setConfigs(() => {
-        Page.pollImages();
-        Page.loadLatestLogFile(Page.pollLogs);
-        Page.loadLatestMetrics(Page.pollMetrics);
+    Page.setConfigs(_ => {
+        Page.loadLatestImage();
+        Page.loadLatestLogFile();
+        Page.loadLatestMetrics();
     });
     $('#run-ettl').on('click', Page.runEttl);
     $('#stop-ettl').on('click', Page.stopEttl);
