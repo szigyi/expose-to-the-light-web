@@ -25,7 +25,7 @@ class ImageApi(blocker: Blocker, imageService: ImageService, imgRepository: Imag
       request.decode[ImagesRequest] { imagesRequest =>
         Ok {
           val dirPaths = imageService.getImagePathsInDirectory(imagesRequest.directory).map(p => ImageResponse(Some(p)))
-          if (imagesRequest.quickMode) dirPaths.take(10) else dirPaths
+          if (imagesRequest.quickMode) dirPaths.takeRight(10) else dirPaths
         }
       }
   }
