@@ -8,6 +8,10 @@ const Template = {
 };
 
 const Page = {
+    setProgressbar: (progress) => {
+        $('#timelapse-progressbar').attr('style', `width: ${progress * 100}%;`);
+        $('#timelapse-progressbar').attr('aria-valuenow', progress * 100);
+    },
     createTimelapse: () => {
         const loadImage = (imagePath, success) =>
             $("<img/>").attr('src', `/image${imagePath}`).on('load', success);
@@ -53,18 +57,20 @@ const Page = {
                             gif.addFrame(image, {delay: frameDelay});
                         });
                         gif.render();
+                        Page.setProgressbar(0);
                     });
                 });
             }
         });
     },
-    createGif: (h, w) => {
+    createGif: (h, w, quickMode) => {
         const newGif = new GIF({
             workers: 4, // increasing the number makes the equivalent amount of first images go black, maybe the worker never merges the result into the main?
             height: h,
             width: w,
-            quality: 1,
+            quality: quickMode ? 70 : 1,
             workerScript: 'js/gif.worker.js',
+            dither: 'FloydSteinberg-serpentine',
             debug: true
         });
         newGif.on('finished', function (blob) {
@@ -72,8 +78,7 @@ const Page = {
             $('#timelapse-section').html(Template.renderTimelapsePreview(URL.createObjectURL(blob)));
         });
         newGif.on('progress', function(p) {
-           $('#timelapse-progressbar').attr('style', `width: ${p * 100}%;`);
-           $('#timelapse-progressbar').attr('aria-valuenow', p * 100);
+           Page.setProgressbar(p)
         });
         return newGif;
     },
