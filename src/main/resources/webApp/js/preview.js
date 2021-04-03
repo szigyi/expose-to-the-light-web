@@ -71,6 +71,10 @@ const Page = {
             Page.hideLoadingScreen();
             $('#timelapse-section').html(Template.renderTimelapsePreview(URL.createObjectURL(blob)));
         });
+        newGif.on('progress', function(p) {
+           $('#timelapse-progressbar').attr('style', `width: ${p * 100}%;`);
+           $('#timelapse-progressbar').attr('aria-valuenow', p * 100);
+        });
         return newGif;
     },
     loadImageDirectories: (success) => {
@@ -84,9 +88,11 @@ const Page = {
     },
     hideLoadingScreen: () => {
         $('#loading-screen').addClass('visually-hidden');
+        $('#timelapse-progressbar').addClass('visually-hidden');
     },
     showLoadingScreen: () => {
         $('#loading-screen').removeClass('visually-hidden');
+        $('#timelapse-progressbar').removeClass('visually-hidden');
     }
 };
 

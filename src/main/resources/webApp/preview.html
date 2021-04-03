@@ -63,13 +63,15 @@
         </div>
     </section>
     <h4>Timelapse Preview</h4>
-    <section id="timelapse-section"></section>
+    <div id="timelapse-progressbar" class="progress" style="height: 20px;">
+        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
     <section id="loading-screen" class="d-flex justify-content-center">
         <div class="spinner-border spinner-grow m-5" style="width: 6rem; height: 6rem;" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <span style="position: absolute">Your browser is creating the gif. Please do not refresh or leave the page!</span>
     </section>
+    <section id="timelapse-section"></section>
     <section id="timelapse-paths-section"></section>
 </section>
 </body>
