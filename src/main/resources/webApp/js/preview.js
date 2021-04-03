@@ -9,8 +9,9 @@ const Template = {
 
 const Page = {
     setProgressbar: (progress) => {
-        $('#timelapse-progressbar').attr('style', `width: ${progress * 100}%;`);
-        $('#timelapse-progressbar').attr('aria-valuenow', progress * 100);
+        $('#timelapse-progressbar > div').html(`${Math.round(progress * 100)}%`);
+        $('#timelapse-progressbar > div').attr('style', `width: ${progress * 100}%;`);
+        $('#timelapse-progressbar > div').attr('aria-valuenow', progress * 100);
     },
     createTimelapse: () => {
         const loadImage = (imagePath, success) =>
@@ -41,6 +42,7 @@ const Page = {
             return images;
         };
 
+        Page.setProgressbar(0);
         Page.showLoadingScreen();
         const frameDelay = $('#frame-delay').val();
         const quickMode = $('#quick-mode-input').is(':checked');
@@ -57,7 +59,6 @@ const Page = {
                             gif.addFrame(image, {delay: frameDelay});
                         });
                         gif.render();
-                        Page.setProgressbar(0);
                     });
                 });
             }
@@ -92,11 +93,9 @@ const Page = {
         });
     },
     hideLoadingScreen: () => {
-        $('#loading-screen').addClass('visually-hidden');
         $('#timelapse-progressbar').addClass('visually-hidden');
     },
     showLoadingScreen: () => {
-        $('#loading-screen').removeClass('visually-hidden');
         $('#timelapse-progressbar').removeClass('visually-hidden');
     }
 };
