@@ -2,6 +2,8 @@
 
 expose-to-the-light-web client
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FRLU958RSV3KY)
+
 ## Install application
 
 ### Download installer
