@@ -3,7 +3,7 @@
 # -help
 # ettl-web INFO
 
-artif="expose-to-the-light-web_2.13-0.1.32.jar"
+artif="expose-to-the-light-web_2.13-0.1.33.jar"
 export LOG_LEVEL=$1
 
 shift
