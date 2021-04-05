@@ -54,7 +54,7 @@ import scala.concurrent.ExecutionContext
 // 37 first image load (latest image) sets the height of the image container - eliminate jumping logs when next image loading
 // 38 if ettl is not running then stop polling images, logs, metrics
 // 39 add progress bar to preview page
-// TODO 40 add timelapse length estimator based on the # of captures and interval, like replaying it in 30fps it will be 2 secs long
+// 40 add timelapse length estimator based on the # of captures and interval, like replaying it in 30fps it will be 2 secs long
 
 object WebEttlApp extends IOApp with StrictLogging {
 

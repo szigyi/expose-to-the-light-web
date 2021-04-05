@@ -168,6 +168,22 @@ const Page = {
         urlParams.set('ext', $('#raw-file-extension-input').val());
         urlParams.set('level', $('#log-level').text());
         window.history.replaceState('', '', `index.html?${urlParams.toString()}`);
+    },
+    calculateTimelapseLength: () => {
+        const timeLength = (seconds) => {
+            const hours = Math.floor(seconds / 3600);
+            seconds -= hours * 3600;
+            const minutes = Math.floor(seconds / 60);
+            seconds -= minutes * 60;
+            return `${hours}:${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}`;
+        };
+        const numberOfCaptures = $('#number-of-captures').val();
+        const intervalSeconds = $('#interval-seconds').val();
+        const fps = 30;
+        const playbackLength = numberOfCaptures / fps;
+        const realtimeLength = numberOfCaptures * intervalSeconds;
+        $('#playback-length').html(`${timeLength(playbackLength)}`);
+        $('#realtime-length').html(`${timeLength(realtimeLength)}`);
     }
 };
 
@@ -175,6 +191,7 @@ $(function () {
     Page.pollIsEttlRunning();
     Shared.copyQueryParamsToMenu();
     Page.fetchUrlParams();
+    Page.calculateTimelapseLength();
     Page.setConfigs(_ => {
         Page.loadLatestImage();
         Page.loadLatestLogFile();
@@ -182,4 +199,6 @@ $(function () {
     });
     $('#run-ettl').on('click', Page.runEttl);
     $('#stop-ettl').on('click', Page.stopEttl);
+    $('#number-of-captures').on('change', Page.calculateTimelapseLength);
+    $('#interval-seconds').on('change', Page.calculateTimelapseLength);
 });
