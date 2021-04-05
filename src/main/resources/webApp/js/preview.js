@@ -1,6 +1,6 @@
 const Template = {
     renderTimelapsePreview: (timelapseSource) =>
-        `<img id="timelapse-preview" alt="latest image" class="responsive" src="${timelapseSource}"/>`,
+        `<a target="_blank" href="${timelapseSource}"><img id="timelapse-preview" alt="timelapse preview" class="responsive" src="${timelapseSource}"/></a>`,
     renderImagePath: (path) =>
         `<p><a target="_blank" href="/image${path}">${path}</a></p>`,
     renderDirectoryPathInDropdown: (path) =>
@@ -66,10 +66,10 @@ const Page = {
     },
     createGif: (h, w, quickMode) => {
         const newGif = new GIF({
-            workers: 4, // increasing the number makes the equivalent amount of first images go black, maybe the worker never merges the result into the main?
+            workers: 4,
             height: h,
             width: w,
-            quality: quickMode ? 70 : 1,
+            quality: quickMode ? 99 : 1,
             workerScript: 'js/gif.worker.js',
             dither: 'FloydSteinberg-serpentine',
             debug: true
